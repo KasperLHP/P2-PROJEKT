@@ -9,7 +9,6 @@ async function writeToFile(file, text) {
   await fs2.outputFile(file, `${text}${os.EOL}`, options);
 }
 
-
 async function scraperProduct(url, filename){
     console.log('Starting...');
 
@@ -17,10 +16,12 @@ async function scraperProduct(url, filename){
     const page = await browser.newPage();
     await page.goto(url);
 
+    await page.waitFor(3000);
+
     //Departure flight
     //Price
-    const [el] = await page.$x('/html/body/flights-root/div/div/div/div/flights-summary-container/flights-summary/div/div[1]/journey-container/journey/div/div[2]/carousel-container/carousel/div/ul/li[3]/carousel-item/button/div[2]/ry-price/span[2]');
-    const txt = await el.getProperty('textContent');
+    const [el1] = await page.$x('/html/body/flights-root/div/div/div/div/flights-summary-container/flights-summary/div/div[1]/journey-container/journey/div/div[2]/carousel-container/carousel/div/ul/li[3]/carousel-item/button/div[2]/ry-price/span[2]');
+    const txt = await el1.getProperty('textContent');
     const Price = await txt.jsonValue();
     //From city, to city
     const [el2] = await page.$x('/html/body/flights-root/div/div/div/div/flights-summary-container/flights-summary/div/div[1]/journey-container/journey/div/div[1]/h3/text()');
@@ -91,11 +92,11 @@ function chooseDate(dateout, datein){
 
     console.log('Før fil er lavet');
     
-    fs.writeFile(dateout + datein +'.json', null, function(err){
+    /*fs.writeFile(dateout + datein +'.json',null, function(err){
         if(err){
             console.log(err);
         }
-    });
+    });*/
     
     console.log('Efter fil er lavet');
 }
