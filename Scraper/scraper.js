@@ -1,7 +1,16 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 
-async function scraperProduct(url){
+const os = require('os');
+const fs2 = require('fs-extra');
+const options = {flag: 'a'};
+
+async function writeToFile(file, text) {
+  await fs2.outputFile(file, `${text}${os.EOL}`, options);
+}
+
+
+async function scraperProduct(url, filename){
     console.log('Starting...');
 
     const browser = await puppeteer.launch();
@@ -53,21 +62,42 @@ async function scraperProduct(url){
     const txt10 = await el10.getProperty('textContent');
     const ArrivalTime2 = await txt10.jsonValue();
 
-    console.log({Departure: FromTo, DepartureDate: DepartureDate + " 2020", Price: Price + "DKK", DepartureTime: DepartureTime, ArrivalTime: ArrivalTime}, {Return: FromTo2, ReturnDate: ReturnDate.slice(3, 10) + " 2020", Price: Price2 + "DKK", DepartureTime: DepartureTime2, ArrivalTime: ArrivalTime2}, {TotalPrice: parseFloat(Price) + parseFloat(Price2) + " DKK"}, {ScrapeDate: Date().toLocaleString()});
+    var data = [{ScrapeDate: Date().toLocaleString()}, {Departure: FromTo, DepartureDate: DepartureDate + " 2020", Price: Price + "DKK", DepartureTime: DepartureTime, ArrivalTime: ArrivalTime}, {Return: FromTo2, ReturnDate: ReturnDate.slice(3, 10) + " 2020", Price: Price2 + "DKK", DepartureTime: DepartureTime2, ArrivalTime: ArrivalTime2}, {TotalPrice: parseFloat(Price) + parseFloat(Price2) + " DKK"}];
+    var jsonData = JSON.stringify(data);
+    
+    writeToFile(filename+'.json', jsonData);
+    
+/*
+fs.appendFile(filename+'.json', jsonData (err) => {
+        if(err){
+            console.log('The "data to append" was appended to file!');
+        }
+      });
 
-    console.log('Done!');
-}
+*/
+    /* fs.writeFile("test2.json", jsonData, function(err){
+        if(err){
+            console.log(err);
+        }
+    }); */
+    
+    
 
-//scraperProduct('https://www.ryanair.com/dk/da/trip/flights/select?adults=1&teens=0&children=0&infants=0&dateOut=2020-05-01&dateIn=2020-05-08&originIata=CPH&destinationIata=STN&isConnectedFlight=false&isReturn=true&discount=0&tpAdults=1&tpTeens=0&tpChildren=0&tpInfants=0&tpStartDate=2020-05-01&tpEndDate=2020-05-08&tpOriginIata=CPH&tpDestinationIata=STN&tpIsConnectedFlight=false&tpIsReturn=true&tpDiscount=0');
+    console.log('File made!');
+}   
 
 function chooseDate(dateout, datein){
-    scraperProduct('https://www.ryanair.com/dk/da/trip/flights/select?adults=1&teens=0&children=0&infants=0&dateOut='+dateout+'&'+'dateIn='+datein+'&originIata=CPH&destinationIata=STN&isConnectedFlight=false&isReturn=true&discount=0');
+    scraperProduct('https://www.ryanair.com/dk/da/trip/flights/select?adults=1&teens=0&children=0&infants=0&dateOut='+dateout+'&'+'dateIn='+datein+'&originIata=CPH&destinationIata=STN&isConnectedFlight=false&isReturn=true&discount=0', dateout + datein);
+
+    console.log('Før fil er lavet');
+    
+    fs.writeFile(dateout + datein +'.json', null, function(err){
+        if(err){
+            console.log(err);
+        }
+    });
+    
+    console.log('Efter fil er lavet');
 }
 
 chooseDate('2020-05-17', '2020-05-24');
-
-
-/* fs.appendFile('output.json', data, function (err) {
-    if (err) throw err;
-        console.log('Saved!');
-  }); */ 
