@@ -1,0 +1,15 @@
+{
+    "From Airport to Airport": FromTo,
+    "Departure date": DepartureDate,
+    "Price": Price,
+    "Departure time": DepartureTime,
+    "Arrival Time": ArrivalTime,
+}
+
+{
+    "From Airport to Airport": FromTo2,
+    "Return date": ReturnDate,
+    "Price": Price2,
+    "Departure time": DepartureTime2,
+    "Arrival Time": ArrivalTime2,
+}
