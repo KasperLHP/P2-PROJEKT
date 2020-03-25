@@ -85,7 +85,7 @@ function chooseDate(dateout, datein){
                     console.log(err);
                 }
             });
-            console.log('Adding scrape data...');
+            console.log('Adding scraped data...');
         }
     });
     scraperProduct('https://www.ryanair.com/dk/da/trip/flights/select?adults=1&teens=0&children=0&infants=0&dateOut='+dateout+'&'+'dateIn='+datein+'&originIata=CPH&destinationIata=STN&isConnectedFlight=false&isReturn=true&discount=0', dateout + datein);
