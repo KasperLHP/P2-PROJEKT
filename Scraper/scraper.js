@@ -76,7 +76,7 @@ function chooseDate(dateout, datein){
     
     fs.access(dateout + datein +".json", (err) => {
         if(!err){
-            console.log('File exists! Adding scrape data...');
+            console.log('File exists! Adding scraped data...');
             return;
         }else{
             console.log('The file does not exist... making new file!');
