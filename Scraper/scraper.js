@@ -10,6 +10,7 @@ async function writeToFile(file, text) {
   await fs2.outputFile(file, `${text}${os.EOL}`, options);
 }
 
+// Actual scraper - takes Xpath elements of website
 async function scraperProduct(url, filename){
     console.log('Starting scraper...');
     console.log('Retrieving scraped data...');
@@ -71,6 +72,7 @@ async function scraperProduct(url, filename){
     writeToFile(filename+'.json', jsonData);    
 }   
 
+// Function that writes scraped data to file + date to link creator
 function chooseDate(dateout, datein){
     console.log('Checking if the given file exists...');
     
@@ -91,7 +93,7 @@ function chooseDate(dateout, datein){
     scraperProduct('https://www.ryanair.com/dk/da/trip/flights/select?adults=1&teens=0&children=0&infants=0&dateOut='+dateout+'&'+'dateIn='+datein+'&originIata=CPH&destinationIata=STN&isConnectedFlight=false&isReturn=true&discount=0', dateout + datein);
 }
 
-
+// Scheduling scraper to specific times
 function startJob (dateout, datein) {
     var j = schedule.scheduleJob('0 * * * *', function(){
         console.log('Running scheduled job...');
