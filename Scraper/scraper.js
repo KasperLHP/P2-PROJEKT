@@ -104,4 +104,4 @@ function startJob (dateout, datein) {
 startJob('2020-05-01', '2020-05-08');
 
 // chooseDate('2020-05-17', '2020-05-24');
-// setInterval(chooseDate('2020-05-17', '2020-05-24'), 10000); <-- til HTML implmenteringen
+// setInterval(chooseDate('2020-05-17', '2020-05-24'), 10000); <-- til HTML implementeringen
