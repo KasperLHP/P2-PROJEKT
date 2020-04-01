@@ -3,6 +3,7 @@ const fs = require('fs');
 const os = require('os');
 const fs2 = require('fs-extra');
 const schedule = require('node-schedule');
+const airports = require('airport-codes');
 
 const options = {flag: 'a'};
 
@@ -13,7 +14,7 @@ async function writeToFile(file, text) {
 // Actual scraper - takes Xpath elements of website
 async function scraperProduct(url, filename){
     console.log('Starting scraper...');
-    console.log('Retrieving scraped data...');
+    console.log('Retrieving data...');
 
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -73,35 +74,346 @@ async function scraperProduct(url, filename){
 }   
 
 // Function that writes scraped data to file + date to link creator
-function chooseDate(dateout, datein){
-    console.log('Checking if the given file exists...');
+function chooseRoute(dateout, datein, cityFrom, cityTo){
     
-    fs.access(dateout + datein +".json", (err) => {
+    scraperProduct('https://www.ryanair.com/dk/da/trip/flights/select?adults=1&teens=0&children=0&infants=0&dateOut='+dateout+'&'+'dateIn='+datein+'&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn=true&discount=0', cityFrom + cityTo + dateout + datein);
+}
+
+
+// Scheduling scraper to specific times
+function startJob(dateout, datein, cityFrom, cityTo){
+    console.log('Checking if the given file exists...');
+    cityFrom = CityToIata(cityFrom);
+    cityTo = CityToIata(cityTo);
+
+    fs.access(cityFrom + cityTo + dateout + datein +".json", (err) => {
         if(!err){
             console.log('File exists! Adding scraped data...');
             return;
         }else{
-            console.log('The file does not exist... making new file!');
-            fs.writeFile(dateout + datein +'.json',"", function(err){
+            console.log('The file does not exist... making a new file named: ' + cityFrom + cityTo + dateout + datein);
+            fs.writeFile(cityFrom + cityTo + dateout + datein +'.json',"", function(err){
                 if(err){
                     console.log(err);
                 }
             });
             console.log('Adding scraped data...');
         }
-    });
-    scraperProduct('https://www.ryanair.com/dk/da/trip/flights/select?adults=1&teens=0&children=0&infants=0&dateOut='+dateout+'&'+'dateIn='+datein+'&originIata=CPH&destinationIata=STN&isConnectedFlight=false&isReturn=true&discount=0', dateout + datein);
-}
+    });    
 
-// Scheduling scraper to specific times
-function startJob (dateout, datein) {
-    var j = schedule.scheduleJob('0 * * * *', function(){
+    var j = schedule.scheduleJob('30 * * * * *', function(){
         console.log('Running scheduled job...');
-        chooseDate(dateout, datein);
+        chooseRoute(dateout, datein, cityFrom, cityTo);
     });
 }
 
-startJob('2020-05-01', '2020-05-08');
+
+function CityToIata(city){
+    switch(city){
+        case 'London Heathrow':
+            return 'LHR';
+            break;
+        case 'Paris Charles de Gaulle':
+            return 'CDG';
+            break;
+        case 'Frankfurt':
+            return 'FRA';
+            break;
+        case 'Amsterdam':
+            return 'AMS';
+            break;
+        case 'Istanbul':
+            return 'IST';
+            break;
+        case 'Madrid':
+            return 'MAD';
+            break;
+        case 'Munich':
+            return 	'MUC';
+            break;
+        case 'Rome Leonardo da Vinci–Fiumicino':
+            return 'FCO';
+            break;
+        case 'London Gatwick':
+            return 'LGW';
+            break;
+        case 'Barcelona':
+            return 'BCN';
+            break;
+        case 'Moscow':
+            return 'DME';
+            break;
+        case 'Khimki':
+            return 'SVO';
+            break;
+        case 'Paris Orly':
+            return 'ORY';
+            break;
+        case 'Antalya':
+            return 'AYT';
+            break;
+        case 'Zurich':
+            return 'ZRH';
+            break;
+        case 'Copenhagen':
+            return 'CPH';
+            break;
+        case 'Oslo':
+            return 'OSL';
+            break;
+        case 'Mallorca':
+            return 'PMI';
+            break;
+        case 'Vienna':
+            return 'VIE';
+            break;
+        case 'Dusseldorf':
+            return 'DUS';
+            break;
+        case 'Manchester':
+            return 'MAN';
+            break;
+        case 'Stockholm':
+            return 'ARN';
+            break;
+        case 'Dublin':
+            return 'DUB';
+            break;
+        case 'Berlin Tegel':
+            return 'TXL';
+            break;
+        case 'Brussels':
+            return 	'BRU';
+            break;
+        case 'Sabiha Gokcen':
+            return 'SAW';
+            break;
+        case 'Milan Malpensa':
+            return 'MXP';
+            break;
+        case 'London Stansted':
+            return 'STN';
+            break;
+        case 'Lisbon':
+            return 'LIS';
+            break;
+        case 'Helsinki':
+            return 'HEL';
+            break;
+        case 'Geneva':
+            return 'GVA';
+            break;
+        case 'Hamburg':
+            return 'HAM';
+            break;
+        case 'Malaga':
+            return 'AGP';
+            break;
+        case 'St. Petersburg':
+            return 'LED';
+            break;
+        case 'Athens':
+            return 'ATH';
+            break;
+        case 'Nice':
+            return 'NCE';
+            break;
+        case 'Vnukovo':
+            return 'VKO';
+            break;
+        case 'Prague':
+            return 'PRG';
+            break;
+        case 'Ankara':
+            return 'ESB';
+            break;
+        case 'Warsaw':
+            return 'WAW';
+            break;
+        case 'Izmir':
+            return 'ADB';
+            break;
+        case 'Edinburgh':
+            return 'EDI';
+            break;
+        case 'Gran Canaria' || 'Las Palmas':
+            return 'LPA';
+            break;    
+        case 'London Luton':
+            return 'LTN';
+            break;          
+        case 'Alicante':
+            return 'ALC';
+            break;
+        case 'Stuttgart':
+            return 'STR';
+            break;
+        case 'Birgmingham':
+            return 'BHX';
+            break;
+        case 'Cologne' || 'Cologne Bonn':
+            return 'CGN';
+            break;
+        case 'Milan Linate':
+            return 'LIN';
+            break;
+        case 'Milan Il Caravaggio':
+            return 'BGY';
+            break;
+        case 'Tenerife':
+            return 'TFS';
+            break;
+        case 'Lyon':
+            return 'LYS';
+            break;
+        case 'Budapest':
+            return 'BUD';
+            break;
+        case 'Venice':
+            return 'VCE';
+            break;
+        case 'Marseille':
+            return 'MRS';
+            break;
+        case 'Boryspil':
+            return 'KBP';
+            break;
+        case 'Bucharest':
+            return 'OTP';
+            break;
+        case 'Toulouse':
+            return 'TLS';
+            break;
+        case 'Glasgow':
+            return 'GLA';
+            break;
+        case 'Brussels South Charleroi':
+            return 'CRL';
+            break;
+        case 'Berlin Schönefeld':
+            return 'SXF';
+            break;
+        case 'Catania' || 'Catania-Fontanarossa':
+            return 'CTA';
+            break;
+        case 'Porto':
+            return 'OPO';
+            break;
+        case 'Bergen':
+            return 'BGO';
+            break;
+        case 'Bologna':
+            return 'BLQ';
+            break;
+        case 'Bristol':
+            return 'BRS';
+            break;     
+        case '	Faro':
+            return 'FAO';
+            break;
+        case 'Basel':
+            return 'BSL';
+            break;
+        case 'Heraklion':
+            return 'HER';
+            break;        
+        case 'Ibiza':
+            return 'IBZ';
+            break; 
+        case 'Naples':
+            return 'NAP';
+            break;
+        case 'Lanzaroten':
+            return 'ACE';
+            break;
+        case 'Hannover ':
+            return 'HAJ';
+            break;
+        case 'Göteborg':
+            return 'GOT';
+            break;
+        case 'Larnaca':
+            return 'LCA';
+            break;
+        case 'Riga':
+            return 'RIX';
+            break;      
+        case 'Rome Ciampino–G. B. Pastine ':
+            return 'CIA';
+            break; 
+        case 'Stavanger':
+            return 'SVG';
+            break; 
+        case 'Valencia':
+            return 'VLC';
+            break; 
+        case 'Bordeaux':
+            return 'BOD';
+            break;
+        case 'Pisa':
+            return 'PSA';
+            break;
+        case 'Newcastle':
+            return 'NCL';
+            break; 
+        case 'Palermo ':
+            return 'PMO';
+            break;
+        case 'East Midlands':
+            return 'EMA';
+            break;     
+        case 'Adana':
+            return 'ADA';
+            break; 
+        case 'Trondheim':
+            return 'TRD';
+            break;
+        case 'Yekaterinburg':
+            return 'SVX';
+            break;  
+        case 'Fuerteventura':
+            return 'FUE';
+            break;
+        case 'Rhodese':
+            return 'RHO';
+            break;
+        case 'Liverpool':
+            return 'LPL';
+            break; 
+        case 'Thessaloniki ':
+            return 'SKG';
+            break;
+        case 'Dalaman':
+            return 'DLM';
+            break;
+        case 'Malta':
+            return 'MLA';
+            break;
+        case 'Belfast ':
+            return 'BFS';
+            break;
+        case 'Beauvais–Tillé ':
+            return 'BVA';
+            break;
+        case 'Nantes':
+            return 'NTE';
+            break;     
+        case 'Bilbao':
+            return 'BIO';
+            break; 
+        case 'Novosibirsk':
+            return 'OVB';
+            break;
+        case 'Seville':
+            return 'SVQ';
+            break;
+        case 'Kraków':
+            return 'KRK';
+            break;                            
+    }
+}
+
+startJob('2020-05-09', '2020-05-16', 'Milan Malpensa', 'London Stansted');
 
 // chooseDate('2020-05-17', '2020-05-24');
 // setInterval(chooseDate('2020-05-17', '2020-05-24'), 10000); <-- til HTML implementeringen
