@@ -1,3 +1,4 @@
+
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 const os = require('os');
@@ -36,14 +37,19 @@ async function scraperProduct(url, filename){
     const txt3 = await el3.getProperty('textContent');
     const DepartureDate = await txt3.jsonValue();
     //Departure time
-    const [el4] = await page.$x('/html/body/flights-root/div/div/div/div/flights-summary-container/flights-summary/div/div[1]/journey-container/journey/flight-list/div/flight-card[3]/div/div/div[1]/div/flight-info/div[1]/span[1]');
+    const [el4] = await page.$x('/html/body/flights-root/div/div/div/div/flights-summary-container/flights-summary/div/div[1]/journey-container/journey/flight-list/div/flight-card/div/div/div[1]/div/flight-info/div[1]/span[1]');
     const txt4 = await el4.getProperty('textContent');
     const DepartureTime = await txt4.jsonValue();
     //Arrival time
-    const [el5] = await page.$x('/html/body/flights-root/div/div/div/div/flights-summary-container/flights-summary/div/div[1]/journey-container/journey/flight-list/div/flight-card[3]/div/div/div[1]/div/flight-info/div[3]/span[1]');
+    const [el5] = await page.$x('/html/body/flights-root/div/div/div/div/flights-summary-container/flights-summary/div/div[1]/journey-container/journey/flight-list/div/flight-card/div/div/div[1]/div/flight-info/div[3]/span[1]');
     const txt5 = await el5.getProperty('textContent');
     const ArrivalTime = await txt5.jsonValue();
-    
+    //Currency
+    const [el12] = await page.$x('/html/body/flights-root/div/div/div/div/flights-summary-container/flights-summary/div/div[1]/journey-container/journey/div/div[2]/carousel-container/carousel/div/ul/li[3]/carousel-item/button/div[2]/ry-price/span[1]');
+    const txt12 = await el12.getProperty('textContent');
+    const Currency = await txt12.jsonValue();
+    // Price element + currency element (euro, pounds, etc..)
+    let Departureprice = Price + Currency;
     
     //Return flight
     //Price
@@ -66,21 +72,25 @@ async function scraperProduct(url, filename){
     const [el10] = await page.$x('/html/body/flights-root/div/div/div/div/flights-summary-container/flights-summary/div/div[2]/journey-container/journey/flight-list/div/flight-card[1]/div/div/div[1]/div/flight-info/div[3]/span[1]');
     const txt10 = await el10.getProperty('textContent');
     const ArrivalTime2 = await txt10.jsonValue();
+    //Currency 
+    const [el11] = await page.$x('/html/body/flights-root/div/div/div/div/flights-summary-container/flights-summary/div/div[2]/journey-container/journey/div/div[2]/carousel-container/carousel/div/ul/li[3]/carousel-item/button/div[2]/ry-price/span[1]');
+    const txt11 = await el11.getProperty('textContent');
+    const Currency2 = await txt11.jsonValue();
+    // Price element + currency element (euro, pounds, etc..)
+    let Returnprice = Price2 + Currency2;
 
-    var data = [{ScrapeDate: Date().toLocaleString()}, {TotalPrice: parseFloat(Price) + parseFloat(Price2) + " DKK"}, {Departure: FromTo, DepartureDate: DepartureDate + " 2020", Price: Price + "DKK", DepartureTime: DepartureTime, ArrivalTime: ArrivalTime}, {Return: FromTo2, ReturnDate: ReturnDate.slice(3, 10) + " 2020", Price: Price2 + "DKK", DepartureTime: DepartureTime2, ArrivalTime: ArrivalTime2}];
+    var data = [{ScrapeDate: Date().toLocaleString()}, {TotalPrice: (parseFloat(Price) + parseFloat(Price2)) + ' ' + Currency}, {Departure: FromTo, DepartureDate: DepartureDate + " 2020", Price: Departureprice , DepartureTime: DepartureTime, ArrivalTime: ArrivalTime}, {Return: FromTo2, ReturnDate: ReturnDate.slice(3, 10) + " 2020", Price: Returnprice, DepartureTime: DepartureTime2, ArrivalTime: ArrivalTime2}];
     var jsonData = JSON.stringify(data);
     
     writeToFile(filename+'.json', jsonData);    
 }   
 
-// Function that writes scraped data to file + date to link creator
+// Function that inserts dates and cities in the flexible link creator
 function chooseRoute(dateout, datein, cityFrom, cityTo){
-    
     scraperProduct('https://www.ryanair.com/dk/da/trip/flights/select?adults=1&teens=0&children=0&infants=0&dateOut='+dateout+'&'+'dateIn='+datein+'&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn=true&discount=0', cityFrom + cityTo + dateout + datein);
 }
 
-
-// Scheduling scraper to specific times
+// Function that allows us to run scraper at scheduled times
 function startJob(dateout, datein, cityFrom, cityTo){
     console.log('Checking if the given file exists...');
     cityFrom = CityToIata(cityFrom);
@@ -106,7 +116,6 @@ function startJob(dateout, datein, cityFrom, cityTo){
         chooseRoute(dateout, datein, cityFrom, cityTo);
     });
 }
-
 
 function CityToIata(city){
     switch(city){
@@ -413,7 +422,7 @@ function CityToIata(city){
     }
 }
 
-startJob('2020-05-09', '2020-05-16', 'Milan Malpensa', 'London Stansted');
+startJob('2020-05-09', '2020-05-16', 'Copenhagen', 'Madrid');
 
 // chooseDate('2020-05-17', '2020-05-24');
 // setInterval(chooseDate('2020-05-17', '2020-05-24'), 10000); <-- til HTML implementeringen
