@@ -4,7 +4,6 @@ const fs = require('fs');
 const os = require('os');
 const fs2 = require('fs-extra');
 const schedule = require('node-schedule');
-const airports = require('airport-codes');
 
 const options = {flag: 'a'};
 

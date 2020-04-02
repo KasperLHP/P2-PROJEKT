@@ -1,0 +1,47 @@
+{
+    "ScrapeDate": "Wed Apr 01 2020 22:56:38 GMT+0200 (GMT+02:00)",
+    "TotalPrice": "598 Dkr",
+    
+    "Departure":[
+        {"Departure": "København til Madrid",
+        "DepartureDate": "9 maj 2020",
+        "Price": "299 Dkr",
+        "DepartureTime": "18:00",
+        "ArrivalTime": "21:25"
+        }
+    ],
+    
+    "Return":[
+        {"Return": "Madrid til København",
+        "ReturnDate": "16 maj 2020",
+        "Price2": "299 Dkr",
+        "DepartureTime2": "14:15",
+        "ArrivalTime2": "17:30"
+        }
+    ]
+}
+
+{
+    "ScrapeDate": "Wed Apr 01 2020 22:57:35 GMT+0200 (GMT+02:00)",
+    "TotalPrice": "598 Dkr",
+    
+    "Departure":[
+        {"Departure": "København til Madrid",
+        "DepartureDate": "9 maj 2020",
+        "Price": "299 Dkr",
+        "DepartureTime": "18:00",
+        "ArrivalTime": "21:25"
+        }
+    ],
+    
+    "Return":[
+        {"Return": "Madrid til København",
+        "ReturnDate": "16 maj 2020",
+        "Price2": "299 Dkr",
+        "DepartureTime2": "14:15",
+        "ArrivalTime2": "17:30"
+        }
+    ]
+}
+
+
