@@ -8,11 +8,11 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <!--Calendar https://gijgo.com/datepicker/example/bootstrap-4-->
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
-  <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+  <!--Calendar "http://datainflow.com/create-bootstrap-datepicker-html/"-->"
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker3.css" rel="stylesheet" id="bootstrap-css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
   <!-- Custom fonts for this theme -->
   <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -23,10 +23,10 @@
 
 
 </head>
-<!--
+
 <body id="page-top">
 
-  <!-- Navigation --
+  <!-- Navigation -->
     <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary" id="mainNav">
         <div class="container">
           <a class="navbar-brand js-scroll-trigger" href ="#page-top">Price Analysing</a>
@@ -63,19 +63,43 @@
           </div>
         </div>
       </nav>
-    -->
+    
       
-     <div class="row">
-        <div class="col-sm-3">Shit</div>
-        <div class="col-sm-4"><input id="datepicker" width="276" />
-          <script>
-              $('#datepicker').datepicker({
-                  uiLibrary: 'bootstrap4'
-              });
-          </script></div>
-        <div class="col-sm-2">Cakes</div>
+    <div class="container">
+      <div class="row">
+        <h2>Bootstrap Datepicker</h2>
       </div>
-        
+      <div class="row">
+            <div class='col-sm-6'>
+              <form>
+                  <div class="form-group">
+                      <div class='input-group date' id='datepicker'>
+                          <input type='text' class="form-control" />
+                          <span class="input-group-addon">
+                              <span class="glyphicon glyphicon-calendar"></span>
+                          </span>
+                      </div>
+                  </div>
+              </form>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+    <script >
+        $(function () {
+            $('#datepicker').datepicker({
+                format: "yyyy/mm/dd",
+                autoclose: true,
+                todayHighlight: true,
+              showOtherMonths: true,
+              selectOtherMonths: true,
+              autoclose: true,
+              changeMonth: true,
+              changeYear: true,
+              orientation: "button"
+            });
+        });
+    </script>
 
 
 
