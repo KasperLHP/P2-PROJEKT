@@ -25,8 +25,8 @@
 </head>
 
 <body id="page-top">
-
-  <!-- Navigation -->
+<!--
+  <!-- Navigation --
     <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary" id="mainNav">
         <div class="container">
           <a class="navbar-brand js-scroll-trigger" href ="#page-top">Price Analysing</a>
@@ -63,14 +63,26 @@
           </div>
         </div>
       </nav>
-    
+    -->
       
     <div class="container">
       <div class="row">
-        <h2>Bootstrap Datepicker</h2>
+        <h2>Pick your date</h2>
       </div>
       <div class="row">
-            <div class='col-sm-6'>
+            <div class='col-sm-3'>
+              <form>
+                  <div class="form-group">
+                      <div class='input-group date' id='datepicker'>
+                          <input type='text' class="form-control" />
+                          <span class="input-group-addon">
+                              <span class="glyphicon glyphicon-calendar"></span>
+                          </span>
+                      </div>
+                  </div>
+              </form>
+            </div>
+            <div class='col-sm-3'>
               <form>
                   <div class="form-group">
                       <div class='input-group date' id='datepicker'>
