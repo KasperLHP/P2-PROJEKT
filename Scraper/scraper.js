@@ -15,11 +15,12 @@ async function writeToFile(file, text) {
 // Actual scraper - takes Xpath elements of website
 async function scraperProduct(url, filename){
     console.log('Starting scraper...');
-    console.log('Retrieving data...');
-
+    
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(url);
+
+    console.log('Fetching data...');
 
     await page.waitFor(3000);
 
@@ -83,9 +84,10 @@ async function scraperProduct(url, filename){
     var jsonData = JSON.stringify(data);
     
     writeToFile(filename+'.json', jsonData);    
+    console.log('Adding data to file...');
 }   
 
-// Function that inserts dates and cities in the flexible link creator
+// Function that inserts dates and IATA codes in the flexible link creator
 function chooseRoute(dateout, datein, cityFrom, cityTo){
     scraperProduct('https://www.ryanair.com/dk/da/trip/flights/select?adults=1&teens=0&children=0&infants=0&dateOut='+dateout+'&'+'dateIn='+datein+'&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn=true&discount=0', cityFrom + cityTo + dateout + datein);
 }
@@ -98,7 +100,7 @@ function startJob(dateout, datein, cityFrom, cityTo){
 
     fs.access(cityFrom + cityTo + dateout + datein +".json", (err) => {
         if(!err){
-            console.log('File exists! Adding scraped data...');
+            console.log('File named: ' + cityFrom + cityTo + dateout + datein + ' already exists!');
             return;
         }else{
             console.log('The file does not exist... making a new file named: ' + cityFrom + cityTo + dateout + datein);
@@ -107,7 +109,6 @@ function startJob(dateout, datein, cityFrom, cityTo){
                     console.log(err);
                 }
             });
-            console.log('Adding scraped data...');
         }
     });    
 
