@@ -4,7 +4,8 @@ const fs = require('fs');
 const os = require('os');
 const fs2 = require('fs-extra');
 const schedule = require('node-schedule');
-const insertLine = require('insert-line');
+const insertLine = require("insert-line");
+const UseSed = require('sed');
 const options = {flag: 'a'};
 
 let firstLine = [];
@@ -20,7 +21,7 @@ async function scraperProduct(url, filename){
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(url);
-
+o
     console.log('Fetching data...');
 
     await page.waitFor(3000);
@@ -85,14 +86,11 @@ async function scraperProduct(url, filename){
     var jsonData = JSON.stringify(data);
     
     if(firstLine[firstLine.length -1] == false){
-        insertLine('C:/Users/KPsan/OneDrive/Skrivebord/GitHub/P2-PROJEKT/CPHSTN2020-05-082020-05-15.json').append(jsonData).at(2);
-        //writeToFile(filename+'.json', ',' + jsonData);
+        writeToFile(filename+'.json', ',' + jsonData);
     }else{
-        insertLine('C:/Users/KPsan/OneDrive/Skrivebord/GitHub/P2-PROJEKT/CPHSTN2020-05-082020-05-15.json').append(jsonData).at(2);
-        // writeToFile(filename+'.json', jsonData);
+        writeToFile(filename+'.json', jsonData);
     }
     
-   
     console.log('Adding data to file...');
     
     firstLine[firstLine.length - 1] = false;
@@ -117,7 +115,7 @@ function startJob(dateout, datein, cityFrom, cityTo){
             return;
         }else{
             console.log('The file does not exist... making a new file named: ' + cityFrom + cityTo + dateout + datein);
-            fs.writeFile(cityFrom + cityTo + dateout + datein +'.json','[\n' + '\n]', function(err){
+            fs.writeFile(cityFrom + cityTo + dateout + datein +'.json','[\n', function(err){
                 if(err){
                     console.log(err);
                 }
