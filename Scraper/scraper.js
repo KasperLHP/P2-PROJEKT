@@ -79,10 +79,10 @@ async function scraperProduct(url, filename){
     // Price element + currency element (euro, pounds, etc..)
     let Returnprice = Price2 + Currency2;
 
-    var data = [{ScrapeDate: Date().toLocaleString()}, {TotalPrice: (parseFloat(Price) + parseFloat(Price2)) + ' ' + Currency}, {Departure: FromTo, DepartureDate: DepartureDate + " 2020", Price: Departureprice , DepartureTime: DepartureTime, ArrivalTime: ArrivalTime}, {Return: FromTo2, ReturnDate: ReturnDate.slice(3, 10) + " 2020", Price: Returnprice, DepartureTime: DepartureTime2, ArrivalTime: ArrivalTime2}];
+    var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Price) + parseFloat(Price2)) + ' ' + Currency, Departure: FromTo, DepartureDate: DepartureDate + " 2020", Price: Departureprice , DepartureTime: DepartureTime, ArrivalTime: ArrivalTime, Return: FromTo2, ReturnDate: ReturnDate.slice(3, 10) + " 2020", Price2: Returnprice, DepartureTime2: DepartureTime2, ArrivalTime2: ArrivalTime2};
     var jsonData = JSON.stringify(data);
-    
-    writeToFile(filename+'.json', jsonData);    
+
+    writeToFile(filename+'.json', jsonData + ',');   
     console.log('Adding data to file...');
 }   
 
@@ -103,7 +103,7 @@ function startJob(dateout, datein, cityFrom, cityTo){
             return;
         }else{
             console.log('The file does not exist... making a new file named: ' + cityFrom + cityTo + dateout + datein);
-            fs.writeFile(cityFrom + cityTo + dateout + datein +'.json',"", function(err){
+            fs.writeFile(cityFrom + cityTo + dateout + datein +'.json',"[\n", function(err){
                 if(err){
                     console.log(err);
                 }
@@ -422,7 +422,7 @@ function CityToIata(city){
     }
 }
 
-startJob('2020-05-09', '2020-05-16', 'Copenhagen', 'Madrid');
+startJob('2020-05-08', '2020-05-15', 'Porto', 'London Stansted');
 
 // chooseDate('2020-05-17', '2020-05-24');
 // setInterval(chooseDate('2020-05-17', '2020-05-24'), 10000); <-- til HTML implementeringen
