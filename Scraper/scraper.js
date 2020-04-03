@@ -5,6 +5,8 @@ const os = require('os');
 const fs2 = require('fs-extra');
 const schedule = require('node-schedule');
 
+let firstLine = [false];
+let counter = 0;
 const options = {flag: 'a'};
 
 async function writeToFile(file, text) {
@@ -81,9 +83,14 @@ async function scraperProduct(url, filename){
 
     var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Price) + parseFloat(Price2)) + ' ' + Currency, Departure: FromTo, DepartureDate: DepartureDate + " 2020", Price: Departureprice , DepartureTime: DepartureTime, ArrivalTime: ArrivalTime, Return: FromTo2, ReturnDate: ReturnDate.slice(3, 10) + " 2020", Price2: Returnprice, DepartureTime2: DepartureTime2, ArrivalTime2: ArrivalTime2};
     var jsonData = JSON.stringify(data);
-
-    writeToFile(filename+'.json', jsonData + ',');   
+    if(firstLine[firstLine.lenght -1] == true) {
+    writeToFile(filename+'.json', jsonData + ',');
+    }
+    else 
+    writeToFile(filename+'.json', jsonData);
     console.log('Adding data to file...');
+
+    firstLine[firstLine.Lenght - 1] = false;
 }   
 
 // Function that inserts dates and IATA codes in the flexible link creator
@@ -91,11 +98,13 @@ function chooseRoute(dateout, datein, cityFrom, cityTo){
     scraperProduct('https://www.ryanair.com/dk/da/trip/flights/select?adults=1&teens=0&children=0&infants=0&dateOut='+dateout+'&'+'dateIn='+datein+'&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn=true&discount=0', cityFrom + cityTo + dateout + datein);
 }
 
-// Function that allows us to run scraper at scheduled times
+// Function that allows us to run scraper at scheduled times + creates new file if a file doesnt already exist
 function startJob(dateout, datein, cityFrom, cityTo){
     console.log('Checking if the given file exists...');
     cityFrom = CityToIata(cityFrom);
     cityTo = CityToIata(cityTo);
+    firstLine.push(true);
+    counter++;
 
     fs.access(cityFrom + cityTo + dateout + datein +".json", (err) => {
         if(!err){
@@ -103,7 +112,7 @@ function startJob(dateout, datein, cityFrom, cityTo){
             return;
         }else{
             console.log('The file does not exist... making a new file named: ' + cityFrom + cityTo + dateout + datein);
-            fs.writeFile(cityFrom + cityTo + dateout + datein +'.json',"[\n", function(err){
+            fs.writeFile(cityFrom + cityTo + dateout + datein +'.json','[\n' + '\n]', function(err){
                 if(err){
                     console.log(err);
                 }
@@ -111,7 +120,7 @@ function startJob(dateout, datein, cityFrom, cityTo){
         }
     });    
 
-    var j = schedule.scheduleJob('30 * * * * *', function(){
+    var j = schedule.scheduleJob('00 * * * * *', function(){
         console.log('Running scheduled job...');
         chooseRoute(dateout, datein, cityFrom, cityTo);
     });
@@ -422,7 +431,8 @@ function CityToIata(city){
     }
 }
 
-startJob('2020-05-08', '2020-05-15', 'Porto', 'London Stansted');
+
+startJob('2020-05-08', '2020-05-15', 'Copenhagen', 'London Stansted');
 
 // chooseDate('2020-05-17', '2020-05-24');
 // setInterval(chooseDate('2020-05-17', '2020-05-24'), 10000); <-- til HTML implementeringen
