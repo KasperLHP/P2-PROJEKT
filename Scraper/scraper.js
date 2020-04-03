@@ -4,10 +4,10 @@ const fs = require('fs');
 const os = require('os');
 const fs2 = require('fs-extra');
 const schedule = require('node-schedule');
-
-let firstLine = [false];
-let counter = 0;
+const insertLine = require('insert-line');
 const options = {flag: 'a'};
+
+let firstLine = [];
 
 async function writeToFile(file, text) {
   await fs2.outputFile(file, `${text}${os.EOL}`, options);
@@ -83,14 +83,19 @@ async function scraperProduct(url, filename){
 
     var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Price) + parseFloat(Price2)) + ' ' + Currency, Departure: FromTo, DepartureDate: DepartureDate + " 2020", Price: Departureprice , DepartureTime: DepartureTime, ArrivalTime: ArrivalTime, Return: FromTo2, ReturnDate: ReturnDate.slice(3, 10) + " 2020", Price2: Returnprice, DepartureTime2: DepartureTime2, ArrivalTime2: ArrivalTime2};
     var jsonData = JSON.stringify(data);
-    if(firstLine[firstLine.lenght -1] == true) {
-    writeToFile(filename+'.json', jsonData + ',');
+    
+    if(firstLine[firstLine.length -1] == false){
+        insertLine('C:/Users/KPsan/OneDrive/Skrivebord/GitHub/P2-PROJEKT/CPHSTN2020-05-082020-05-15.json').append(jsonData).at(2);
+        //writeToFile(filename+'.json', ',' + jsonData);
+    }else{
+        insertLine('C:/Users/KPsan/OneDrive/Skrivebord/GitHub/P2-PROJEKT/CPHSTN2020-05-082020-05-15.json').append(jsonData).at(2);
+        // writeToFile(filename+'.json', jsonData);
     }
-    else 
-    writeToFile(filename+'.json', jsonData);
+    
+   
     console.log('Adding data to file...');
-
-    firstLine[firstLine.Lenght - 1] = false;
+    
+    firstLine[firstLine.length - 1] = false;
 }   
 
 // Function that inserts dates and IATA codes in the flexible link creator
@@ -104,7 +109,7 @@ function startJob(dateout, datein, cityFrom, cityTo){
     cityFrom = CityToIata(cityFrom);
     cityTo = CityToIata(cityTo);
     firstLine.push(true);
-    counter++;
+    
 
     fs.access(cityFrom + cityTo + dateout + datein +".json", (err) => {
         if(!err){
