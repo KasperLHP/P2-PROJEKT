@@ -141,8 +141,15 @@ function chooseRoute(dateout, datein, cityFrom, cityTo){
 // Function that allows us to run scraper at scheduled times + creates new file if a file doesnt already exist
 function startJob(dateout, datein, cityFrom, cityTo){
     console.log('Checking if the given file exists...');
-    cityFrom = CityToIata(cityFrom);
-    cityTo = CityToIata(cityTo);
+    
+    /*
+    dateout = selected_date_element.textContent;
+    datein = selected_date_element2.textContent;
+    
+    cityFrom = CityToIata(document.getElementById('myInput1'));
+    cityTo = CityToIata(document.getElementById('myInput2'));
+    */
+
     firstLine.push(true);
 
     fs.access(cityFrom + cityTo + dateout + datein +".json", (err) => {
@@ -470,7 +477,7 @@ function CityToIata(city){
     }
 }
 
-startJob('2020-05-08', '2020-05-15', 'Copenhagen', 'London Stansted');
+startJob(selected_date_element.textContent, '2020-05-15', CityToIata(document.getElementById('myInput1')), CityToIata(document.getElementById('myInput2')));
 
 // chooseDate('2020-05-17', '2020-05-24');
 // setInterval(chooseDate('2020-05-17', '2020-05-24'), 10000); 
