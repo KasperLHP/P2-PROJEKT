@@ -1,4 +1,4 @@
-var airports = ["London Heathrow", "Paris Charles de Gaulle", "Frankfurt", "Amsterdam", "Istanbul", "Madrid", "Munich", 
+/*var airports = ["London Heathrow", "Paris Charles de Gaulle", "Frankfurt", "Amsterdam", "Istanbul", "Madrid", "Munich", 
 "Rome Leonardo da Vinci-Fiumicino", "London Gatwick", "Barcelona", "Moscow", "Khimki", "Paris Orly", 
 "Antalya", "Zurich", "Copenhagen", "Oslo", "Mallorca", "Vienna", "Dusseldorf", "Manchester", "Stockholm", "Dublin", 
 "Berlin Tegel", "Brussels", "Sabiha Gokcen", "Milan Malpensa", "London Stansted", "Lisbon", "Helsinki"
@@ -18,3 +18,53 @@ $('#form-autocomplete-4').mdbAutocomplete({
     inputFocusShadow: '0 1px 0 0 #4285f4',
     inputBlurShadow: ''
     });
+*/
+
+const date_picker_element = document.querySelector('.date-picker');
+const selected_date_element = document.querySelector('.date-picker .selected-date');
+const dates_element = document.querySelector('.date-picker .dates');
+
+// EVENT LISTENERS
+date_picker_element.addEventListener('click', toggleDatePicker);
+
+
+//FUNCTIONS
+function toggleDatePicker (e) {
+    console.log(e.path);
+    if (!checkEventPathForClass(e.path, 'dates')){
+        dates_element.classList.toggle('active');
+    }
+}
+
+// HELPER FUNCTIONS
+function checkEventPathForClass (path, selector) {
+    for (let i = 0; i < path.length; i++) {
+        if (path[i].classList && path[i].classList.contains(selector)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function rejseDestination() {
+    let inputFra = document.getElementById("inputFra").value;
+    let inputTil = document.getElementById("inputTil").value;
+
+    let hej = 1000
+     document.getElementById("output").innerHTML = hej;
+}
+
+
+function aldersgruppe(){
+    var x,i,j,selElmnt,a,b,c;
+
+    x = document.getElementsByClassName("custom-select");
+    for (i = 0; i < x.length; i++){
+        selElmnt = x[i].getElementsByTagName("select")[0];
+    }
+
+
+}
+
+
+

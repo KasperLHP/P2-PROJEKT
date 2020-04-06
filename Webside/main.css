@@ -35,7 +35,7 @@ h1 span{
 }
 
 .date-picker:hover {
-    background-color: rgb(3, 243, 183);
+    background-color: #F3F3F3;
 }
 
 .date-picker .selected-date{
@@ -58,5 +58,113 @@ h1 span{
     left: 0;
     right: 0;
 
-    background-color: rgb(3, 243, 183);
+    background-color: #FFF;
 }
+
+.date-picker .dates.active{
+    display: block;
+}
+
+.date-picker .dates .month {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #EEE;
+}
+
+
+.date-picker .dates .month .arrows {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #313131;
+    font-size: 20px;
+}
+
+.date-picker .dates .month .arrows:hover {
+    background-color: #F3F3F3;
+}
+
+.date-picker .dates .month .arrows:active {
+    background-color: #00CA85;
+}
+
+.date-picker .dates .days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    height: 200px;
+}
+
+.date-picker .dates .days .day {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #313131 ;
+}
+
+.groupage-select{
+    position: relative;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    border: 1px solid;
+    z-index: 10;
+    
+}
+
+.groupage-select select{
+    position: none;   
+}
+
+.select-selected{
+  background-color: darkred;
+}
+.select-selected:after{
+    position: absolute;
+    content: "";
+    justify-content: center;
+    align-items: center;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-color: #fff transparent transparent transparent
+
+}
+
+.select-selected.select-arrow.active:after{
+    border-color: transparent transparent #fff transparent;
+
+}
+
+.select-items div,.select-selected{
+    color: #ffffff;
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+    cursor: pointer;
+    user-select: none;
+}
+
+.select-items{
+  position: absolute;
+  background-color: DodgerBlue;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+   
+}
+
+.select-hide {
+  display: none;
+}
+
+.select-items div:hover, .same-as-selected{
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+
+
+

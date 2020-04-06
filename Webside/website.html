@@ -18,15 +18,54 @@
         <div class="dates">
             <div class="month">
                 <div class="arrows prev-mth">&lt;</div>
-                <div class= "mth"></div>
+                <div class= "mth">June 2018</div>
                 <div class="arrows next-mth">&gt;</div>
             </div>
         
 
             <div class="days"></div>
+                <div class="day">1</div>
+                <div class="day">2</div>
+                <div class="day">3</div>
+                <div class="day">4</div>
+                <div class="day">5</div>
+                <div class="day">6</div>
+                <div class="day">7</div>
         </div>
     </div>
     <script src="website.js"></script>
+
+    <div>
+        <h2>Indtast fra/til destination</h2>
+    </div>
+      
+    <form id="form" onsubmit="return false;">
+        <p>
+            <label>Fra</label>
+            <input type="text" id="inputFra" /> 
+        </p>
+        <p>
+            <label>Til</label>
+            <input type="text" id="inputTil" />
+        </p>
+        <p>
+            <input type="submit" onclick="rejseDestination();" />
+            <p>
+                <label>output</label>
+                <input type="text" id="output" />
+            </p>
+    </form>
+    <script src="website.js"></script>
+
+<div class="custom-select">
+    <select>
+      <option value="0">Aldergruppe:</option>
+      <option value="1">Voksen</option>
+       <option value="2">Barn</option>
+    </select>
+    <input type="text" id="antal" name="antal">
+    <input type="submit" id="submit" value="Submit">
+  </div>
 
 
 
