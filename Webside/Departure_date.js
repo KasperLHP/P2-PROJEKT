@@ -25,7 +25,6 @@ mth_element.textContent = months[month] + ' ' + year;
 selected_date_element.textContent = formatDate(date);
 selected_date_element.dataset.value = selectedDate;
 
-//document.getElementById("Departure").src = selected_date_element.textContent;
 
 
 populateDates();
@@ -97,7 +96,6 @@ function populateDates (e) {
         days_element.appendChild(day_element);
     }
 
-    export {selected_date_element.textContent};
     return selected_date_element.textContent;
 }
 
