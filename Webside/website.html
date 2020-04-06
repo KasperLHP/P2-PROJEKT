@@ -9,24 +9,24 @@
     <link rel="stylesheet" href="main.css" />
 </head>
 <body>
-
     <div class="navbar"></div>
     <h1>DAMN<span>THIS</span>SHIT</h1>
+    
     <div class="date-picker">
         <div class="selected-date"></div>
-
         <div class="dates">
             <div class="month">
                 <div class="arrows prev-mth">&lt;</div>
                 <div class= "mth"></div>
                 <div class="arrows next-mth">&gt;</div>
             </div>
-        
-
             <div class="days"></div>
         </div>
     </div>
-    <script src="Datepicker.js"></script>
+        <script src="Departure_date.js" id="DateOut"></script> 
+    
+
+
 
     <div>
         <h2>Indtast fra/til destination</h2>
@@ -50,11 +50,11 @@
 
     <script src="website.js"></script>
 
-<div class="groupage-select">
+<div class="custom-select">
     <select>
-      <option value="0">Aldergruppe:</option>
-      <option value="1">Voksen</option>
-       <option value="2">Barn</option>
+        <option value="0">Aldergruppe:</option>
+        <option value="1">Voksen</option>
+        <option value="2">Barn</option>
     </select>
     <input type="text" id="antal" name="antal">
     <input type="submit" id="submit" value="Submit">
