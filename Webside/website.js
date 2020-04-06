@@ -1,7 +1,7 @@
 //Destination
 function autocomplete(inp, arr) {
     var currentFocus;
-    inp.addEventListener("myInput", function(e) {
+    inp.addEventListener("input", function(e) {
         var a, b, i, val = this.value;
         closeAllLists();
         if (!val) { return false;}
@@ -19,7 +19,7 @@ function autocomplete(inp, arr) {
             b.innerHTML += arr[i].substr(val.length);
             b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
             b.addEventListener("click", function(e) {
-                inp.value = this.getElementsByTagName("myInput")[0].value;
+                inp.value = this.getElementsByTagName("input")[0].value;
                 closeAllLists();
             });
             a.appendChild(b);
@@ -79,9 +79,10 @@ var airports = ["London Heathrow", "Paris Charles de Gaulle", "Frankfurt", "Amst
 "Bordeaux", "Pisa", "Newcastle", "Parlermo", "East Midlands", "Adana", "Trondheim", "Yekaterinburg", "Fuerteventura", "Rhodese", "Liverpool", 
 "Thessaloniki", "Dalaman", "Malta", "Belfast", "Beauvais-Tillé", "Nantes", "Bilbao", "Novosibirsk", "Seville", "Kraków"]
 
-autocomplete(document.getElementById("myAirport"), airports); 
+autocomplete(document.getElementById("myInput1"), airports); 
+autocomplete(document.getElementById("myInput2"), airports); 
 
-$('#form-autocomplete-4').mdbAutocomplete({
+/* $('#form-autocomplete-4').mdbAutocomplete({
     data: airports,
     dataColor: 'green',
     inputFocus: '2px solid green',
@@ -89,7 +90,7 @@ $('#form-autocomplete-4').mdbAutocomplete({
     inputFocusShadow: '0 1px 0 0 #4285f4',
     inputBlurShadow: ''
     });
-/*
+
 function rejseDestination() {
     let inputFra = document.getElementById("inputFra").value;
     let inputTil = document.getElementById("inputTil").value;
