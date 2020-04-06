@@ -104,7 +104,11 @@ h1 span{
     color: #313131 ;
 }
 
-.groupage-select{
+.date-picker .dates .days .day.selected {
+    background-color: #00CA85;
+}
+
+.custom-select{
     position: relative;
     display: block;
     justify-content: center;
@@ -115,7 +119,7 @@ h1 span{
     
 }
 
-.groupage-select select{
+.custom-select select{
     position: none;   
 }
 

@@ -13,24 +13,17 @@
     <div class="navbar"></div>
     <h1>DAMN<span>THIS</span>SHIT</h1>
     <div class="date-picker">
-        <div class="selected-date">2020/04/03</div>
+        <div class="selected-date"></div>
 
         <div class="dates">
             <div class="month">
                 <div class="arrows prev-mth">&lt;</div>
-                <div class= "mth">June 2018</div>
+                <div class= "mth"></div>
                 <div class="arrows next-mth">&gt;</div>
             </div>
         
 
             <div class="days"></div>
-                <div class="day">1</div>
-                <div class="day">2</div>
-                <div class="day">3</div>
-                <div class="day">4</div>
-                <div class="day">5</div>
-                <div class="day">6</div>
-                <div class="day">7</div>
         </div>
     </div>
     <script src="website.js"></script>
@@ -39,25 +32,25 @@
         <h2>Indtast fra/til destination</h2>
     </div>
       
-    <form id="form" onsubmit="return false;">
+    <form autocomplete="off" id="form" onsubmit="return false;">
+        <div class="autocomplete" style="width:300px;">
         <p>
             <label>Fra</label>
-            <input type="text" id="inputFra" /> 
+            <input type="text" id="inputFra" name="myAirports" placeholder="airports"/> 
         </p>
         <p>
             <label>Til</label>
             <input type="text" id="inputTil" />
         </p>
+        </div>
         <p>
             <input type="submit" onclick="rejseDestination();" />
-            <p>
-                <label>output</label>
-                <input type="text" id="output" />
-            </p>
     </form>
     <script src="website.js"></script>
 
-<div class="custom-select">
+   
+
+<div class="groupage-select">
     <select>
       <option value="0">Aldergruppe:</option>
       <option value="1">Voksen</option>
