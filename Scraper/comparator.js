@@ -46,9 +46,6 @@ function PriceCheck(dateout, datein, cityFrom, cityTo, CustomerSpecifiedPrice){
 
 PriceCheck('2020-05-08', '2020-05-15', 'CPH', 'STN', 250);
 
-
-
-
 /* function insertEndingBracket(filename){
     fs.appendFile(filename+'.json', '\n ]', function (err) {
         if (err) throw err;

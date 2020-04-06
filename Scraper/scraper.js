@@ -4,8 +4,6 @@ const fs = require('fs');
 const os = require('os');
 const fs2 = require('fs-extra');
 const schedule = require('node-schedule');
-const insertLine = require("insert-line");
-const UseSed = require('sed');
 const options = {flag: 'a'};
 
 let firstLine = [];
@@ -14,6 +12,21 @@ async function writeToFile(file, text) {
   await fs2.outputFile(file, `${text}${os.EOL}`, options);
 }
 
+
+/* function jsonReader(filePath, cb){
+    fs.readFile(filePath, (err, fileData) => {
+        if (err){
+            return cb && cb(err)
+        }
+        try{
+            const object = JSON.parse(fileData);
+            return cb && cb(null, object)
+        }catch(err){
+            return cb && cb(err)
+        }
+    })
+} */
+
 // Actual scraper - takes Xpath elements of website
 async function scraperProduct(url, filename){
     console.log('Starting scraper...');
@@ -21,7 +34,7 @@ async function scraperProduct(url, filename){
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(url);
-o
+
     console.log('Fetching data...');
 
     await page.waitFor(3000);
@@ -82,19 +95,43 @@ o
     // Price element + currency element (euro, pounds, etc..)
     let Returnprice = Price2 + Currency2;
 
-    var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Price) + parseFloat(Price2)) + ' ' + Currency, Departure: FromTo, DepartureDate: DepartureDate + " 2020", Price: Departureprice , DepartureTime: DepartureTime, ArrivalTime: ArrivalTime, Return: FromTo2, ReturnDate: ReturnDate.slice(3, 10) + " 2020", Price2: Returnprice, DepartureTime2: DepartureTime2, ArrivalTime2: ArrivalTime2};
-    var jsonData = JSON.stringify(data);
+    // var dataArray = [];
+    var data = ({ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Price) + parseFloat(Price2)) + ' ' + Currency, Departure: FromTo, DepartureDate: DepartureDate + " 2020", Price: Departureprice , DepartureTime: DepartureTime, ArrivalTime: ArrivalTime, Return: FromTo2, ReturnDate: ReturnDate.slice(3, 10) + " 2020", Price2: Returnprice, DepartureTime2: DepartureTime2, ArrivalTime2: ArrivalTime2});
+    // dataArray.push(data);
+   
+    /* jsonReader(filename+'.json', (err, ScrapedData) => {
+        if(err){
+            console.log(err);
+            return;
+        }else{
+            for(i = 0; i < ScrapedData.length; i++){
+                dataArray.push(ScrapedData[i]);
+                console.log(ScrapedData[i].TotalPrice);
+            }
+        }
+    });
     
+    fs.writeFile(filename+'.json', jsonData, function (err) {
+        if (err) throw err;
+        console.log('Saved!');
+    });
+    
+    for(i = 0; i < dataArray.length; i++) {
+        console.log(dataArray[i]);
+    }*/
+
+    var jsonData = JSON.stringify(data);
+
     if(firstLine[firstLine.length -1] == false){
         writeToFile(filename+'.json', ',' + jsonData);
-    }else{
+        }else{
         writeToFile(filename+'.json', jsonData);
     }
-    
+
     console.log('Adding data to file...');
     
     firstLine[firstLine.length - 1] = false;
-}   
+}
 
 // Function that inserts dates and IATA codes in the flexible link creator
 function chooseRoute(dateout, datein, cityFrom, cityTo){
@@ -107,7 +144,6 @@ function startJob(dateout, datein, cityFrom, cityTo){
     cityFrom = CityToIata(cityFrom);
     cityTo = CityToIata(cityTo);
     firstLine.push(true);
-    
 
     fs.access(cityFrom + cityTo + dateout + datein +".json", (err) => {
         if(!err){
@@ -123,7 +159,7 @@ function startJob(dateout, datein, cityFrom, cityTo){
         }
     });    
 
-    var j = schedule.scheduleJob('00 * * * * *', function(){
+    var j = schedule.scheduleJob('01 * * * * *', function(){
         console.log('Running scheduled job...');
         chooseRoute(dateout, datein, cityFrom, cityTo);
     });
@@ -434,8 +470,7 @@ function CityToIata(city){
     }
 }
 
-
 startJob('2020-05-08', '2020-05-15', 'Copenhagen', 'London Stansted');
 
 // chooseDate('2020-05-17', '2020-05-24');
-// setInterval(chooseDate('2020-05-17', '2020-05-24'), 10000); <-- til HTML implementeringen
+// setInterval(chooseDate('2020-05-17', '2020-05-24'), 10000); 
