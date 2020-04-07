@@ -45,18 +45,15 @@
     <div>
         <h2>Indtast fra/til destination</h2>
     </div>    
-    <form id="fromDestination" autocomplete="off">
+    <form id="fromDestination" autocomplete="off" method='POST'>
         <div class="autocomplete" style="width:300px;">
           <label>Fra</label>
-          <input id="myInput1" type="text" placeholder="Airport">
+          <input id="myInput1" type="text" placeholder="Airport" name='myInput1'>
         </div>
-        <input type="submit">
-    </form>
-
-    <form id="toDestination" autocomplete="off">
+   
         <div class="autocomplete" style="width:300px;">
           <label>Til</label>
-          <input id="myInput2" type="text" placeholder="Airport">
+          <input id="myInput2" type="text" placeholder="Airport" name='myInput2'>
         </div>
         <input type="submit">
         <script src="website.js"></script>

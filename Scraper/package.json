@@ -1,7 +1,6 @@
 {
   "name": "Scraper",
   "version": "1.0.0",
-  "description": "",
   "main": "scraper.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,5 +15,6 @@
     "node-schedule": "^1.3.2",
     "os": "^0.1.1",
     "puppeteer": "^2.1.1"
-  }
+  },
+  "description": ""
 }

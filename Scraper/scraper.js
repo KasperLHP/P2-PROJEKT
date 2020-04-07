@@ -4,8 +4,43 @@ const fs2 = require('fs-extra');
 const schedule = require('node-schedule');
 const fs = require('fs');
 const options = {flag: 'a'};
+var nStatic = require('node-static');
+var qs = require('querystring');
 
 let firstLine = [];
+
+var fileServer = new nStatic.Server('../Webside');
+
+var http = require('http');
+http.createServer(function (req, res) {
+    if(req.method == 'POST') {
+        console.log(req.method);
+        var body = '';
+
+        req.on('data', function (data) {
+            body += data;
+
+            // Too much POST data, kill the connection!
+            // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
+            if (body.length > 1e6)
+                req.connection.destroy();
+        });
+
+        req.on('end', function () {
+            var post = qs.parse(body);
+            startJob('2020-05-09', '2020-05-16', post.myInput1, post.myInput2,);
+           
+            console.log(post.myInput1, post.myInput2);
+            res.writeHead(200);
+            res.end('test');
+            console.log(post);
+            // use post['blah'], etc.
+        });
+    }
+    else
+    fileServer.serve(req, res);
+
+}).listen(8080);
 
 async function writeToFile(file, text) {
   await fs2.outputFile(file, `${text}${os.EOL}`, options);
@@ -478,8 +513,8 @@ function CityToIata(city){
     }
 }
 
-startJob();
-console.log(selected_date_element.textContent, selected_date_element2.textContent, CityToIata(document.getElementById('myInput1')), CityToIata(document.getElementById('myInput2')));
+
+//console.log(selected_date_element.textContent, selected_date_element2.textContent, CityToIata(document.getElementById('myInput1')), CityToIata(document.getElementById('myInput2')));
 // startJob('2020-05-09', '2020-05-16', 'London Stansted', 'Copenhagen');
 // startJob(selected_date_element.textContent, selected_date_element2.textContent, CityToIata(document.getElementById('myInput1')), CityToIata(document.getElementById('myInput2')));
 // selected_date_element.textContent - dateout
