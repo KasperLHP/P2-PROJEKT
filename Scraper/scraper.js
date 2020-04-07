@@ -13,7 +13,7 @@ async function writeToFile(file, text) {
 }
 
 
-/* function jsonReader(filePath, cb){
+/*function jsonReader(filePath, cb){
     fs.readFile(filePath, (err, fileData) => {
         if (err){
             return cb && cb(err)
@@ -25,7 +25,7 @@ async function writeToFile(file, text) {
             return cb && cb(err)
         }
     })
-} */
+}*/
 
 // Actual scraper - takes Xpath elements of website
 async function scraperProduct(url, filename){
@@ -96,16 +96,18 @@ async function scraperProduct(url, filename){
     let Returnprice = Price2 + Currency2;
 
     // var dataArray = [];
-    var data = ({ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Price) + parseFloat(Price2)) + ' ' + Currency, Departure: FromTo, DepartureDate: DepartureDate + " 2020", Price: Departureprice , DepartureTime: DepartureTime, ArrivalTime: ArrivalTime, Return: FromTo2, ReturnDate: ReturnDate.slice(3, 10) + " 2020", Price2: Returnprice, DepartureTime2: DepartureTime2, ArrivalTime2: ArrivalTime2});
-    // dataArray.push(data);
+    var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Price) + parseFloat(Price2)) + ' ' + Currency, Departure: FromTo, DepartureDate: DepartureDate + " 2020", Price: Departureprice , DepartureTime: DepartureTime, ArrivalTime: ArrivalTime, Return: FromTo2, ReturnDate: ReturnDate.slice(3, 10) + " 2020", Price2: Returnprice, DepartureTime2: DepartureTime2, ArrivalTime2: ArrivalTime2};
+    var jsonData = JSON.stringify(data);
+    // emptyArray.push(jsonData);
    
-    /* jsonReader(filename+'.json', (err, ScrapedData) => {
+    /*
+    jsonReader(filename+'.json', (err, ScrapedData) => {
         if(err){
             console.log(err);
             return;
         }else{
             for(i = 0; i < ScrapedData.length; i++){
-                dataArray.push(ScrapedData[i]);
+                emptyArray.push(ScrapedData[i]);
                 console.log(ScrapedData[i].TotalPrice);
             }
         }
@@ -113,24 +115,24 @@ async function scraperProduct(url, filename){
     
     fs.writeFile(filename+'.json', jsonData, function (err) {
         if (err) throw err;
-        console.log('Saved!');
+        console.log('Writing to file...');
     });
     
-    for(i = 0; i < dataArray.length; i++) {
-        console.log(dataArray[i]);
-    }*/
+    for(i = 0; i < emptyArray.length; i++) {
+        console.log(emptyArray[i]);
+    } */
 
-    var jsonData = JSON.stringify(data);
+    console.log('Adding data to file...');
 
     if(firstLine[firstLine.length -1] == false){
         writeToFile(filename+'.json', ',' + jsonData);
         }else{
         writeToFile(filename+'.json', jsonData);
+        
     }
-
-    console.log('Adding data to file...');
     
     firstLine[firstLine.length - 1] = false;
+    console.log('Data has been added to file!');
 }
 
 // Function that inserts dates and IATA codes in the flexible link creator
@@ -141,8 +143,15 @@ function chooseRoute(dateout, datein, cityFrom, cityTo){
 // Function that allows us to run scraper at scheduled times + creates new file if a file doesnt already exist
 function startJob(dateout, datein, cityFrom, cityTo){
     console.log('Checking if the given file exists...');
+    
+    /*
+    dateout = selected_date_element.textContent;
+    datein = selected_date_element2.textContent;
+    */
+    
     cityFrom = CityToIata(cityFrom);
     cityTo = CityToIata(cityTo);
+    
     firstLine.push(true);
 
     fs.access(cityFrom + cityTo + dateout + datein +".json", (err) => {
@@ -159,7 +168,7 @@ function startJob(dateout, datein, cityFrom, cityTo){
         }
     });    
 
-    var j = schedule.scheduleJob('01 * * * * *', function(){
+    var j = schedule.scheduleJob('05 * * * * *', function(){
         console.log('Running scheduled job...');
         chooseRoute(dateout, datein, cityFrom, cityTo);
     });
@@ -470,7 +479,9 @@ function CityToIata(city){
     }
 }
 
-startJob('2020-05-08', '2020-05-15', 'Copenhagen', 'London Stansted');
+startJob('2020-05-09', '2020-05-16', 'London Stansted', 'Copenhagen');
 
-// chooseDate('2020-05-17', '2020-05-24');
-// setInterval(chooseDate('2020-05-17', '2020-05-24'), 10000); 
+// selected_date_element.textContent - dateout
+// selected_date_element2.textContent - datein
+// CityToIata(document.getElementById('myInput1')) - cityfrom
+// CityToIata(document.getElementById('myInput2')) - city to
