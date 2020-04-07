@@ -1,4 +1,3 @@
-
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 const os = require('os');
@@ -152,7 +151,7 @@ function startJob(dateout, datein, cityFrom, cityTo){
     cityFrom = CityToIata(cityFrom);
     cityTo = CityToIata(cityTo);
     
-    firstLine.push(true);
+    // firstLine.push(true);
 
     fs.access(cityFrom + cityTo + dateout + datein +".json", (err) => {
         if(!err){
@@ -479,7 +478,9 @@ function CityToIata(city){
     }
 }
 
-startJob('2020-05-09', '2020-05-16', 'London Stansted', 'Copenhagen');
+startJob(selected_date_element.textContent, selected_date_element2.textContent, CityToIata(document.getElementById('myInput1')), CityToIata(document.getElementById('myInput2')));
+console.log(selected_date_element.textContent, selected_date_element2.textContent, CityToIata(document.getElementById('myInput1')), CityToIata(document.getElementById('myInput2')));
+// startJob('2020-05-09', '2020-05-16', 'London Stansted', 'Copenhagen');
 
 // selected_date_element.textContent - dateout
 // selected_date_element2.textContent - datein

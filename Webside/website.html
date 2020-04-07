@@ -7,11 +7,13 @@
     <title>Website</title>
     <link rel="icon" href="icon1.png" type="image/x-icon">
     <link rel="stylesheet" href="main.css" />
+    <script src="" type="text/javascript"></script>
 </head>
 <body>
     <div class="navbar"></div>
     <h1>IT <span>CAME</span> FROM CHINA</h1>
     
+    <section>
     <div class="date-picker">
         <div class="selected-date"></div>
         <div class="dates">
@@ -22,8 +24,8 @@
             </div>
             <div class="days"></div>
         </div>
-    </div>
-    <script src="Departure_date.js" id="DateOut"></script>     
+        <script src="Departure_date.js" id="DateOut"></script> 
+    </div>  
 
     <div class="date-picker2">
         <div class="selected-date">30/01/2020</div>
@@ -35,14 +37,14 @@
             </div>
             <div class="days"></div>
         </div>
+        <script src="Return_date.js" id="DateIn"></script>
     </div>
-    <script src="Return_date.js" id="DateIn"></script>
+   
 
     
     <div>
         <h2>Indtast fra/til destination</h2>
     </div>    
-  
     <form id="fromDestination" autocomplete="off">
         <div class="autocomplete" style="width:300px;">
           <label>Fra</label>
@@ -57,9 +59,13 @@
           <input id="myInput2" type="text" placeholder="Airport">
         </div>
         <input type="submit">
+        <script src="website.js"></script>
     </form>
-
-    <script src="website.js"></script>
+    
+    <script src="../Scraper/scraper.js"></script>
+    <!--<button onclick="startJob(selected_date_element.textContent, selected_date_element2.textContent, CityToIata(document.getElementById('myInput1')), CityToIata(document.getElementById('myInput2')))">Start flight search!</button>-->
+    <button onclick="startJob()">Start flight search!</button>
+    </section>
 
     <!--<div class="custom-select">
     <select>
