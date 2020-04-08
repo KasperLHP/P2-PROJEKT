@@ -7,7 +7,6 @@
     <title>Website</title>
     <link rel="icon" href="icon1.png" type="image/x-icon">
     <link rel="stylesheet" href="main.css" />
-    <script src="modules.js"></script> 
 </head>
 <body>
     <div class="navbar"></div>
@@ -40,30 +39,22 @@
         <script src="Return_date.js" id="DateIn"></script>
     </div>
    
-
-    
     <div>
         <h2>Indtast fra/til destination</h2>
     </div>    
     <form id="fromDestination" autocomplete="off" method='POST'>
         <div class="autocomplete" style="width:300px;">
-          <label>Fra</label>
+          <label>Fra lufthavn: </label>
           <input id="myInput1" type="text" placeholder="Airport" name='myInput1'>
         </div>
    
         <div class="autocomplete" style="width:300px;">
-          <label>Til</label>
+          <label>Til lufthavn: </label>
           <input id="myInput2" type="text" placeholder="Airport" name='myInput2'>
         </div>
         <input type="submit">
         <script src="website.js"></script>
     </form>
-    
-    <!--<script src="../Scraper/scraper.js"></script>-->
-    <!--<button onclick="startJob('2020-05-10', '2020-05-17', 'Copenhagen', 'Stuttgart')">Start flight search!</button>-->
-    
-    <button onclick="startJob(selected_date_element.textContent, selected_date_element2.textContent, CityToIata(document.getElementById('myInput1')), CityToIata(document.getElementById('myInput2')))">Start flight search!</button>
-    <!--<button onclick="startJob()">Start flight search!</button>-->
     </section>
 
 

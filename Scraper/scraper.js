@@ -16,7 +16,7 @@ http.createServer(function (req, res) {
         console.log(req.method);
         var body = '';
 
-        req.on('data', function (data) {
+        req.on('data', function(data){
             body += data;
 
             // Too much POST data, kill the connection!
@@ -25,25 +25,23 @@ http.createServer(function (req, res) {
                 req.connection.destroy();
         });
 
-        req.on('end', function () {
+        req.on('end', function(){
             var post = qs.parse(body);
-            startJob('2020-05-09', '2020-05-16', post.myInput1, post.myInput2,);
+            startJob(selected_date_element.textContent, selected_date_element2.textContent, post.myInput1, post.myInput2);
            
-            console.log(post.myInput1, post.myInput2);
+            console.log({CityFrom: post.myInput1, CityTo: post.myInput2});
             res.writeHead(200);
             res.end('test');
             console.log(post);
             // use post['blah'], etc.
         });
-    }
-    else
-    fileServer.serve(req, res);
+    }else
+        fileServer.serve(req, res);
 }).listen(8080);
 
-async function writeToFile(file, text) {
+async function writeToFile(file, text){
   await fs2.outputFile(file, `${text}${os.EOL}`, options);
 }
-
 
 /*function jsonReader(filePath, cb){
     fs.readFile(filePath, (err, fileData) => {
@@ -160,7 +158,6 @@ async function scraperProduct(url, filename){
         writeToFile(filename+'.json', ',' + jsonData);
         }else{
         writeToFile(filename+'.json', jsonData);
-        
     }
     
     firstLine[firstLine.length - 1] = false;
@@ -505,7 +502,6 @@ function CityToIata(city){
             break;                            
     }
 }
-
 
 // console.log(selected_date_element.textContent, selected_date_element2.textContent, CityToIata(document.getElementById('myInput1')), CityToIata(document.getElementById('myInput2')));
 // startJob('2020-05-09', '2020-05-16', 'London Stansted', 'Copenhagen');
