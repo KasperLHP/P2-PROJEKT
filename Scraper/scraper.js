@@ -6,12 +6,11 @@ const fs = require('fs');
 const options = {flag: 'a'};
 var nStatic = require('node-static');
 var qs = require('querystring');
-
+var http = require('http');
 let firstLine = [];
 
 var fileServer = new nStatic.Server('../Webside');
 
-var http = require('http');
 http.createServer(function (req, res) {
     if(req.method == 'POST') {
         console.log(req.method);
@@ -39,7 +38,6 @@ http.createServer(function (req, res) {
     }
     else
     fileServer.serve(req, res);
-
 }).listen(8080);
 
 async function writeToFile(file, text) {
@@ -177,11 +175,6 @@ function chooseRoute(dateout, datein, cityFrom, cityTo){
 // Function that allows us to run scraper at scheduled times + creates new file if a file doesnt already exist
 function startJob(dateout, datein, cityFrom, cityTo){
     console.log('Checking if the given file exists...');
-    
-    /*
-    dateout = selected_date_element.textContent;
-    datein = selected_date_element2.textContent;
-    */
     
     cityFrom = CityToIata(cityFrom);
     cityTo = CityToIata(cityTo);
@@ -514,9 +507,8 @@ function CityToIata(city){
 }
 
 
-//console.log(selected_date_element.textContent, selected_date_element2.textContent, CityToIata(document.getElementById('myInput1')), CityToIata(document.getElementById('myInput2')));
+// console.log(selected_date_element.textContent, selected_date_element2.textContent, CityToIata(document.getElementById('myInput1')), CityToIata(document.getElementById('myInput2')));
 // startJob('2020-05-09', '2020-05-16', 'London Stansted', 'Copenhagen');
-// startJob(selected_date_element.textContent, selected_date_element2.textContent, CityToIata(document.getElementById('myInput1')), CityToIata(document.getElementById('myInput2')));
 // selected_date_element.textContent - dateout
 // selected_date_element2.textContent - datein
 // CityToIata(document.getElementById('myInput1')) - cityfrom
