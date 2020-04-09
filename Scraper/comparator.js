@@ -1,16 +1,8 @@
 const fs = require('fs');
 const twilio = require('twilio');
 
-/*
-client.messages.create({
-    to: 'YOUR_NUMBER',
-    from: 'YOUR_TWILIO_NUMBER',
-    body: 'Hello from Twilio!'
-  });
-
-var client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-client.sendMessage({to: '+004542313187', from: '+16082862799', body: 'Hey fuckhovede, din flybillet er nu på den laveste pris!'});
-*/
+// Find your account sid and auth token in your Twilio account Console.
+var client = new twilio('AC047d2382d93c940c915d16976326c659', '01b0ac5994bb30dabd7ef3b778d338a5');
 
 function jsonReader(filePath, cb){
     fs.readFile(filePath, (err, fileData) => {
@@ -36,6 +28,11 @@ function PriceCheck(dateout, datein, cityFrom, cityTo, CustomerSpecifiedPrice){
                 if(parseFloat(ScrapedData[i].TotalPrice) <= CustomerSpecifiedPrice){
                     console.log(ScrapedData[i].ScrapeDate);
                     console.log('Sending notification about price drop...');
+                    client.messages.create({
+                        to: '+4542313187',
+                        from: '+12512200734',
+                        body: 'HeyHo! The route' + cityFrom + 'to' + cityTo + '(From' + dateout + 'to' + datein + ')' + 'is now at or lower than the price' + '(' +CustomerSpecifiedPrice + ')' + 'you have specified!'
+                      });
                 }else{
                     console.log('No price changes so far...');
                 }
@@ -45,12 +42,3 @@ function PriceCheck(dateout, datein, cityFrom, cityTo, CustomerSpecifiedPrice){
 }
 
 PriceCheck('2020-05-08', '2020-05-15', 'CPH', 'STN', 250);
-
-/* function insertEndingBracket(filename){
-    fs.appendFile(filename+'.json', '\n ]', function (err) {
-        if (err) throw err;
-        console.log('Ending bracket inserted!');
-      });
-} */
-
-// insertEndingBracket('OPOSTN2020-05-082020-05-15');
