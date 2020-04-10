@@ -6,17 +6,17 @@ const fs = require('fs');
 const options = {flag: 'a'};
 var nStatic = require('node-static');
 var qs = require('querystring');
-var http = require('http');
 let firstLine = [];
 
 var fileServer = new nStatic.Server('../Webside');
 
-http.createServer(function (req, res){
-    if(req.method == 'POST'){
+var http = require('http');
+http.createServer(function (req, res) {
+    if(req.method == 'POST') {
         console.log(req.method);
         var body = '';
 
-        req.on('data', function(data){
+        req.on('data', function (data) {
             body += data;
 
             // Too much POST data, kill the connection!
@@ -25,19 +25,20 @@ http.createServer(function (req, res){
                 req.connection.destroy();
         });
 
-        req.on('end', function(){
+        req.on('end', function () {
             var post = qs.parse(body);
-            startJob('2020-05-10', '2020-05-17', post.myInput1, post.myInput2); 
+            startJob('2020-05-09', '2020-05-16', post.myInput1, post.myInput2,);
            
-            console.log(post.myInput1, post.myInput);
+            console.log(post.myInput1, post.myInput2);
             res.writeHead(200);
             res.end('test');
             console.log(post);
             // use post['blah'], etc.
         });
-    }else{
-        fileServer.serve(req, res);
     }
+    else
+    fileServer.serve(req, res);
+
 }).listen(8080);
 
 async function writeToFile(file, text){
@@ -129,7 +130,7 @@ async function scraperProduct(url, filename){
 
 // Function that inserts dates and IATA codes in the flexible link creator
 function chooseRoute(dateout, datein, cityFrom, cityTo){
-    scraperProduct('https://www.ryanair.com/dk/da/trip/flights/select?adults=1&teens=0&children=0&infants=0&dateOut='+dateout+'&'+'dateIn='+datein+'&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn=true&discount=0', cityFrom + cityTo + dateout + datein);
+    scraperProduct('https://www.ryanair.com/dk/da/trip/flights/select?adults=1&teens=0&children=0&infants=0&dateOut='+dateout+'&dateIn='+datein+'&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn=true&discount=0', cityFrom + cityTo + dateout + datein);
 }
 
 // Function that allows us to run scraper at scheduled times + creates new file if a file doesnt already exist
