@@ -162,7 +162,7 @@ function startJob(dateout, datein, cityFrom, cityTo){
         }
     });    
 
-    var j = schedule.scheduleJob('45 * * * * *', function(){
+    var j = schedule.scheduleJob('15 * * * * *', function(){
         console.log('Running scheduled job...');
         chooseRoute(dateout, datein, cityFrom, cityTo);
     });
