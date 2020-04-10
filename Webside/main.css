@@ -300,5 +300,12 @@ li a {
 }
 
 
-
+.autocomplete {
+    width: 300px;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin: 30px 30px;
+    float: left;
+}
 
