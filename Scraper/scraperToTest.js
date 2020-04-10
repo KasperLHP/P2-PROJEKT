@@ -32,12 +32,12 @@ async function writeToFile(file, text){
 async function scraperProduct(url, filename){
     console.log('Starting scraper...');
     
-    const browser = await puppeteer.launch({headless: false});
+    const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(url);
     
     console.log('Fetching data...');
-    await page.waitFor(6000);
+    await page.waitFor(3000);
 
     //Departure flight
     //Price                                             
@@ -96,7 +96,7 @@ async function scraperProduct(url, filename){
     let Returnprice = Price2 + Currency2;
 
     // var dataArray = [];
-    var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Price) + parseFloat(Price2)) + ' ' + Currency, Departure: FromTo, DepartureDate: DepartureDate + " 2020", Price: Departureprice , DepartureTime: DepartureTime, ArrivalTime: ArrivalTime, Return: FromTo2, ReturnDate: ReturnDate.slice(3, 10) + " 2020", Price2: Returnprice, DepartureTime2: DepartureTime2, ArrivalTime2: ArrivalTime2};
+    var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Price) + parseFloat(Price2)) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + " 2020", Price: Departureprice.trim() , DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Return: FromTo2.trim(), ReturnDate: ReturnDate.slice(3, 10) + " 2020", Price2: Returnprice.trim(), DepartureTime2: DepartureTime2.trim(), ArrivalTime2: ArrivalTime2.trim(), Currency: Currency};
     var jsonData = JSON.stringify(data);
     // emptyArray.push(jsonData);
    
@@ -130,7 +130,7 @@ async function scraperProduct(url, filename){
         writeToFile(filename+'.json', jsonData);
     }
     
-    // firstLine[firstLine.length - 1] = false;
+    firstLine[firstLine.length - 1] = false;
     console.log('Data has been added to file!');
 }
 
@@ -148,13 +148,13 @@ function startJob(dateout, datein, cityFrom, cityTo){
     
     firstLine.push(true);
 
-    fs.access(cityFrom + cityTo + dateout + datein +".json", (err) => {
+    fs.access(cityFrom + cityTo + dateout + datein +'.json', (err) => {
         if(!err){
             console.log('File named: ' + cityFrom + cityTo + dateout + datein + ' already exists!');
             return;
         }else{
             console.log('The file does not exist... making a new file named: ' + cityFrom + cityTo + dateout + datein);
-            fs.writeFile(cityFrom + cityTo + dateout + datein +".json",'[\n', function(err){
+            fs.writeFile(cityFrom + cityTo + dateout + datein +'.json','[\n', function(err){
                 if(err){
                     console.log(err);
                 }
@@ -162,7 +162,7 @@ function startJob(dateout, datein, cityFrom, cityTo){
         }
     });    
 
-    var j = schedule.scheduleJob('20 * * * * *', function(){
+    var j = schedule.scheduleJob('45 * * * * *', function(){
         console.log('Running scheduled job...');
         chooseRoute(dateout, datein, cityFrom, cityTo);
     });

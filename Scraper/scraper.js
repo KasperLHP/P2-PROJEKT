@@ -112,7 +112,7 @@ async function scraperProduct(url, filename){
     // Price element + currency element (euro, pounds, etc..)
     let Returnprice = Price2 + Currency2;
    
-    var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Price) + parseFloat(Price2)) + ' ' + Currency, Departure: FromTo, DepartureDate: DepartureDate + " 2020", Price: Departureprice , DepartureTime: DepartureTime, ArrivalTime: ArrivalTime, Return: FromTo2, ReturnDate: ReturnDate.slice(3, 10) + " 2020", Price2: Returnprice, DepartureTime2: DepartureTime2, ArrivalTime2: ArrivalTime2};
+    var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Price) + parseFloat(Price2)) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + " 2020", Price: Departureprice.trim() , DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Return: FromTo2.trim(), ReturnDate: ReturnDate.slice(3, 10) + " 2020", Price2: Returnprice.trim(), DepartureTime2: DepartureTime2.trim(), ArrivalTime2: ArrivalTime2.trim(), Currency: Currency};
     var jsonData = JSON.stringify(data);
     
     console.log('Adding data to file...');

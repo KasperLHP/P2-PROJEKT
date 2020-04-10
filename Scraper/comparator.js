@@ -1,8 +1,9 @@
+require('dotenv').config();
 const fs = require('fs');
 const twilio = require('twilio');
-
-// Find your account sid and auth token in your Twilio account Console.
-var client = new twilio('AC047d2382d93c940c915d16976326c659', '01b0ac5994bb30dabd7ef3b778d338a5');
+var twilioSID = process.env.TWILIO_ACCOUNT_SID;
+var twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
+const client = new twilio(twilioSID, twilioAuthToken);
 
 function jsonReader(filePath, cb){
     fs.readFile(filePath, (err, fileData) => {
@@ -26,13 +27,14 @@ function PriceCheck(dateout, datein, cityFrom, cityTo, CustomerSpecifiedPrice){
         }else{
             for(i = 0; i < ScrapedData.length; i++){
                 if(parseFloat(ScrapedData[i].TotalPrice) <= CustomerSpecifiedPrice){
-                    console.log(ScrapedData[i].ScrapeDate);
-                    console.log('Sending notification about price drop...');
+                    console.log('Price equal to or lower than '+ CustomerSpecifiedPrice + ' has been recorded at: ' + ScrapedData[i].ScrapeDate);
+                    console.log('Sending notification to user...');
                     client.messages.create({
                         to: '+4542313187',
                         from: '+12512200734',
-                        body: 'HeyHo! The route' + cityFrom + 'to' + cityTo + '(From' + dateout + 'to' + datein + ')' + 'is now at or lower than the price' + '(' +CustomerSpecifiedPrice + ')' + 'you have specified!'
+                        body: 'HeyHo!\n\nThe route: ' + ScrapedData[i].Departure + ' and ' + ScrapedData[i].Return + ' from ' + ScrapedData[i].DepartureDate + ' to ' + ScrapedData[i].ReturnDate + ' has price dropped to ' + ScrapedData[i].TotalPrice + ', which is under or equal to your desired price at ' + CustomerSpecifiedPrice + ' ' + ScrapedData[i].Currency + '.\n\nAct fast and buy before it gets sold out!\n\nVisit this link to buy: https://www.ryanair.com/dk/da/trip/flights/select?adults=1&teens=0&children=0&infants=0&dateOut='+dateout+'&'+'dateIn='+datein+'&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn=true&discount=0'  
                       });
+                    console.log('Notification sent!');
                 }else{
                     console.log('No price changes so far...');
                 }
@@ -41,4 +43,4 @@ function PriceCheck(dateout, datein, cityFrom, cityTo, CustomerSpecifiedPrice){
     });
 }
 
-PriceCheck('2020-05-08', '2020-05-15', 'CPH', 'STN', 250);
+PriceCheck('2020-05-10', '2020-05-17', 'CPH', 'STN', 300);
