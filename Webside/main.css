@@ -5,7 +5,7 @@
 }
 
 body {
-    background-color: aqua;
+    background-color: #FFF;
     font-family: 'Saira',Arial, Helvetica, sans-serif;
 }
 
@@ -20,6 +20,35 @@ h1{
 h1 span{
     font-weight: 300;
 }
+
+/*navbar*/
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+  }
+li {
+    float: left;
+}
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  li a:hover:not(.active) {
+    background-color: #111;
+  }
+  
+  .active {
+    background-color: #4CAF50;
+  }
+/*navbar*/ 
+
 /*Departure*/
 .date-picker {
     position: relative;
@@ -29,7 +58,7 @@ h1 span{
     background-color: #FFF;
     margin:30px auto;
     box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
-    float: left;
+    
 
     curser: pointer;
     user-select: none;
@@ -121,9 +150,9 @@ h1 span{
     max-width: 320px;
     height: 60px;
     background-color: #FFF;
-    margin:30px auto;
+    margin:30px 60px auto;
     box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
-    float: left;
+    
 
     curser: pointer;
     user-select: none;
