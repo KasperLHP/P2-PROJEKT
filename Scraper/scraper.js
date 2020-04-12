@@ -6,6 +6,8 @@ const fs = require('fs');
 const options = {flag: 'a'};
 var nStatic = require('node-static');
 var qs = require('querystring');
+const path = require('path');
+
 let firstLine = [];
 
 var fileServer = new nStatic.Server('../Webside');
@@ -13,6 +15,8 @@ var fileServer = new nStatic.Server('../Webside');
 var http = require('http');
 http.createServer(function (req, res) {
     if(req.method == 'POST') {
+       
+        console.log(req.url);
         console.log(req.method);
         var body = '';
 
@@ -24,21 +28,46 @@ http.createServer(function (req, res) {
             if (body.length > 1e6)
                 req.connection.destroy();
         });
+        
 
         req.on('end', function () {
             var post = qs.parse(body);
-            startJob('2020-05-09', '2020-05-16', post.myInput1, post.myInput2,);
-           
-            console.log(post.myInput1, post.myInput2);
-            res.writeHead(200);
-            res.end('test');
-            console.log(post);
+            if(req.url == "/website.html") {
+                startJob('2020-05-09', '2020-05-16', post.myInput1, post.myInput2,);
+            
+                console.log(post.myInput1, post.myInput2);
+                res.writeHead(200);
+                res.end('test');
+                console.log(post);
+            }
             // use post['blah'], etc.
         });
     }
-    else
-    fileServer.serve(req, res);
-
+    else if (req.method == 'GET') {
+        if(req.url == '/getFlightData') {
+            var directoryPath = path.join(__dirname, '../Webside/scrapedata');
+            fs.readdir(directoryPath, function (err, files) {
+                console.log(files)
+                //handling error
+                if (err) {
+                    return console.log('Unable to scan directory: ' + err);
+                } 
+                //listing all files using forEach
+               /* files.forEach(function (file) {
+                    // Do whatever you want to do with the file
+                    res.write(file); 
+                    res.write("test");
+                    
+                });
+                */
+                res.writeHead(200);
+                    res.end(JSON.stringify(files));
+            });
+          
+        } else {
+            fileServer.serve(req, res);
+        }
+    }
 }).listen(8080);
 
 async function writeToFile(file, text){
