@@ -27,7 +27,7 @@ function PriceCheck(dateout, datein, cityFrom, cityTo, CustomerSpecifiedPrice, I
         }else{
             for(i = 0; i < ScrapedData.length; i++){
                
-                // If customer picks a return trip - will take the total price
+                // If user picks a return trip - will take the total price
                 if(IsReturn == 'true'){
                     if(parseFloat(ScrapedData[i].TotalPrice) <= CustomerSpecifiedPrice){
                         console.log('Price equal to or lower than '+ CustomerSpecifiedPrice + ' has been recorded at: ' + ScrapedData[i].ScrapeDate);
@@ -42,7 +42,7 @@ function PriceCheck(dateout, datein, cityFrom, cityTo, CustomerSpecifiedPrice, I
                         console.log('No price changes so far...');
                     }
                 
-                    // If customer picks a one-way flight - will take the price for the one way
+                // If user picks a one-way flight - will take the price for the one way flight
                 }else if(IsReturn == 'false'){
                     if(parseFloat(ScrapedData[i].Price) <= CustomerSpecifiedPrice){
                         console.log('Price equal to or lower than '+ CustomerSpecifiedPrice + ' has been recorded at: ' + ScrapedData[i].ScrapeDate);
