@@ -4,29 +4,11 @@ const fs2 = require('fs-extra');
 const schedule = require('node-schedule');
 const fs = require('fs');
 const options = {flag: 'a'};
-// var nStatic = require('node-static');
-// var qs = require('querystring');
-// var http = require('http');
 let firstLine = [];
-
 
 async function writeToFile(file, text){
   await fs2.outputFile(file, `${text}${os.EOL}`, options);
 }
-
-/*function jsonReader(filePath, cb){
-    fs.readFile(filePath, (err, fileData) => {
-        if (err){
-            return cb && cb(err)
-        }
-        try{
-            const object = JSON.parse(fileData);
-            return cb && cb(null, object)
-        }catch(err){
-            return cb && cb(err)
-        }
-    })
-}*/
 
 // Actual scraper - takes Xpath elements of website
 async function scraperProduct(url, filename){
@@ -67,6 +49,7 @@ async function scraperProduct(url, filename){
     // Price element + currency element (euro, pounds, etc..)
     let Departureprice = Price + Currency;
     
+
     //Return flight
     //Price                      
     const [el6] = await page.$x('/html/body/flights-root/div/div/div/div/flights-summary-container/flights-summary/div/div[2]/journey-container/journey/div/div[2]/carousel-container/carousel/div/ul/li[3]/carousel-item/button/div[2]/ry-price/span[2]');
@@ -94,34 +77,9 @@ async function scraperProduct(url, filename){
     const Currency2 = await txt11.jsonValue();
     // Price element + currency element (euro, pounds, etc..)
     let Returnprice = Price2 + Currency2;
-
-    // var dataArray = [];
-    var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Price) + parseFloat(Price2)) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + " 2020", Price: Departureprice.trim() , DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Return: FromTo2.trim(), ReturnDate: ReturnDate.slice(3, 10) + " 2020", Price2: Returnprice.trim(), DepartureTime2: DepartureTime2.trim(), ArrivalTime2: ArrivalTime2.trim(), Currency: Currency};
+        
+    var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Price) + parseFloat(Price2)) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + ' ' + Date.getFullYear(), Price: Departureprice.trim() , DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Return: FromTo2.trim(), ReturnDate: ReturnDate.slice(3, 10) + ' ' +  Date.getFullYear(), Price2: Returnprice.trim(), DepartureTime2: DepartureTime2.trim(), ArrivalTime2: ArrivalTime2.trim(), Currency: Currency};
     var jsonData = JSON.stringify(data);
-    // emptyArray.push(jsonData);
-   
-    /*
-    jsonReader(filename+'.json', (err, ScrapedData) => {
-        if(err){
-            console.log(err);
-            return;
-        }else{
-            for(i = 0; i < ScrapedData.length; i++){
-                emptyArray.push(ScrapedData[i]);
-                console.log(ScrapedData[i].TotalPrice);
-            }
-        }
-    });
-    
-    fs.writeFile(filename+'.json', jsonData, function (err) {
-        if (err) throw err;
-        console.log('Writing to file...');
-    });
-    
-    for(i = 0; i < emptyArray.length; i++) {
-        console.log(emptyArray[i]);
-    } */
-
     console.log('Adding data to file...');
 
     if(firstLine[firstLine.length -1] == false){
@@ -175,6 +133,9 @@ function CityToIata(city){
             break;
         case 'Paris Charles de Gaulle':
             return 'CDG';
+            break;
+        case 'Malaga':
+            return 'AGP';
             break;
         case 'Frankfurt':
             return 'FRA';
