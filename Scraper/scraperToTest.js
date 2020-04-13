@@ -49,7 +49,6 @@ async function scraperProduct(url, filename){
     // Price element + currency element (euro, pounds, etc..)
     let Departureprice = Price + Currency;
     
-
     //Return flight
     //Price                      
     const [el6] = await page.$x('/html/body/flights-root/div/div/div/div/flights-summary-container/flights-summary/div/div[2]/journey-container/journey/div/div[2]/carousel-container/carousel/div/ul/li[3]/carousel-item/button/div[2]/ry-price/span[2]');
