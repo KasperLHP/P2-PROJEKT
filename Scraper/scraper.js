@@ -15,7 +15,6 @@ var fileServer = new nStatic.Server('../Webside');
 var http = require('http');
 http.createServer(function (req, res) {
     if(req.method == 'POST') {
-       
         console.log(req.url);
         console.log(req.method);
         var body = '';
@@ -29,11 +28,10 @@ http.createServer(function (req, res) {
                 req.connection.destroy();
         });
         
-
         req.on('end', function () {
             var post = qs.parse(body);
             if(req.url == "/website.html") {
-                startJob('2020-05-09', '2020-05-16', post.myInput1, post.myInput2,);
+                startJob('2020-05-10', '2020-05-17', post.myInput1, post.myInput2);
             
                 console.log(post.myInput1, post.myInput2);
                 res.writeHead(200);
@@ -42,8 +40,7 @@ http.createServer(function (req, res) {
             }
             // use post['blah'], etc.
         });
-    }
-    else if (req.method == 'GET') {
+    }else if (req.method == 'GET') {
         if(req.url == '/getFlightData') {
             var directoryPath = path.join(__dirname, '../Webside/scrapedata');
             fs.readdir(directoryPath, function (err, files) {
@@ -64,7 +61,7 @@ http.createServer(function (req, res) {
                     res.end(JSON.stringify(files));
             });
           
-        } else {
+        }else {
             fileServer.serve(req, res);
         }
     }
