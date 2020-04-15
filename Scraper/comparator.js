@@ -26,7 +26,6 @@ function PriceCheck(dateout, datein, cityFrom, cityTo, CustomerSpecifiedPrice, I
             return;
         }else{
             for(i = 0; i < ScrapedData.length; i++){
-               
                 // If user picks a return trip - will take the total price
                 if(IsReturn == 'true'){
                     if(parseFloat(ScrapedData[i].TotalPrice) <= CustomerSpecifiedPrice){
