@@ -31,12 +31,11 @@ http.createServer(function (req, res) {
         req.on('end', function () {
             var post = qs.parse(body);
             if(req.url == "/website.html") {
-                startJob('2020-05-08', post.selected_date_element2.textContent, post.myInput1, post.myInput2);
+                startJob(post.departdate, post.returndate, post.myInput1, post.myInput2);
             
-                console.log(post.myInput1, post.myInput2);
+                console.log(post.departdate, post.returndate, post.myInput1, post.myInput2);
                 res.writeHead(200);
                 res.end('test');
-                console.log(post);
             }
             // use post['blah'], etc.
         });
@@ -138,7 +137,7 @@ async function scraperProduct(url, filename){
     // Price element + currency element (euro, pounds, etc..)
     let Returnprice = Price2 + Currency2;
    
-    var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Price) + parseFloat(Price2)) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + " 2020", Price: Departureprice.trim() , DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Return: FromTo2.trim(), ReturnDate: ReturnDate.slice(3, 10) + " 2020", Price2: Returnprice.trim(), DepartureTime2: DepartureTime2.trim(), ArrivalTime2: ArrivalTime2.trim(), Currency: Currency};
+    var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Price) + parseFloat(Price2)) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + ' ' + Date.getFullYear(), Price: Departureprice.trim() , DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Return: FromTo2.trim(), ReturnDate: ReturnDate.slice(3, 10) + ' ' +  Date.getFullYear(), Price2: Returnprice.trim(), DepartureTime2: DepartureTime2.trim(), ArrivalTime2: ArrivalTime2.trim(), Currency: Currency};
     var jsonData = JSON.stringify(data);
     console.log('Adding data to file...');
 
