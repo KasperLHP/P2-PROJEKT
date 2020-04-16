@@ -31,7 +31,7 @@ http.createServer(function (req, res) {
         req.on('end', function () {
             var post = qs.parse(body);
             if(req.url == "/website.html") {
-                startJob('2020-05-10', '2020-05-17', post.myInput1, post.myInput2);
+                startJob('2020-05-08', post.selected_date_element2.textContent, post.myInput1, post.myInput2);
             
                 console.log(post.myInput1, post.myInput2);
                 res.writeHead(200);
