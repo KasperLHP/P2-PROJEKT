@@ -21,7 +21,6 @@
 				<div class="clearfix"> </div>	
 				<div class="resp-tabs-container">
 					<div class="tab-1 resp-tab-content roundtrip">
-						
 						<form id="getFlightInfo" method="POST">
 							<div class="from">
 								<h3>From</h3>
@@ -62,12 +61,30 @@
 							<div class="clear"></div>
 							<input type="submit" value="Search Flights">
 						</form>		
-
 					</div>		
 				</div>						
 			</div>
 		</div>
 	</div>
+	
+	<!-- Success box -->
+	<div class="alert success">
+		<span class="closebtn">&times;</span>  
+		<strong>Success!</strong> Your price agent has started.
+	</div>
+	<script>
+		var close = document.getElementsByClassName("closebtn");
+		var i;
+		
+		for (i = 0; i < close.length; i++) {
+		  close[i].onclick = function(){
+			var div = this.parentElement;
+			div.style.opacity = "0";
+			setTimeout(function(){ div.style.display = "none"; }, 600);
+		  }
+		}
+	</script>
+	
 	<div class="footer-w3l">
 		<p class="agileinfo"> &copy; 2020 Flight Ticket Booking . All Rights Reserved | Design by <a href="http://w3layouts.com">W3layouts</a></p>
 	</div>

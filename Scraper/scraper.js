@@ -32,10 +32,9 @@ http.createServer(function (req, res) {
             var post = qs.parse(body);
             if(req.url == "/website.html") {
                 startJob(post.datepicker, post.datepicker1, post.myInput1, post.myInput2);
-            
                 console.log(post.datepicker, post.datepicker1, post.myInput1, post.myInput2);
                 res.writeHead(200);
-                res.end('test');
+                // res.end('test');
             }
             // use post['blah'], etc.
         });
