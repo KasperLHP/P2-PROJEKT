@@ -7,7 +7,7 @@ const options = {flag: 'a'};
 var nStatic = require('node-static');
 var qs = require('querystring');
 const path = require('path');
-
+var d = new Date();
 let firstLine = [];
 
 var fileServer = new nStatic.Server('../Webside');
@@ -31,11 +31,10 @@ http.createServer(function (req, res) {
         req.on('end', function () {
             var post = qs.parse(body);
             if(req.url == "/website.html") {
-                startJob(post.departdate, post.returndate, post.myInput1, post.myInput2);
-            
-                console.log(post.departdate, post.returndate, post.myInput1, post.myInput2);
+                startJob(post.datepicker, post.datepicker1, post.myInput1, post.myInput2);
+                console.log(post.datepicker, post.datepicker1, post.myInput1, post.myInput2);
                 res.writeHead(200);
-                res.end('test');
+                // res.end('test');
             }
             // use post['blah'], etc.
         });
@@ -137,7 +136,7 @@ async function scraperProduct(url, filename){
     // Price element + currency element (euro, pounds, etc..)
     let Returnprice = Price2 + Currency2;
    
-    var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Price) + parseFloat(Price2)) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + ' ' + Date.getFullYear(), Price: Departureprice.trim() , DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Return: FromTo2.trim(), ReturnDate: ReturnDate.slice(3, 10) + ' ' +  Date.getFullYear(), Price2: Returnprice.trim(), DepartureTime2: DepartureTime2.trim(), ArrivalTime2: ArrivalTime2.trim(), Currency: Currency};
+    var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Price) + parseFloat(Price2)) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + ' ' + d.getFullYear(), Price: Departureprice.trim() , DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Return: FromTo2.trim(), ReturnDate: ReturnDate.slice(3, 10) + ' ' +  d.getFullYear(), Price2: Returnprice.trim(), DepartureTime2: DepartureTime2.trim(), ArrivalTime2: ArrivalTime2.trim(), Currency: Currency};
     var jsonData = JSON.stringify(data);
     console.log('Adding data to file...');
 

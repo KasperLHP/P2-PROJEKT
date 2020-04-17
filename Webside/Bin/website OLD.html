@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ICFC</title>
+    <link rel="icon" href="icon1.png" type="image/x-icon">
+    <link rel="stylesheet" href="main.css" />
+    
+    <!-- sources for Datepicker -->
+    <script src="jquery-1.10.2.min.js"></script>
+    <script src="datedropper.js"></script>
+</head>
+<body>
+    <div class="navbar"><h1>IT <span>CAME FROM</span>  CHINA</h1></div>
+    <ul class="navbar">
+        <li><a href="#sit">IT</a></li>
+        <li><a href="#som">CAME</a></li>
+        <li><a href="#as">FROM</a></li>
+        <li><a href="#china">CHINA</a></li>
+        <li style="float:right"><a class="active" href="#about">About</a></li>
+    </ul>
+      
+    <form id="getFlightInfo" autocomplete="off" method="POST">
+        <div class="droppers">
+            <input method="POST" id="departdate" name="departdate" type="text" placeholder="Pick departure date..." data-large-mode="true" data-lock="from" data-theme="my-style" data-dd-roundtrip="my-trip"/>
+            <input method="POST" id="returndate" name="returndate" type="text" placeholder="Pick return date..." data-large-mode="true" data-lock="from" data-theme="my-style" data-dd-roundtrip="my-trip"/>
+            <script>
+                $('#departdate').dateDropper();
+                $('#returndate').dateDropper();
+            </script>
+        </div> 
+        <div>
+            <h2>Indtast fra/til destination</h2>
+        </div>    
+        <div class="autocomplete" style="width:300px ;" >
+            <label>Fra lufthavn: </label>
+            <input id="myInput1" type="text" placeholder="Airport" name="myInput1">
+        </div>
+    
+        <div class="autocomplete" style="width:300px;">
+            <label>Til lufthavn: </label>
+            <input id="myInput2" type="text" placeholder="Airport" name="myInput2">
+        </div>
+        <input type="submit">
+        <script src="website.js"></script>
+    </form>
+    </body>
+
+
+
+
+
+
+
+    
+    <!--<div class="custom-select">
+    <select>
+        <option value="0">Aldergruppe:</option>
+        <option value="1">Voksen</option>
+        <option value="2">Barn</option>
+    </select>
+    <input type="text" id="antal" name="antal">
+  </div>-->
+
+
+<!--
+    <h1>Desired travel period</h1>
+    <h2 text-align="center";>Destination</h>
+
+    <table style="width:50%;margin-left:auto;margin-right:auto;">
+        <tr>
+            <td>Fra:</td>
+            <td>Til:</td>
+        </tr>
+    <table style="width:50%;margin-left:auto;margin-right:auto;">   
+        <tr>
+            <td width="40%"> Ønsket afrejse periode:</td>
+            <td width="30%">Dato</td>
+            <td width="30%">Dato</td>
+            
+        </tr>
+       -->
+        
+   
+
+</html>
