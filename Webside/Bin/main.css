@@ -1116,16 +1116,4 @@ li a {
     color: #4D4D4D;
   }
   
-input[id="departdate"]{
-    position: absolute;
-    top:250px;
-    left:10%;
-    transform: translateX(-50%);
-}
-
-input[id="returndate"]{
-    position: absolute;
-    top:250px;
-    left:25%;
-    transform: translateX(-50%);
-}    
+ 
