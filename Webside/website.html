@@ -11,55 +11,59 @@
 		
 </head>
 <body>
-	<h1>Flight Ticket Booking</h1>
+	<h1>FlightChecker</h1>
 	<div class="main-agileinfo">
 		<div class="sap_tabs">			
 			<div id="horizontalTab">
 				<ul class="resp-tabs-list">
-					<li class="resp-tab-item"><span>Book flight</span></li>			
+					<li class="resp-tab-item"><span>Flight Ticket Agent</span></li>			
 				</ul>	
 				<div class="clearfix"> </div>	
 				<div class="resp-tabs-container">
 					<div class="tab-1 resp-tab-content roundtrip">
-						<form id="getFlightInfo" method="POST">
+						<form id="getFlightInfo" method="POST" autocomplete="off">
 							<div class="from">
 								<h3>From</h3>
-								<input id= "myInput1" name="myInput1" type="text" class="autocomplete" placeholder="Type Departure Airport" required="">
+								<input id= "myInput1" name="myInput1" type="text" class="autocomplete" placeholder="Type Departure Airport" onfocus="this.placeholder = '';" onblur="if (this.placeholder == '') {this.placeholder = 'Type Departure Airport';}" required="">
 							</div>
 							<div class="to">
 								<h3>To</h3>
-								<input id= "myInput2" name="myInput2" type="text" class="autocomplete" placeholder="Type Destination Airport" required="">
+								<input id= "myInput2" name="myInput2" type="text" class="autocomplete" placeholder="Type Destination Airport" onfocus="this.placeholder = '';" onblur="if (this.placeholder == '') {this.placeholder = 'Type Destination Airport';}"  required="">
 								<script src="website.js"></script>
 							</div>
 							<div class="clear"></div>
 							<div class="date">
 								<div class="depart">
 									<h3>Departure date</h3>
-									<input method="POST" id="datepicker" name="datepicker" type="text" value="yyyy-mm-dd" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'yyyy-mm-dd';}" required="">
+									<input id="datepicker" name="datepicker" type="text" placeholder="yyyy-mm-dd" onfocus="this.placeholder = '';" onblur="if (this.placeholder == '') {this.placeholder = 'yyyy-mm-dd';}" required="">
 								</div>
 								<div class="return">
 									<h3>Return date</h3>
-									<input method="POST" id="datepicker1" name="datepicker1" type="text" value="yyyy-mm-dd" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'yyyy-mm-dd';}" required="">
+									<input id="datepicker1" name="datepicker1" type="text" placeholder="yyyy-mm-dd" onfocus="this.placeholder = '';" onblur="if (this.placeholder == '') {this.placeholder = 'yyyy-mm-dd';}" required="">
 								</div>
 								<div class="clear"></div>
 							</div>
 							<div class="clear"></div>
-							<!--
+							
 							<div class="numofppl">
 								<div class="adults">
 									<h3>Adult (15+ yrs): </h3>
 									<div class="quantity"> 
 										<div class="quantity-select">                           
 											<div class="entry value-minus">&nbsp;</div>
-											<div class="entry value"><span>1</span></div>
+											<div class="entry value" id="amntadlts"><span>1</span></div>
 											<div class="entry value-plus active">&nbsp;</div>
+											<input type="hidden" id="accamntadlts" name="content">
 										</div>
+										<script>
+											document.getElementById("accamntadlts") = document.getElementById("amntadlts").innerHTML;
+										</script>
 									</div>
 								</div>
 								<div class="clear"></div>
-							</div> -->
+							</div>
 							<div class="clear"></div>
-							<input type="submit" value="Search Flights">
+							<input id="StartScraper" type="submit" value="Search Flights">
 						</form>		
 					</div>		
 				</div>						
@@ -68,25 +72,41 @@
 	</div>
 	
 	<!-- Success box -->
-	<div class="alert success">
+	<div class="alert success" id="success">
 		<span class="closebtn">&times;</span>  
 		<strong>Success!</strong> Your price agent has started.
 	</div>
-	<script>
-		var close = document.getElementsByClassName("closebtn");
-		var i;
 		
-		for (i = 0; i < close.length; i++) {
-		  close[i].onclick = function(){
+	<script defer type="text/javascript">
+		function successMessage(){
+		var x = document.getElementById("success");
+		if(x.style.display == "none"){
+			x.style.display = "block"; 
+		/*}else if(x.style.display == "block"){
+			x.style.display = "none"; 
+		*/}
+	}
+	</script>
+	
+	
+	<script type="text/javascript">
+	var close = document.getElementsByClassName("closebtn");
+	var i;
+		
+	for(i = 0; i < close.length; i++){
+		close[i].onclick = function(){
 			var div = this.parentElement;
 			div.style.opacity = "0";
 			setTimeout(function(){ div.style.display = "none"; }, 600);
-		  }
 		}
+	}
 	</script>
 	
+	<!-- End of Success box -->
+
+
 	<div class="footer-w3l">
-		<p class="agileinfo"> &copy; 2020 Flight Ticket Booking . All Rights Reserved | Design by <a href="http://w3layouts.com">W3layouts</a></p>
+		<p class="agileinfo"> &copy; 2020 Flight Ticket Booking. All Rights Reserved | Design by SW2B2-8</p>
 	</div>
 
 	<!--script for portfolio-->
@@ -108,7 +128,7 @@
 	<script src="js/jquery-ui.js"></script>
 	<script>
 		$(function() {
-			$( "#datepicker,#datepicker1" ).datepicker({ dateFormat: 'yy-mm-dd' });
+			$( "#datepicker,#datepicker1" ).datepicker({ dateFormat: 'yy-mm-dd', minDate: 0 });
 		});
 	</script>
 

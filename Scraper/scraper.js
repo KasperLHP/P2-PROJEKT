@@ -32,7 +32,7 @@ http.createServer(function (req, res) {
             var post = qs.parse(body);
             if(req.url == "/website.html") {
                 startJob(post.datepicker, post.datepicker1, post.myInput1, post.myInput2);
-                console.log(post.datepicker, post.datepicker1, post.myInput1, post.myInput2);
+                console.log({departDate: post.datepicker, returnDate: post.datepicker1, fromCity: post.myInput1, toCity: post.myInput2, AmountAdults: post.accamntadlts});
                 res.writeHead(200);
                 // res.end('test');
             }
