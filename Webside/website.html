@@ -8,7 +8,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-		
 </head>
 <body>
 	<h1>FlightChecker</h1>
@@ -25,11 +24,11 @@
 							<div class="autocomplete">
 								<div class="from">
 									<h3>From</h3>
-									<input id= "myInput1" name="myInput1" type="text" class="autocomplete" placeholder="Type Departure Airport" onfocus="this.placeholder = '';" onblur="if (this.placeholder == '') {this.placeholder = 'Type Departure Airport';}" required="">
+									<input id= "myInput1" name="myInput1" type="text" class="autocomplete" placeholder="Enter Departure Airport" onfocus="this.placeholder = '';" onblur="if (this.placeholder == '') {this.placeholder = 'Enter Departure Airport';}" required="">
 								</div>
 								<div class="to">
 									<h3>To</h3>
-									<input id= "myInput2" name="myInput2" type="text" class="autocomplete" placeholder="Type Destination Airport" onfocus="this.placeholder = '';" onblur="if (this.placeholder == '') {this.placeholder = 'Type Destination Airport';}" required="">
+									<input id= "myInput2" name="myInput2" type="text" class="autocomplete" placeholder="Enter Destination Airport" onfocus="this.placeholder = '';" onblur="if (this.placeholder == '') {this.placeholder = 'Enter Destination Airport';}" required="">
 									<script src="website.js"></script>
 								</div>
 							</div>
@@ -52,20 +51,17 @@
 									<h3>Adult (15+ yrs): </h3>
 									<div class="quantity"> 
 										<div class="quantity-select">                           
-											<div class="entry value-minus">&nbsp;</div>
-											<div class="entry value" id="amntadlts"><span>1</span></div>
-											<div class="entry value-plus active">&nbsp;</div>
-											<input type="hidden" id="accamntadlts" name="content">
+											<!-- <div class="entry value-minus" id="minusQ">&nbsp;</div>-->
+											<input class="entry value" id="adltsQ" name="adltsQ" type="number" value="1" min="1">
+											<!-- <div class="entry value-plus active" id="plusQ">&nbsp;</div>-->
 										</div>
-										<script>
-											document.getElementById("accamntadlts") = document.getElementById("amntadlts").innerHTML;
-										</script>
 									</div>
 								</div>
 								<div class="clear"></div>
 							</div>
 							<div class="clear"></div>
 							<input id="StartScraper" type="submit" value="Search Flights">
+							<!-- <button id="StartScraper2" type="button" value="Search Flights">Search Flights</button>-->
 						</form>		
 					</div>		
 				</div>						
@@ -90,7 +86,6 @@
 	}
 	</script>
 	
-	
 	<script type="text/javascript">
 	var close = document.getElementsByClassName("closebtn");
 	var i;
@@ -103,7 +98,6 @@
 		}
 	}
 	</script>
-	
 	<!-- End of Success box -->
 
 
@@ -137,15 +131,29 @@
 	<!-- //Calendar -->
 	<!--quantity-->
 	<script>
-		$('.value-plus').on('click', function(){
-			var divUpd = $(this).parent().find('.value'), newVal = parseInt(divUpd.text(), 10)+1;
-			divUpd.text(newVal);
-		});
-
-		$('.value-minus').on('click', function(){
-			var divUpd = $(this).parent().find('.value'), newVal = parseInt(divUpd.text(), 10)-1;
-			if(newVal>=1) divUpd.text(newVal);
-		});
+	$('.quantity-select input').each(function() {
+		// Add two new buttons after each input number.
+		$(this).after('<span class="decrement"></span><span class="increment"></span>');
+	});
+	
+	$('span').click(function() {
+		var $button = $(this);
+		var oldValue = $button.parent().find("input[id=adltsQ]").val();
+		
+		if($button.hasClass('increment')){
+			var newVal = parseFloat(oldValue) + 1;
+		}else if($button.hasClass('decrement')){
+			var newVal = parseFloat(oldValue) - 1;
+		}
+	
+		if($button.hasClass('decrement') && oldValue == 1){
+			var newVal = oldValue;
+		}else if($button.hasClass('increment') && oldValue == 10){
+			var newVal = oldValue;
+		}
+	
+		$button.parent().find("input[id=adltsQ]").val(newVal);
+	});								
 	</script>
 		
 	<!--//quantity-->

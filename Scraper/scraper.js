@@ -31,8 +31,8 @@ http.createServer(function (req, res) {
         req.on('end', function () {
             var post = qs.parse(body);
             if(req.url == "/website.html") {
-                startJob(post.datepicker, post.datepicker1, post.myInput1, post.myInput2);
-                console.log({departDate: post.datepicker, returnDate: post.datepicker1, fromCity: post.myInput1, toCity: post.myInput2, AmountAdults: post.accamntadlts});
+                startJob(post.datepicker, post.datepicker1, post.myInput1, post.myInput2, post.adltsQ);
+                console.log({departDate: post.datepicker, returnDate: post.datepicker1, fromCity: post.myInput1, toCity: post.myInput2, AmountAdults: post.adltsQ});
                 res.writeHead(200);
                 // res.end('test');
             }
@@ -70,7 +70,7 @@ async function writeToFile(file, text){
 }
 
 // Actual scraper - takes Xpath elements of website
-async function scraperProduct(url, filename){
+async function scraperProduct(url, filename, adltsQ){
     console.log('Starting scraper...');
     
     const browser = await puppeteer.launch();
@@ -101,12 +101,12 @@ async function scraperProduct(url, filename){
     const [el5] = await page.$x('/html/body/flights-root/div/div/div/div/flights-summary-container/flights-summary/div/div[1]/journey-container/journey/flight-list/div/flight-card/div/div/div[1]/div/flight-info/div[3]/span[1]');
     const txt5 = await el5.getProperty('textContent');
     const ArrivalTime = await txt5.jsonValue();
-    //Currency
+    //Currency - the currency of departure country specifies the currency for the whole trip
     const [el12] = await page.$x('/html/body/flights-root/div/div/div/div/flights-summary-container/flights-summary/div/div[1]/journey-container/journey/div/div[2]/carousel-container/carousel/div/ul/li[3]/carousel-item/button/div[2]/ry-price/span[1]');
     const txt12 = await el12.getProperty('textContent');
     const Currency = await txt12.jsonValue();
-    // Price element + currency element (euro, pounds, etc..)
-    let Departureprice = Price + Currency;
+    // Price element times amount of adults
+    let Departureprice = (Price * adltsQ);
     
     //Return flight
     //Price
@@ -129,14 +129,10 @@ async function scraperProduct(url, filename){
     const [el10] = await page.$x('/html/body/flights-root/div/div/div/div/flights-summary-container/flights-summary/div/div[2]/journey-container/journey/flight-list/div/flight-card[1]/div/div/div[1]/div/flight-info/div[3]/span[1]');
     const txt10 = await el10.getProperty('textContent');
     const ArrivalTime2 = await txt10.jsonValue();
-    //Currency 
-    const [el11] = await page.$x('/html/body/flights-root/div/div/div/div/flights-summary-container/flights-summary/div/div[2]/journey-container/journey/div/div[2]/carousel-container/carousel/div/ul/li[3]/carousel-item/button/div[2]/ry-price/span[1]');
-    const txt11 = await el11.getProperty('textContent');
-    const Currency2 = await txt11.jsonValue();
-    // Price element + currency element (euro, pounds, etc..)
-    let Returnprice = Price2 + Currency2;
+    // Price element times amount of adults
+    let Returnprice = (Price2 * adltsQ);
    
-    var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Price) + parseFloat(Price2)) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + ' ' + d.getFullYear(), Price: Departureprice.trim() , DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Return: FromTo2.trim(), ReturnDate: ReturnDate.slice(3, 10) + ' ' +  d.getFullYear(), Price2: Returnprice.trim(), DepartureTime2: DepartureTime2.trim(), ArrivalTime2: ArrivalTime2.trim(), Currency: Currency};
+    var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Returnprice) + parseFloat(Departureprice)) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + ' ' + d.getFullYear(), Price: Departureprice + ' ' + Currency , DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Return: FromTo2.trim(), ReturnDate: ReturnDate.slice(3, 10) + ' ' +  d.getFullYear(), Price2: Returnprice + ' ' + Currency, DepartureTime2: DepartureTime2.trim(), ArrivalTime2: ArrivalTime2.trim(), Currency: Currency};
     var jsonData = JSON.stringify(data);
     console.log('Adding data to file...');
 
@@ -151,12 +147,12 @@ async function scraperProduct(url, filename){
 }
 
 // Function that inserts dates and IATA codes in the flexible link creator
-function chooseRoute(dateout, datein, cityFrom, cityTo){
-    scraperProduct('https://www.ryanair.com/dk/da/trip/flights/select?adults=1&teens=0&children=0&infants=0&dateOut='+dateout+'&dateIn='+datein+'&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn=true&discount=0', cityFrom + cityTo + dateout + datein);
+function chooseRoute(dateout, datein, cityFrom, cityTo, adltsQ){
+    scraperProduct('https://www.ryanair.com/dk/da/trip/flights/select?adults='+adltsQ+'&teens=0&children=0&infants=0&dateOut='+dateout+'&dateIn='+datein+'&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn=true&discount=0', cityFrom + cityTo + dateout + datein, adltsQ);
 }
 
 // Function that allows us to run scraper at scheduled times + creates new file if a file doesnt already exist
-function startJob(dateout, datein, cityFrom, cityTo){
+function startJob(dateout, datein, cityFrom, cityTo, adltsQ){
     console.log('Checking if the given file exists...');
     
     cityFrom = CityToIata(cityFrom);
@@ -180,7 +176,7 @@ function startJob(dateout, datein, cityFrom, cityTo){
 
     var j = schedule.scheduleJob('30 * * * * *', function(){
         console.log('Running scheduled job...');
-        chooseRoute(dateout, datein, cityFrom, cityTo);
+        chooseRoute(dateout, datein, cityFrom, cityTo, adltsQ);
     });
 }
 

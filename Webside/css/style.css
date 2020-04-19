@@ -185,10 +185,10 @@ input[type="checkbox"]{
 	display:none;
 }
 
-.quantity-select .entry.value-minus {
+.quantity-select .entry.value-minus, span[class="decrement"]{
     margin-left: 0;
 }
-.value-minus, .value-plus {
+.value-minus, .value-plus, span[class="decrement"], span[class="increment"] {
     height: 40px;
     line-height: 24px;
     width: 40px;
@@ -205,10 +205,10 @@ input[type="checkbox"]{
     vertical-align: bottom;
 }
 
-.value {
+.value, input[id="adltsQ"] {
     cursor: default;
-    width: 40px;
-    height:33px;
+    width: 30px;
+    height:32px;
     color: #000;
     line-height: 24px;
     border: 1px solid #E5E5E5;
@@ -219,10 +219,10 @@ input[type="checkbox"]{
 	padding-top:7px;
 }
 
-.quantity-select .entry.value-minus:hover, .quantity-select .entry.value-plus:hover {
+.quantity-select .entry.value-minus:hover, .quantity-select .entry.value-plus:hover, span[class="decrement"]:hover, span[class="increment"]:hover {
     background: #E5E5E5;
 }
-.value-minus, .value-plus {
+.value-minus, .value-plus, span[class="decrement"], span[class="increment"]{
     height: 40px;
     line-height: 24px;
     width: 40px;
@@ -238,7 +238,7 @@ input[type="checkbox"]{
     border: 1px solid #b2b2b2;
     vertical-align: bottom;
 }
-.quantity-select .entry.value-minus:before, .quantity-select .entry.value-plus:before {
+.quantity-select .entry.value-minus:before, .quantity-select .entry.value-plus:before, span[class="decrement"]:before, span[class="increment"]:before{
     content: "";
     width: 13px;
     height: 2px;
@@ -249,7 +249,7 @@ input[type="checkbox"]{
     margin-top: -0.5px;
     position: absolute;
 }
-.quantity-select .entry.value-plus:after {
+.quantity-select .entry.value-plus:after, span[class="increment"]:after {
     content: "";
     height: 13px;
     width: 2px;
@@ -269,6 +269,14 @@ input[type="checkbox"]{
 	width:48%;
 	float:left;
 }
+
+/* For adults amount button */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 input[type="submit"] {
     font-size: 14px;
     color: #fff;
@@ -288,6 +296,27 @@ input[type="submit"]:hover  {
     background:#212121;
 	color:#fff;
 }
+
+button[type="button"] {
+    font-size: 14px;
+    color: #fff;
+    background:#ffc107;
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+    margin-top: 50px;
+	cursor:pointer;
+	 transition: 0.5s all ease;
+    -webkit-transition: 0.5s all ease;
+    -moz-transition: 0.5s all ease;
+    -o-transition: 0.5s all ease;
+	-ms-transition: 0.5s all ease;
+}
+button[type="button"]:hover  {
+    background:#212121;
+	color:#fff;
+}
+
 /*-- load-more --*/
 ul#myList{
 	margin-bottom:2em;
@@ -484,13 +513,13 @@ form.blackbg{
 	input#datepicker, input#datepicker1{
 		width: 79%;
 	}
-	.value-minus, .value-plus {
+	.value-minus, .value-plus, span[class="increment"], span[class="decrement"] {
 		height: 30px;
 		width: 30px;
 	}
-	.value {
-		width: 33px;
-		height: 25px;
+	.value, input[id="adltsQ"] {
+		width: 23px;
+		height: 23px;
 		padding-top: 6px;
 	}
 }
