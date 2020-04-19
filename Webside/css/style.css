@@ -31,10 +31,22 @@ body {
 h1,h2,h3,h4,h5,h6{
 	font-family: 'Montserrat', sans-serif;
 }
+
+div[class="img-box"]{
+	border: 1px
+}
+
+img[id="FClogo"] {
+	display: block;
+	margin: 1px auto 1px;
+	width: 35%;
+}
+
 h1{
 	color:#fff;
 	font-size:50px;
-	margin-top:50px;
+	margin-top:25px;
+	margin-bottom:50px;
 	text-align:center;
 }
 .main-agileinfo{
@@ -55,7 +67,7 @@ h1{
 }
 .resp-tabs-list {
     list-style: none;
-    padding: 15px 0px;
+    padding: 10px 0px;
     margin: 0 auto;
     text-align: center;
 	background: #FFC107;
@@ -76,7 +88,7 @@ h1{
     transition: all 0.3s;
     text-transform: uppercase;
     margin: 0 1.2em 0;
-	color:#b1b1b1;
+	color:#696868;
 	padding:7px 15px;
 }
 
