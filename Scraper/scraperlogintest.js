@@ -1,18 +1,181 @@
+/*//load in our env variables
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
+} 
+
+const express = require('express')
+const app = express()
+const bcrypt = require('bcrypt')
+const passport = require('passport')
+const flash = require('express-flash')
+const session = require('express-session')
+const methodOverride = require('method-override')
+const initializePassport = require('./passport-config') 
+*/
 const puppeteer = require('puppeteer');
 const os = require('os');
 const fs2 = require('fs-extra');
 const schedule = require('node-schedule');
 const fs = require('fs');
 const options = {flag: 'a'};
-let firstLine = [];
-var d = new Date();
+var nStatic = require('node-static');
+var qs = require('querystring');
+const path = require('path');
 
+let firstLine = [];
+
+var fileServer = new nStatic.Server('../Webside');
+
+var http = require('http');
+http.createServer(function (req, res) {
+    if(req.method == 'POST') {
+       
+        console.log(req.url);
+        console.log(req.method);
+        var body = '';
+
+        req.on('data', function (data) {
+            body += data;
+
+            // Too much POST data, kill the connection!
+            // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
+            if (body.length > 1e6)
+                req.connection.destroy();
+        });
+        
+
+        req.on('end', function () {
+            var post = qs.parse(body);
+            if(req.url == "/websitetest.html") {
+                startJob('2020-05-09', '2020-05-16', post.myInput1, post.myInput2,);
+            
+                console.log(post.myInput1, post.myInput2);
+                res.writeHead(200);
+                res.end('test');
+                console.log(post);
+            }
+            // use post['blah'], etc.
+        });
+    }
+    else if (req.method == 'GET') {
+        if(req.url == '/getFlightData') {
+            var directoryPath = path.join(__dirname, '../Webside/scrapedata');
+            fs.readdir(directoryPath, function (err, files) {
+                console.log(files)
+                //handling error
+                if (err) {
+                    return console.log('Unable to scan directory: ' + err);
+                } 
+                //listing all files using forEach
+               /* files.forEach(function (file) {
+                    // Do whatever you want to do with the file
+                    res.write(file); 
+                    res.write("test");
+                    
+                });
+                */
+                res.writeHead(200);
+                    res.end(JSON.stringify(files));
+            });
+          
+        } else {
+            fileServer.serve(req, res);
+        }
+    }
+})
+app.listen(8080);
+
+/*
+//function to find user based on the email and the passport 
+initializePassport(
+    passport,
+    email => users.find(user => user.email === email),
+    id => users.find(user => user.id === id)
+  )
+
+// array to store users, easier to do than entire data base
+const users = []
+
+//tell server that we are using ejs
+app.set('view-engines', 'ejs')
+//tells our application that we can access our login details inside our req inside post
+app.use(express.urlencoded({ extended: false }))
+app.use(flash())
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+  }))
+ 
+app.use(passport.initialize())
+//store variables across all pages
+app.use(passport.session())
+app.use(methodOverride('_method'))
+
+app.get('/', checkAuthenticated, (req, res) => {
+    res.render('index.ejs', {name: req.user.name })
+})
+
+app.get('/login', checkNotAuthenticated, (req, res) => {
+    res.render('login.ejs')
+})
+
+app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true
+}))
+
+app.get('/register', checkNotAuthenticated, (req, res) => {
+    res.render('register.ejs')
+})
+
+app.post('/register', checkNotAuthenticated, async (req, res) => {
+    try {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10)
+        users.push({
+            id: Date.now().toString(),
+            name: req.body.name,
+            email: req.body.email,
+            phone_number: req.body.phone_number,
+            password: hashedPassword
+        })
+        res.redirect('/login')
+    } catch {
+        res.redirect('/register')
+    }
+   console.log(users)
+  })
+
+// logout funktion, noget passport gør for os
+app.delete('/logout', (req, res) => {
+    req.logOut()
+    res.redirect('/login')
+})
+
+// tjekker for om man er logget ind ved hvert kald
+function checkAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next()
+    }
+
+    res.redirect('/login')
+}
+
+function checkNotAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return   res.redirect('/')
+    }
+
+    next()
+}
+*/
 async function writeToFile(file, text){
   await fs2.outputFile(file, `${text}${os.EOL}`, options);
 }
 
 // Actual scraper - takes Xpath elements of website
-async function scraperProduct(url, filename, adltsQ){
+async function scraperProduct(url, filename){
     console.log('Starting scraper...');
     
     const browser = await puppeteer.launch();
@@ -20,6 +183,7 @@ async function scraperProduct(url, filename, adltsQ){
     await page.goto(url);
 
     console.log('Fetching data...');
+
     await page.waitFor(3000);
 
     //Departure flight
@@ -48,7 +212,7 @@ async function scraperProduct(url, filename, adltsQ){
     const txt12 = await el12.getProperty('textContent');
     const Currency = await txt12.jsonValue();
     // Price element + currency element (euro, pounds, etc..)
-    let Departureprice = (Price * adltsQ);
+    let Departureprice = Price + Currency;
     
     //Return flight
     //Price
@@ -71,11 +235,16 @@ async function scraperProduct(url, filename, adltsQ){
     const [el10] = await page.$x('/html/body/flights-root/div/div/div/div/flights-summary-container/flights-summary/div/div[2]/journey-container/journey/flight-list/div/flight-card[1]/div/div/div[1]/div/flight-info/div[3]/span[1]');
     const txt10 = await el10.getProperty('textContent');
     const ArrivalTime2 = await txt10.jsonValue();
+    //Currency 
+    const [el11] = await page.$x('/html/body/flights-root/div/div/div/div/flights-summary-container/flights-summary/div/div[2]/journey-container/journey/div/div[2]/carousel-container/carousel/div/ul/li[3]/carousel-item/button/div[2]/ry-price/span[1]');
+    const txt11 = await el11.getProperty('textContent');
+    const Currency2 = await txt11.jsonValue();
     // Price element + currency element (euro, pounds, etc..)
-    let Returnprice = (Price2 * adltsQ);
-    
-    var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Returnprice) + parseFloat(Departureprice)) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + ' ' + d.getFullYear(), Price: Departureprice + ' ' + Currency , DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Return: FromTo2.trim(), ReturnDate: ReturnDate.slice(3, 10) + ' ' +  d.getFullYear(), Price2: Returnprice + ' ' + Currency, DepartureTime2: DepartureTime2.trim(), ArrivalTime2: ArrivalTime2.trim(), Currency: Currency};
+    let Returnprice = Price2 + Currency2;
+   
+    var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Price) + parseFloat(Price2)) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + " 2020", Price: Departureprice.trim() , DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Return: FromTo2.trim(), ReturnDate: ReturnDate.slice(3, 10) + " 2020", Price2: Returnprice.trim(), DepartureTime2: DepartureTime2.trim(), ArrivalTime2: ArrivalTime2.trim(), Currency: Currency};
     var jsonData = JSON.stringify(data);
+    
     console.log('Adding data to file...');
 
     if(firstLine[firstLine.length -1] == false){
@@ -89,12 +258,12 @@ async function scraperProduct(url, filename, adltsQ){
 }
 
 // Function that inserts dates and IATA codes in the flexible link creator
-function chooseRoute(dateout, datein, cityFrom, cityTo, adltsQ){
-    scraperProduct('https://www.ryanair.com/dk/da/trip/flights/select?adults='+adltsQ+'&teens=0&children=0&infants=0&dateOut='+dateout+'&dateIn='+datein+'&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn=true&discount=0', cityFrom + cityTo + dateout + datein, adltsQ);
+function chooseRoute(dateout, datein, cityFrom, cityTo){
+    scraperProduct('https://www.ryanair.com/dk/da/trip/flights/select?adults=1&teens=0&children=0&infants=0&dateOut='+dateout+'&dateIn='+datein+'&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn=true&discount=0', cityFrom + cityTo + dateout + datein);
 }
 
 // Function that allows us to run scraper at scheduled times + creates new file if a file doesnt already exist
-function startJob(dateout, datein, cityFrom, cityTo, adltsQ){
+function startJob(dateout, datein, cityFrom, cityTo){
     console.log('Checking if the given file exists...');
     
     cityFrom = CityToIata(cityFrom);
@@ -116,9 +285,9 @@ function startJob(dateout, datein, cityFrom, cityTo, adltsQ){
         }
     });    
 
-    var j = schedule.scheduleJob('25 * * * * *', function(){
+    var j = schedule.scheduleJob('30 * * * * *', function(){
         console.log('Running scheduled job...');
-        chooseRoute(dateout, datein, cityFrom, cityTo, adltsQ);
+        chooseRoute(dateout, datein, cityFrom, cityTo);
     });
 }
 
@@ -426,9 +595,10 @@ function CityToIata(city){
             break;                            
     }
 }
-startJob('2020-05-10', '2020-05-17', 'London Stansted', 'Copenhagen', 3);
 
+ 
 // console.log(selected_date_element.textContent, selected_date_element2.textContent, CityToIata(document.getElementById('myInput1')), CityToIata(document.getElementById('myInput2')));
+// startJob('2020-05-09', '2020-05-16', 'London Stansted', 'Copenhagen');
 // selected_date_element.textContent - dateout
 // selected_date_element2.textContent - datein
 // CityToIata(document.getElementById('myInput1')) - cityfrom
