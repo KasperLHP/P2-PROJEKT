@@ -12,8 +12,6 @@ let firstLine = [];
 
 var fileServer = new nStatic.Server('../Webside');
 
-
-
 var http = require('http');
 http.createServer(function (req, res) {
     if(req.method == 'POST') {
@@ -82,8 +80,6 @@ async function scraperProduct(url, filename, adltsQ){
     console.log('Fetching data...');
     await page.waitFor(3000);
 
-    
-    
     //Departure flight
     //Price
     const [el1] = await page.$x('/html/body/flights-root/div/div/div/div/flights-summary-container/flights-summary/div/div[1]/journey-container/journey/div/div[2]/carousel-container/carousel/div/ul/li[3]/carousel-item/button/div[2]/ry-price/span[2]');
@@ -136,13 +132,8 @@ async function scraperProduct(url, filename, adltsQ){
     // Price element times amount of adults
     let Returnprice = (Price2 * adltsQ);
    
-<<<<<<< HEAD
-    var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Price) + parseFloat(Price2)) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + ' ' + d.getFullYear(), Price: Departureprice.trim() , DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Return: FromTo2.trim(), ReturnDate: ReturnDate.slice(3, 10) + ' ' +  d.getFullYear(), Price2: Returnprice.trim(), DepartureTime2: DepartureTime2.trim(), ArrivalTime2: ArrivalTime2.trim(), Currency: Currency};
-   // var jsonData = JSON.stringify(data);
-=======
     var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Returnprice) + parseFloat(Departureprice)) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + ' ' + d.getFullYear(), Price: Departureprice + ' ' + Currency , DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Return: FromTo2.trim(), ReturnDate: ReturnDate.slice(3, 10) + ' ' +  d.getFullYear(), Price2: Returnprice + ' ' + Currency, DepartureTime2: DepartureTime2.trim(), ArrivalTime2: ArrivalTime2.trim(), Currency: Currency};
     var jsonData = JSON.stringify(data);
->>>>>>> 200740a28cec8496e7ab62e3ccd96189ad9e25e9
     console.log('Adding data to file...');
 
     var jsonArray = [];
