@@ -81,7 +81,7 @@ async function scraperProduct(url, filename, adltsQ){
     await page.waitFor(3000);
 
     //Departure flight
-    //Price
+    //Price                      
     const [el1] = await page.$x('/html/body/flights-root/div/div/div/div/flights-summary-container/flights-summary/div/div[1]/journey-container/journey/div/div[2]/carousel-container/carousel/div/ul/li[3]/carousel-item/button/div[2]/ry-price/span[2]');
     const txt = await el1.getProperty('textContent');
     const Price = await txt.jsonValue();
@@ -523,7 +523,7 @@ function CityToIata(city){
     }
 }
 
-startJob('2020-05-15', '2020-05-17', 'Copenhagen', 'London Stansted');
+// startJob('2020-05-15', '2020-05-17', 'Copenhagen', 'London Stansted');
 
 // console.log(selected_date_element.textContent, selected_date_element2.textContent, CityToIata(document.getElementById('myInput1')), CityToIata(document.getElementById('myInput2')));
 // startJob('2020-05-09', '2020-05-16', 'London Stansted', 'Copenhagen');
