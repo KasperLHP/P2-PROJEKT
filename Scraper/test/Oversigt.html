@@ -1,0 +1,27 @@
+<style> 
+#links > a {
+  display: block
+}
+</style>
+<div id="links"></div>
+
+
+<script>
+
+var jsonfolder = "\Test tabel"
+
+fetch('/getFlightData')
+  .then((response) => {
+    return response.json();
+  })
+  .then((data) => {
+    var links = document.getElementById("links");
+    data.forEach(file => {
+     var a = document.createElement("a");
+     a.setAttribute("href", "Tabel.html#"+file)
+     a.textContent = file;
+    links.appendChild(a);
+    });
+  });
+
+</script>
