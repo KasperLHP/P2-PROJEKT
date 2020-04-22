@@ -101,6 +101,7 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
 //tells our application that we can access our login details inside our req inside post
+app.use(express.static(__dirname + '/views'));
 app.use(express.urlencoded({ extended: false }))
 app.use(flash())
 app.use(session({
@@ -115,7 +116,7 @@ app.use(passport.session())
 app.use(methodOverride('_method'))
 
 app.get('/', checkAuthenticated, (req, res) => {
-    res.render('website.html', {name: req.user.name })
+    res.render('testwebside.html', {name: req.user.name })
 })
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
