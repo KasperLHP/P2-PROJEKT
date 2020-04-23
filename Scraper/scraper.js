@@ -169,7 +169,7 @@ async function scraperProduct(url, filename, adltsQ){
 
     fs.writeFile("../Webside/scrapedata/"+filename+'.json', jsonData, function (err) {
         if (err) throw err;
-        console.log('Writing to file...');
+            console.log('Writing to file...');
     });
 
 
@@ -524,7 +524,6 @@ function CityToIata(city){
 }
 
 // startJob('2020-05-15', '2020-05-17', 'Copenhagen', 'London Stansted');
-
 // console.log(selected_date_element.textContent, selected_date_element2.textContent, CityToIata(document.getElementById('myInput1')), CityToIata(document.getElementById('myInput2')));
 // startJob('2020-05-09', '2020-05-16', 'London Stansted', 'Copenhagen');
 // selected_date_element.textContent - dateout
