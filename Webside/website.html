@@ -20,13 +20,17 @@
 		<div class="sap_tabs">			
 			<div id="horizontalTab">
 				<ul class="resp-tabs-list">
-					<li class="resp-tab-item"><span>Flight Ticket Agent</span></li>
-					<li class="Login"><span>Login</span></li>			
+					<!--<li class="resp-tab-item"><a id="RoundTrip" href="website.html">Round trip</a></li> -->
+					<li class="resp-tab-item"><span>Round trip</span></li>
+					<li class="resp-tab-item"><span>One way</span></li>
+					<!--<li class="resp-tab-item"><a id="OneWay" href="OneWay.html">One way</a></li> -->
+					<!--<li class="resp-tab-item"><span>Login</span></li>-->			
 				</ul>	
-				<div class="clearfix"> </div>	
+				<div class="clearfix"></div>	
 				<div class="resp-tabs-container">
+					<!-- ROUND-TRIP TAB -->
 					<div class="tab-1 resp-tab-content roundtrip">
-						<form id="getFlightInfo" method="POST" autocomplete="off">
+						<form method="POST" autocomplete="off">
 							<div class="autocomplete">
 								<div class="from">
 									<h3>From</h3>
@@ -57,9 +61,7 @@
 									<h3>Adult (15+ yrs): </h3>
 									<div class="quantity"> 
 										<div class="quantity-select">                           
-											<!-- <div class="entry value-minus" id="minusQ">&nbsp;</div>-->
 											<input class="entry value" id="adltsQ" name="adltsQ" type="number" value="1" min="1">
-											<!-- <div class="entry value-plus active" id="plusQ">&nbsp;</div>-->
 										</div>
 									</div>
 								</div>
@@ -68,46 +70,55 @@
 							<div class="clear"></div>
 							<input id="StartScraper" type="submit" value="Search Flights">
 						</form>		
-					</div>		
+					</div>	
+					<!-- ONE-WAY TAB -->
+					<div class="tab-1 resp-tab-content oneway">
+                        <form method="POST" autocomplete="off">
+							<div class="autocomplete">
+								<div class="from">
+									<h3>From</h3>
+									<input id= "myInput3" name="myInput3" type="text" class="autocomplete" placeholder="Enter Departure Airport" onfocus="this.placeholder = '';" onblur="if (this.placeholder == '') {this.placeholder = 'Enter Departure Airport';}" required="">
+								</div>
+								<div class="to">
+									<h3>To</h3>
+									<input id= "myInput4" name="myInput4" type="text" class="autocomplete" placeholder="Enter Destination Airport" onfocus="this.placeholder = '';" onblur="if (this.placeholder == '') {this.placeholder = 'Enter Destination Airport';}" required="">
+									<script src="js/autocomplete.js"></script>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="date">
+								<div class="depart">
+									<h3>Departure date</h3>
+									<input id="datepicker2" name="datepicker2" type="text" placeholder="yyyy-mm-dd" onfocus="this.placeholder = '';" onblur="if (this.placeholder == '') {this.placeholder = 'yyyy-mm-dd';}" required="">
+								</div>
+								<div hidden class="return">
+									<h3>Return date</h3>
+									<input id="datepicker3" name="datepicker3" type="text" placeholder="yyyy-mm-dd" onfocus="this.placeholder = '';" onblur="if (this.placeholder == '') {this.placeholder = 'yyyy-mm-dd';}" value="">
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+							
+							<div class="numofppl">
+								<div class="adults">
+									<h3>Adult (15+ yrs): </h3>
+									<div class="quantity"> 
+										<div class="quantity-select">                           
+											<input class="entry value" id="adltsQ1" name="adltsQ1" type="number" value="1" min="1">
+										</div>
+									</div>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+							<input id="StartScraper1" type="submit" value="Search Flights">
+						</form>		
+                    </div>		
 				</div>						
 			</div>
 		</div>
 	</div>
 	
-	<!-- Success box -->
-	<!--
-	<div class="alert success" id="success">
-		<span class="closebtn">&times;</span>  
-		<strong>Success!</strong> Your price agent has started.
-	</div>
-		
-	<script defer type="text/javascript">
-		function successMessage(){
-		var x = document.getElementById("success");
-		if(x.style.display == "none"){
-			x.style.display = "block"; 
-		/*}else if(x.style.display == "block"){
-			x.style.display = "none"; 
-		*/}
-	}
-	</script>
-	
-	<script type="text/javascript">
-	var close = document.getElementsByClassName("closebtn");
-	var i;
-		
-	for(i = 0; i < close.length; i++){
-		close[i].onclick = function(){
-			var div = this.parentElement;
-			div.style.opacity = "0";
-			setTimeout(function(){ div.style.display = "none"; }, 600);
-		}
-	}
-	</script>
-	-->
-	<!-- End of Success box -->
-
-
 	<!--<div class="footer-w3l">
 		<p class="agileinfo"> &copy; 2020 Flight Ticket Booking. All Rights Reserved | Design by SW2B2-8</p>
 	</div>-->
@@ -131,12 +142,12 @@
 	<script src="js/jquery-ui.js"></script>
 	<script>
 		$(function() {
-			$( "#datepicker,#datepicker1" ).datepicker({ dateFormat: 'yy-mm-dd', minDate: 0 });
+			$( "#datepicker,#datepicker1,#datepicker2,#datepicker3" ).datepicker({ dateFormat: 'yy-mm-dd', minDate: 0 });
 		});
 	</script>
 
 	<!-- //Calendar -->
-	<!--quantity-->
+	<!--quantity on ROUND TRIP-->
 	<script>
 	$('.quantity-select input').each(function() {
 		// Add two new buttons after each input number.
@@ -146,24 +157,41 @@
 	$('span').click(function() {
 		var $button = $(this);
 		var oldValue = $button.parent().find("input[id=adltsQ]").val();
+		var oldValue1 = $button.parent().find("input[id=adltsQ1]").val();
 		
+		/* For Round trip */
 		if($button.hasClass('increment')){
 			var newVal = parseFloat(oldValue) + 1;
 		}else if($button.hasClass('decrement')){
 			var newVal = parseFloat(oldValue) - 1;
 		}
-	
+
+		/* For One Way */
+		if($button.hasClass('increment')){
+			var newVal1 = parseFloat(oldValue1) + 1;
+		}else if($button.hasClass('decrement')){
+			var newVal1 = parseFloat(oldValue1) - 1;
+		}
+
+		/* For Round trip */
 		if($button.hasClass('decrement') && oldValue == 1){
 			var newVal = oldValue;
 		}else if($button.hasClass('increment') && oldValue == 10){
 			var newVal = oldValue;
 		}
-	
 		$button.parent().find("input[id=adltsQ]").val(newVal);
+
+		/* For One Way */
+		if($button.hasClass('decrement') && oldValue1 == 1){
+			var newVal1 = oldValue1;
+		}else if($button.hasClass('increment') && oldValue1 == 10){
+			var newVal1 = oldValue1;
+		}
+		$button.parent().find("input[id=adltsQ1]").val(newVal1);
 	});								
 	</script>
 		
-	<!--//quantity-->
+	
 	<!--load more-->
 	<script>
 		$(document).ready(function () {

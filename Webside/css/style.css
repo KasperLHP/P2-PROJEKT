@@ -67,7 +67,7 @@ h1{
 }
 
 /* Navbar */
-.resp-tabs-list {
+.resp-tabs-list,  a[id="RoundTrip"], a[id="OneWay"] {
     list-style: none;
     padding: 10px 0px;
     margin: 0 auto;
@@ -75,7 +75,7 @@ h1{
 	background: #FFC107;
 }
 /* Un-current tab font color */
-.resp-tab-item {
+.resp-tab-item, a[id="RoundTrip"], a[id="OneWay"] {
     font-size: 1.1em;
     font-weight: 500;
     cursor: pointer;
@@ -122,10 +122,17 @@ h3 {
     color:#FFC107;
     margin-bottom: 7px;
 }
-.from,.to,.date,.depart,.return{
+.from,.to,.date,.depart{
 	width:48%;
 	float:left;
 }
+
+/* Added to support oneway flight */ 
+.return{
+	width:48%;
+	float:left;
+}
+
 .from,.to,.date{
 	margin-bottom:40px;
 }
@@ -138,10 +145,17 @@ input[type="text"]{
 	width:93%;
 	float:left;
 }
-input#datepicker,input#datepicker1 {
+input#datepicker {
     width: 85%;
 	margin-bottom:10px;
 }
+
+/* Added to support oneway flight */ 
+input#datepicker1, input#datepicker2, input#datepicker3 {
+    width: 85%;
+	margin-bottom:10px;
+}
+
 select#w3_country1 {
     padding: 10px;
 	float:left;
@@ -195,11 +209,11 @@ label.checkbox {
     font: normal 12px/16px FontAwesome;
     text-align: center;
 }
-input[type="checkbox"]{
+/*input[type="checkbox"]{
 	opacity:0;
 	margin:0;
 	display:none;
-}
+}*/
 
 .quantity-select .entry.value-minus, span[class="decrement"]{
     margin-left: 0;
@@ -221,7 +235,7 @@ input[type="checkbox"]{
     vertical-align: bottom;
 }
 
-.value, input[id="adltsQ"] {
+.value, input[id="adltsQ"], input[id="adltsQ1"] {
     cursor: default;
     width: 30px;
     height:32px;
@@ -474,10 +488,17 @@ form.blackbg{
 	}
 }
  @media (max-width:991px){
-	.from, .to, .date, .depart, .return {
+	.from, .to, .date, .depart{
 		width: 49%;
 		float: left;
 	}
+
+	/* Added to support oneway flight (2) */ 
+	.return{
+		width: 49%;
+		float: left;
+	}
+
 	.from, .date, .depart {
 		margin-right: 2%;
 	}
@@ -526,14 +547,18 @@ form.blackbg{
 		width: 90%;
 		float: left;
 	}
-	input#datepicker, input#datepicker1{
+	input#datepicker{
+		width: 79%;
+	}
+
+	input#datepicker1, input#datepicker2, input#datepicker3 {
 		width: 79%;
 	}
 	.value-minus, .value-plus, span[class="increment"], span[class="decrement"] {
 		height: 30px;
 		width: 30px;
 	}
-	.value, input[id="adltsQ"] {
+	.value, input[id="adltsQ"], input[id="adltsQ1"] {
 		width: 23px;
 		height: 23px;
 		padding-top: 6px;
@@ -586,7 +611,10 @@ form.blackbg{
 		width: 100%;
 		float: left;
 	}
-	input#datepicker, input#datepicker1{
+	input#datepicker{
+		width: 86%;
+	}
+	input#datepicker1, input#datepicker2, input#datepicker3 {
 		width: 86%;
 	}
 	.roundtrip .class{
@@ -622,11 +650,19 @@ form.blackbg{
 	h3 {
 		font-size: 15px;
 	}
-	.from, .to, .date, .depart, .return {
+	.from, .to, .date, .depart {
 		width: 100%;
 		float: left;
 		margin-bottom:25px;
 	}
+
+	/* Added to support oneway flight (3) */ 
+	.return{
+		width: 100%;
+		float: left;
+		margin-bottom:25px;
+	}
+
 	.date{
 		margin-bottom:0;
 	}
@@ -644,7 +680,10 @@ form.blackbg{
 		padding: 10px;
 		width: 91.5%;
 	}
-	input#datepicker, input#datepicker1{
+	input#datepicker{
+		width: 91.5%;
+	}
+	input#datepicker1, input#datepicker2, input#datepicker3 {
 		width: 91.5%;
 	}
 }
