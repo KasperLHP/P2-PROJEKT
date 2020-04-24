@@ -1,4 +1,4 @@
-/*//load in our env variables
+//load in our env variables
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 } 
@@ -10,8 +10,8 @@ const passport = require('passport')
 const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
-const initializePassport = require('./passport-config') 
-*/
+const initializePassport = require('./passport-config')
+
 const puppeteer = require('puppeteer');
 const os = require('os');
 const fs2 = require('fs-extra');
@@ -46,7 +46,7 @@ http.createServer(function (req, res) {
 
         req.on('end', function () {
             var post = qs.parse(body);
-            if(req.url == "/websitetest.html") {
+            if(req.url == "/website.html") {
                 startJob('2020-05-09', '2020-05-16', post.myInput1, post.myInput2,);
             
                 console.log(post.myInput1, post.myInput2);
@@ -85,7 +85,6 @@ http.createServer(function (req, res) {
 })
 app.listen(8080);
 
-/*
 //function to find user based on the email and the passport 
 initializePassport(
     passport,
@@ -97,8 +96,12 @@ initializePassport(
 const users = []
 
 //tell server that we are using ejs
-app.set('view-engines', 'ejs')
+app.set('views', path.join(__dirname, 'views'));
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+
 //tells our application that we can access our login details inside our req inside post
+app.use(express.static(__dirname + '/views'));
 app.use(express.urlencoded({ extended: false }))
 app.use(flash())
 app.use(session({
@@ -113,11 +116,11 @@ app.use(passport.session())
 app.use(methodOverride('_method'))
 
 app.get('/', checkAuthenticated, (req, res) => {
-    res.render('index.ejs', {name: req.user.name })
+    res.render('testwebside.html', {name: req.user.name })
 })
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
-    res.render('login.ejs')
+    res.render('login.html')
 })
 
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
@@ -127,7 +130,7 @@ app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
 }))
 
 app.get('/register', checkNotAuthenticated, (req, res) => {
-    res.render('register.ejs')
+    res.render('register.html')
 })
 
 app.post('/register', checkNotAuthenticated, async (req, res) => {
@@ -135,7 +138,7 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
         const hashedPassword = await bcrypt.hash(req.body.password, 10)
         users.push({
             id: Date.now().toString(),
-            name: req.body.name,
+            name: req.body.navn,
             email: req.body.email,
             phone_number: req.body.phone_number,
             password: hashedPassword
@@ -169,7 +172,7 @@ function checkNotAuthenticated(req, res, next) {
 
     next()
 }
-*/
+
 async function writeToFile(file, text){
   await fs2.outputFile(file, `${text}${os.EOL}`, options);
 }
