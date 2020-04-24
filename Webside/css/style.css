@@ -65,6 +65,8 @@ h1{
 .top1{
 	margin-top: 2%;
 }
+
+/* Navbar */
 .resp-tabs-list {
     list-style: none;
     padding: 10px 0px;
@@ -72,6 +74,7 @@ h1{
     text-align: center;
 	background: #FFC107;
 }
+/* Un-current tab font color */
 .resp-tab-item {
     font-size: 1.1em;
     font-weight: 500;
@@ -91,7 +94,7 @@ h1{
 	color:#696868;
 	padding:7px 15px;
 }
-
+/* Current tab font color */
 .resp-tab-active {
 	color:#fff;	
 }
@@ -126,6 +129,7 @@ h3 {
 .from,.to,.date{
 	margin-bottom:40px;
 }
+
 .from,.date,.depart{
 	margin-right:4%;
 }
@@ -295,8 +299,8 @@ input[type="submit"] {
     background:#ffc107;
     border: none;
     outline: none;
-    padding: 10px 20px;
-    margin-top: 50px;
+    padding: 10px 25px;
+    margin-top: 30px;
 	cursor:pointer;
 	 transition: 0.5s all ease;
     -webkit-transition: 0.5s all ease;
