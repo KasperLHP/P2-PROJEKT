@@ -16,7 +16,7 @@ fetch('/getFlightData')
   .then((data) => {
     var links = document.getElementById("links");
     data.forEach(file => {
-     var a = document.createElement("a");
+     var a = document.createElement("a[class='listedjobs']");
      a.setAttribute("href", "Tabel.html#"+file)
      a.textContent = file;
     links.appendChild(a);

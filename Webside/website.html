@@ -113,9 +113,10 @@
 					</div>
 					<!-- JOBS OVERVIEW -->
 					<div class="tab-1 resp-tab-content jobsoverview">
-						<div id="blackbox">
-
-						</div>
+						<form method="POST" autocomplete="off" id="datatabel">
+							<h3>Your Current Jobs</h3>
+							<div id="links" class="listJobs"></div>		
+						</form>
 					</div>
 				</div>						
 			</div>
@@ -214,79 +215,18 @@
 	</script>
 
 	<!-- Data tables - tabels and graphs -->
-	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-	<canvas id="myChart" width ="100" height="100" style="border: 1px;"></canvas>
-	<script>document.getElementById('myChart').width= 200 </script>
 	<script>
-		function insertTd(td, dom){
-			var node = document.createElement("td");
-			var text = document.createTextNode(td);
-			node.appendChild(text);
-			dom.appendChild(node);
-		}
-		
-		fetch("/scrapedata"+location.hash.substr(1)).then((response) => {
-			return response.json();
-		}).then((data) => {
-			document.getElementById("fileName").textContent = location.hash.substr(1);
-			var dataTabel = document.getElementById("dataTabel");
-			for(var flight of data) {
-				var tr = document.createElement("tr");
-				insertTd(flight.ScrapeDate, tr);
-				insertTd(flight.TotalPrice, tr);
-				insertTd(flight.Departure, tr);
-				insertTd(flight.Return, tr);
-				dataTabel.appendChild(tr);
-			}
-		
-			// GRAF 
-			console.log(data);
-			var flightPrice = [];
-				var flightDates = [];
-				for(i=0;i<data.length;i++){
-					var movedElement = parseFloat(data[i].TotalPrice); 
-					var movedElement2 = data[i].ScrapeDate.slice(0, 25);
-					flightPrice.push(movedElement);
-					flightDates.push(movedElement2);
-				}
-		
-				console.log(flightPrice); 
-				newGraph(flightPrice,flightDates);
-		});
-		  
-		function newGraph(data,data2){
-			var ctx = document.getElementById('myChart').getContext('2d');
-			var myChart = new Chart(ctx, {
-			type: 'line',
-				data: {
-					labels: data2,
-					datasets: [{
-						label: 'Pris i DDK',
-						data: data,
-						backgroundColor: [
-							'rgba(0, 0, 0, 0.0)',
-					  
-						],
-						borderColor: [
-							'rgba(255, 99, 132, 1)',
-					  
-						],
-						borderWidth: 1
-					}]
-				}, 
-			});
-		}  
-	</script>
+	var jsonfolder = "/Test tabel";
 
-	<script>
 	fetch('/getFlightData').then((response) => {
 		return response.json();
 	}).then((data) => {
 		var links = document.getElementById("links");
 		data.forEach(file => {
 			var a = document.createElement("a");
-			a.setAttribute("href", "Tabel.html#"+file);
+			a.setAttribute("href", "test/Tabel.html#"+file);
 			a.textContent = file;
+			a.style = 'font-size: 16px; color:rgb(250, 249, 248); margin-bottom: 7px;';
 			links.appendChild(a);
 		});
 	});

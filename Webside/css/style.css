@@ -118,9 +118,8 @@ form, form[id="datatabel"] {
     padding: 25px;
 }
 
-div[id="blackbox"] {
-    background:rgba(3, 3, 3, 0.57);
-    padding: 200px;
+#links > a {
+	display: block
 }
 
 
@@ -624,6 +623,12 @@ form.blackbg{
 	background-color: DodgerBlue !important;
 	color: #ffffff;
   }
+
+/* Chart options */
+.chart-container {
+    width: 10px;
+    height:10px
+}
 
 
 /*-- responsive --*/
