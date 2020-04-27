@@ -117,6 +117,13 @@ form {
     background:rgba(3, 3, 3, 0.57);
     padding: 25px;
 }
+
+div[id="blackbox"] {
+    background:rgba(3, 3, 3, 0.57);
+    padding: 200px;
+}
+
+
 h3 {
     font-size: 16px;
     color:#FFC107;
@@ -126,6 +133,90 @@ h3 {
 	width:48%;
 	float:left;
 }
+
+.email, .password, .email_reg, .phonenumber, .password_reg{
+	width:28%;
+	float:left;
+}
+
+.email, .password, .navn, .email_reg, .phonenumber, .password_reg{
+	margin-bottom:40px;
+	
+}
+
+.navn{
+	width:50%;
+	float:left;
+}
+
+div[id="email"], div[id="password"]{
+	margin-bottom:60px
+}
+
+div[id="navn"]{
+	margin-bottom:60px
+}
+
+div[id="email_reg"]{
+	margin-bottom:60px
+}
+
+div[id="phonenumber"]{
+	margin-bottom:60px
+}
+
+div[id="password_reg"]{
+	margin-bottom:60px
+}
+
+input[id="UserLogin"]{
+	margin-bottom: 1%;
+}
+
+input[id="UserRegister"]{
+	margin-bottom: 1%;
+}
+
+.email, .password, .navn, .email_reg, .phonenumber, .password_reg{
+	margin-right:4%;
+}
+
+input[type="name"]{
+	padding:10px;
+	width: 267px;
+	float:left;
+}
+
+input[type="text"]{
+	padding:10px;
+	widows: 80px;
+	float:left;
+}
+
+input[type="name"]{
+	padding:10px;
+	width: 267px;
+	float:left;
+}
+
+input[type="email"]{
+	padding:10px;
+	width:40%;
+	float:left;
+}
+
+input[type="password"]{
+	padding:10px;
+	width:40%;
+	float:left;
+}
+
+input[type="number"]{
+	padding:10px;
+	width:40%;
+	float:left;
+}
+
 
 /* Added to support oneway flight */ 
 .return{
@@ -237,8 +328,8 @@ label.checkbox {
 
 .value, input[id="adltsQ"], input[id="adltsQ1"] {
     cursor: default;
-    width: 30px;
-    height:32px;
+    width: 22px;
+    height:23px;
     color: #000;
     line-height: 24px;
     border: 1px solid #E5E5E5;
@@ -306,6 +397,84 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+a[id="register"] {
+    font-size: 14px;
+    color: rgb(14, 1, 1);
+    background:#f0efee;
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+	top: -50px;
+	margin-left: 10px;
+	cursor:pointer;
+	 transition: 0.5s all ease;
+    -webkit-transition: 0.5s all ease;
+    -moz-transition: 0.5s all ease;
+    -o-transition: 0.5s all ease;
+	-ms-transition: 0.5s all ease;
+}
+
+a[id="register"]:hover  {
+    background:#212121;
+	color:#fff;
+}
+
+a[id="login"] {
+    font-size: 14px;
+    color: rgb(14, 1, 1);
+    background:#f0efee;
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+	top: -50px;
+	margin-left: 10px;
+	cursor:pointer;
+	 transition: 0.5s all ease;
+    -webkit-transition: 0.5s all ease;
+    -moz-transition: 0.5s all ease;
+    -o-transition: 0.5s all ease;
+	-ms-transition: 0.5s all ease;
+}
+
+a[id="login"]:hover  {
+    background:#212121;
+	color:#fff;
+}
+
+input[id="UserLogin"] {
+    font-size: 14px;
+    color: #fff;
+    background:#ffc107;
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+    margin-top: 20px;
+	cursor:pointer;
+	 transition: 0.5s all ease;
+    -webkit-transition: 0.5s all ease;
+    -moz-transition: 0.5s all ease;
+    -o-transition: 0.5s all ease;
+	-ms-transition: 0.5s all ease;
+}
+
+
+input[id="UserRegister"] {
+    font-size: 14px;
+    color: #fff;
+    background:#ffc107;
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+    margin-top: 20px;
+	cursor:pointer;
+	 transition: 0.5s all ease;
+    -webkit-transition: 0.5s all ease;
+    -moz-transition: 0.5s all ease;
+    -o-transition: 0.5s all ease;
+	-ms-transition: 0.5s all ease;
+}
+
 
 input[type="submit"] {
     font-size: 14px;
@@ -488,18 +657,18 @@ form.blackbg{
 	}
 }
  @media (max-width:991px){
-	.from, .to, .date, .depart{
+	.from, .to, .date, .depart, .email, .password, .navn, .email_reg, .phonenumber, .password_reg{
 		width: 49%;
 		float: left;
 	}
-
+	
 	/* Added to support oneway flight (2) */ 
 	.return{
 		width: 49%;
 		float: left;
 	}
 
-	.from, .date, .depart {
+	.from, .date, .depart, .email, .password, .navn, .email_reg, .phonenumber, .password_reg {
 		margin-right: 2%;
 	}
 }
@@ -559,8 +728,8 @@ form.blackbg{
 		width: 30px;
 	}
 	.value, input[id="adltsQ"], input[id="adltsQ1"] {
-		width: 23px;
-		height: 23px;
+		width: 13px;
+		height: 14px;
 		padding-top: 6px;
 	}
 }
@@ -650,7 +819,7 @@ form.blackbg{
 	h3 {
 		font-size: 15px;
 	}
-	.from, .to, .date, .depart {
+	.from, .to, .date, .depart, .email, .password, .navn, .email_reg, .phonenumber, .password_reg {
 		width: 100%;
 		float: left;
 		margin-bottom:25px;
