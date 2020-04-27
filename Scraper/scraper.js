@@ -4,12 +4,12 @@ const fs2 = require('fs-extra');
 const schedule = require('node-schedule');
 const fs = require('fs');
 const options = {flag: 'a'};
-var nStatic = require('node-static');
-var qs = require('querystring');
+const nStatic = require('node-static');
+const qs = require('querystring');
 const path = require('path');
+
 var d = new Date();
 let firstLine = [];
-
 var fileServer = new nStatic.Server('../Webside');
 
 var http = require('http');
