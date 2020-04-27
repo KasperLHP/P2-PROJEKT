@@ -45,7 +45,7 @@ http.createServer(function (req, res) {
         });
     }else if (req.method == 'GET') {
         if(req.url == '/getFlightData') {
-            var directoryPath = path.join(__dirname, '../Webside/scrapedata');
+            var directoryPath = path.join(__dirname, '/scrapedata');
             fs.readdir(directoryPath, function (err, files) {
                 console.log(files)
                 //handling error

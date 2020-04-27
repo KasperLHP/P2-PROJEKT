@@ -113,10 +113,15 @@ h2.resp-accordion {
 .resp-content-active, .resp-accordion-active {
    display: block;
 }
-form {
+form, form[id="datatabel"] {
     background:rgba(3, 3, 3, 0.57);
     padding: 25px;
 }
+
+div[id="links"] {
+	display: block
+}
+
 h3 {
     font-size: 16px;
     color:#FFC107;
