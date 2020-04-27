@@ -61,4 +61,4 @@ function PriceCheck(dateout, datein, cityFrom, cityTo, CustomerSpecifiedPrice, I
     });
 }
 
-PriceCheck('2020-05-10', '2020-05-17', 'CPH', 'STN', 100, 'false');
+PriceCheck('2020-05-10', '2020-05-17', 'CPH', 'STN', 200, 'false');
