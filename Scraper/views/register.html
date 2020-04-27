@@ -26,29 +26,25 @@
                     <div class="clearfix"> </div>
                     <div class="resp-tabs-container">
                         <div class="tab-1 resp-tab-content roundtrip">
-                            <form id="getFlightInfo" method="POST"></form>
-                            <form action="/register" method="POST">
+                            <form id="form_register" action="/register" method="POST">
                                 <div id="navn">
-                                    <div>
-                                        <label for="navn">Navn</label>
-                                        <input type="name" id="navn" name="navn" required>
-                                    </div>
+                                    <h3>Full Name</h3>
+                                    <input type="name" id="navn" name="navn" required>
                                 </div>
                                 <div id="email_reg">
-                                    <label for="email">Email</label>
+                                    <h3>Email</h3>
                                     <input type="email" id="email" name="email" required>
                                 </div>
                                 <div id="phonenumber">
-                                    <label for="phone_number">Telefonnummer</label>
+                                    <h3>Phone number</h3>
                                     <input type="number" id="phone_number" name="phone_number" required>
                                 </div>
                                 <div id="password_reg">
-                                    <label for="password">Adgangskode</label>
+                                    <h3>Password</h3>
                                     <input type="password" id="password" name="password" required>
                                 </div>
-                                <button type="submit">Registrer</button>
-                            </form>
-                            <a href="/login">Log på</a>
+                                <input id="UserRegister" type="submit" value="Register">
+                                <a id="login" href="/login">Log på...</a>
                             </form>
                         </div>
                     </div>
