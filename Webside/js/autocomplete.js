@@ -81,6 +81,8 @@ var airports = ["London Heathrow", "Paris Charles de Gaulle", "Frankfurt", "Amst
 
 autocomplete(document.getElementById("myInput1"), airports); 
 autocomplete(document.getElementById("myInput2"), airports); 
+autocomplete(document.getElementById("myInput3"), airports); 
+autocomplete(document.getElementById("myInput4"), airports); 
 
 /* $('#form-autocomplete-4').mdbAutocomplete({
     data: airports,
