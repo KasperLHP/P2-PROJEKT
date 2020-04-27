@@ -136,8 +136,13 @@ h3 {
 	float:left;
 }
 
-.email, .password{
+.email, .password, .email_reg, .phonenumber, .password_reg{
 	width:28%;
+	float:left;
+}
+
+.navn{
+	width:50%;
 	float:left;
 }
 
@@ -145,7 +150,7 @@ h3 {
 	margin-bottom:40px;
 }
 
-.email, .password{
+.email, .password, .navn, .email_reg, .phonenumber, .password_reg{
 	margin-bottom:40px;
 	
 }
@@ -154,16 +159,43 @@ div[id="email"], div[id="password"]{
 	margin-bottom:60px
 }
 
+div[id="navn"]{
+	margin-bottom:60px
+}
+
+div[id="email_reg"]{
+	margin-bottom:60px
+}
+
+div[id="phonenumber"]{
+	margin-bottom:60px
+}
+
+div[id="password_reg"]{
+	margin-bottom:60px
+}
+
 input[id="UserLogin"]{
 	margin-bottom: 1%;
 }
 
-.from,.date,.depart, .email, .password{
+input[id="UserRegister"]{
+	margin-bottom: 1%;
+}
+
+.from,.date,.depart, .email, .password, .navn, .email_reg, .phonenumber, .password_reg{
 	margin-right:4%;
 }
+
 input[type="text"]{
 	padding:10px;
-	width:93%;
+	widows: 80px;
+	float:left;
+}
+
+input[type="name"]{
+	padding:10px;
+	width: 267px;
 	float:left;
 }
 
@@ -174,6 +206,12 @@ input[type="email"]{
 }
 
 input[type="password"]{
+	padding:10px;
+	width:40%;
+	float:left;
+}
+
+input[type="number"]{
 	padding:10px;
 	width:40%;
 	float:left;
@@ -356,6 +394,28 @@ a[id="register"]:hover  {
 	color:#fff;
 }
 
+a[id="login"] {
+    font-size: 14px;
+    color: rgb(14, 1, 1);
+    background:#f0efee;
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+	top: -50px;
+	margin-left: 10px;
+	cursor:pointer;
+	 transition: 0.5s all ease;
+    -webkit-transition: 0.5s all ease;
+    -moz-transition: 0.5s all ease;
+    -o-transition: 0.5s all ease;
+	-ms-transition: 0.5s all ease;
+}
+
+a[id="login"]:hover  {
+    background:#212121;
+	color:#fff;
+}
+
 input[type="submit"] {
     font-size: 14px;
     color: #fff;
@@ -373,6 +433,23 @@ input[type="submit"] {
 }
 
 input[id="UserLogin"] {
+    font-size: 14px;
+    color: #fff;
+    background:#ffc107;
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+    margin-top: 20px;
+	cursor:pointer;
+	 transition: 0.5s all ease;
+    -webkit-transition: 0.5s all ease;
+    -moz-transition: 0.5s all ease;
+    -o-transition: 0.5s all ease;
+	-ms-transition: 0.5s all ease;
+}
+
+
+input[id="UserRegister"] {
     font-size: 14px;
     color: #fff;
     background:#ffc107;
@@ -555,11 +632,11 @@ form.blackbg{
 	}
 }
  @media (max-width:991px){
-	.from, .to, .date, .depart, .return, .email, .password {
+	.from, .to, .date, .depart, .return, .email, .password, .navn, .email_reg, .phonenumber, .password_reg {
 		width: 49%;
 		float: left;
 	}
-	.from, .date, .depart, .email, .password {
+	.from, .date, .depart, .email, .password, .navn, .email_reg, .phonenumber, .password_reg {
 		margin-right: 2%;
 	}
 }
@@ -703,7 +780,7 @@ form.blackbg{
 	h3 {
 		font-size: 15px;
 	}
-	.from, .to, .date, .depart, .return, .email, .password {
+	.from, .to, .date, .depart, .return, .email, .password, .navn, .email_reg, .phonenumber, .password_reg {
 		width: 100%;
 		float: left;
 		margin-bottom:25px;
