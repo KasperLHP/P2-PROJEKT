@@ -41,18 +41,7 @@ http.createServer(function (req, res) {
                     res.writeHead(200);
                 }
             }
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-            // use post['blah'], etc.
->>>>>>> parent of e589540... lego
-=======
-            // use post['blah'], etc.
->>>>>>> parent of e589540... lego
-=======
-            // use post['blah'], etc.
->>>>>>> parent of e589540... lego
+
         });
     }else if (req.method == 'GET') {
         if(req.url == '/getFlightData') {
@@ -68,18 +57,6 @@ http.createServer(function (req, res) {
                     // Do whatever you want to do with the file
                     res.write(file); 
                     res.write("test");
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-                    
->>>>>>> parent of e589540... lego
-=======
-                    
->>>>>>> parent of e589540... lego
-=======
-                    
->>>>>>> parent of e589540... lego
                 });
                 */
                 res.writeHead(200);
