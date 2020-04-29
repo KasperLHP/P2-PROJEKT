@@ -41,7 +41,6 @@ http.createServer(function (req, res) {
                     res.writeHead(200);
                 }
             }
-            // use post['blah'], etc.
         });
     }else if (req.method == 'GET') {
         if(req.url == '/getFlightData') {
@@ -57,7 +56,6 @@ http.createServer(function (req, res) {
                     // Do whatever you want to do with the file
                     res.write(file); 
                     res.write("test");
-                    
                 });
                 */
                 res.writeHead(200);
