@@ -18,7 +18,7 @@ http.createServer(function (req, res) {
         console.log(req.url);
         console.log(req.method);
         var body = '';
-
+        //test
         req.on('data', function (data) {
             body += data;
 
