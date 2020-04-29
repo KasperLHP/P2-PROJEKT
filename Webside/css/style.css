@@ -26,7 +26,8 @@ body {
 	background-size: cover;
 	font-family: 'Open Sans', sans-serif;
 	background-attachment: fixed;
-    background-position: center;
+	background-position: center;
+	zoom: 80%;
 }
 h1,h2,h3,h4,h5,h6{
 	font-family: 'Montserrat', sans-serif;
@@ -113,15 +114,109 @@ h2.resp-accordion {
 .resp-content-active, .resp-accordion-active {
    display: block;
 }
+
 form, form[id="datatabel"] {
     background:rgba(3, 3, 3, 0.57);
-    padding: 25px;
+	padding: 25px;
+}
+
+#graf {
+    background:rgba(3, 3, 3, 0.57);
+	padding: 200px;
+}
+
+.svg-container{
+	float: right;
+	bottom: 232px;
+	left: 185px;
+}
+
+/* Route field on graph page */
+#LabelForFileName{
+	color:#FFC107;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 1.1em;
+	margin-top:-185px;
+	margin-bottom:125px;
+	margin-right: 85px;
+	margin-left: -792px;
+}
+	#fileName{
+		color:#fff;
+		font-family: 'Montserrat', sans-serif;
+		font-size: 1.0em;
+		margin-top:-120px;
+		margin-bottom:212px;
+		margin-right: 85px;
+		margin-left: -620px;
+	}
+/* Departure date field on graph page */
+#LabelForDeparture{
+	color:#FFC107;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 1.1em;
+	margin-top:-185px;
+	margin-bottom:125px;
+	margin-right: 85px;
+	margin-left: -765px;
+}
+	#DepartureField{
+		color:#fff;
+		font-family: 'Montserrat', sans-serif;
+		font-size: 1.0em;
+		margin-top:-120px;
+		margin-bottom:212px;
+		margin-right: 85px;
+		margin-left: -695px;
+	}
+/* Return date field on graph page */
+#LabelForReturn{
+	color:#FFC107;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 1.1em;
+	margin-top:-185px;
+	margin-bottom:125px;
+	margin-right: 85px;
+	margin-left: -790px;
+}
+	#ReturnField{
+		color:#fff;
+		font-family: 'Montserrat', sans-serif;
+		font-size: 1.0em;
+		margin-top:-120px;
+		margin-bottom:212px;
+		margin-right: 85px;
+		margin-left: -695px;
+	}
+/* Price field on graph page */
+#LabelForPrice{
+	color:#FFC107;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 1.1em;
+	margin-top:-185px;
+	margin-bottom:125px;
+	margin-right: 85px;
+	margin-left: -690px;
+}
+	#PriceField{
+		color:#fff;
+		font-family: 'Montserrat', sans-serif;
+		font-size: 1.0em;
+		margin-top:-120px;
+		margin-bottom:-30px;
+		margin-right: 85px;
+		margin-left: -678px;
+	}
+
+#showchart{
+	float: right;
+	top: -200px;
+	left: 280px;
 }
 
 #links > a {
 	display: block
 }
-
 
 h3 {
     font-size: 16px;
