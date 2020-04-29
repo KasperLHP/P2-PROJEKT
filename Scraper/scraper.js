@@ -43,6 +43,10 @@ http.createServer(function (req, res) {
             }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+            // use post['blah'], etc.
+>>>>>>> parent of e589540... lego
 =======
             // use post['blah'], etc.
 >>>>>>> parent of e589540... lego
@@ -66,6 +70,10 @@ http.createServer(function (req, res) {
                     res.write("test");
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+                    
+>>>>>>> parent of e589540... lego
 =======
                     
 >>>>>>> parent of e589540... lego
