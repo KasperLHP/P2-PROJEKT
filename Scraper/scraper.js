@@ -113,7 +113,7 @@ async function scraperProduct(url, filename, adltsQ, datein){
     let Departureprice = (Price * adltsQ);
 
     var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: parseFloat(Departureprice) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + ' ' + d.getFullYear(), Price: Departureprice + ' ' + Currency , DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Currency: Currency};
-    var jsonData = JSON.stringify(data);
+    
 
     if(datein !== "_0"){
         //Return flight
@@ -141,18 +141,31 @@ async function scraperProduct(url, filename, adltsQ, datein){
         let Returnprice = (Price2 * adltsQ);
             
         var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Returnprice) + parseFloat(Departureprice)) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + ' ' + d.getFullYear(), Price: Departureprice + ' ' + Currency , DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Return: FromTo2.trim(), ReturnDate: ReturnDate.slice(3, 10) + ' ' +  d.getFullYear(), Price2: Returnprice + ' ' + Currency, DepartureTime2: DepartureTime2.trim(), ArrivalTime2: ArrivalTime2.trim(), Currency: Currency};
-        var jsonData = JSON.stringify(data);
+        
     }
 
-    console.log('Adding data to file...');
-    if(firstLine[firstLine.length -1] == false){
-        writeToFile(filename +'.json', ',' + jsonData);
-        }else{
-        writeToFile(filename +'.json', jsonData);
+    var filejsonData = [];
+    try{
+        var filedata = fs.readFileSync("../Webside/scrapedata/"+filename+'.json', 'utf8', 'r' )
+        filejsonData = JSON.parse(filedata)
+        console.log(filejsonData);
+        filejsonData.push(data);
     }
-        
-    firstLine[firstLine.length - 1] = false;
-    console.log('Data has been added to file!');
+    catch(error) {
+        console.log(error);
+        filejsonData = data
+    } 
+
+   // filejsonData = JSON.parse(filejsonData);
+    
+    var jsonData = JSON.stringify(filejsonData);
+
+    fs.writeFile("../Webside/scrapedata/"+filename +'.json', jsonData, function(err){
+        if(err){
+            console.log(err);
+        }
+    });
+    
 }
 
 // Function that inserts dates and IATA codes in the flexible link creator
@@ -177,13 +190,13 @@ function startJob(dateout, datein, cityFrom, cityTo, adltsQ){
     
     firstLine.push(true);
 
-    fs.access(cityFrom + cityTo + dateout + datein +".json", (err) => {
+    fs.access("../Webside/scrapedata/"+cityFrom + cityTo + dateout + datein +".json", (err) => {
         if(!err){
             console.log('File named: ' + cityFrom + cityTo + dateout + datein + ' already exists!');
             return;
         }else{
             console.log('The file does not exist... making a new file named: ' + cityFrom + cityTo + dateout + datein);
-            fs.writeFile(cityFrom + cityTo + dateout + datein +'.json','[\n', function(err){
+            fs.writeFile("../Webside/scrapedata/"+cityFrom + cityTo + dateout + datein +'.json','[]', function(err){
                 if(err){
                     console.log(err);
                 }
