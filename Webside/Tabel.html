@@ -37,14 +37,15 @@
                         </tr>
                     </table>
                     <form id="graf" method="POST" autocomplete="off">
-                        <h1 id="LabelForFileName">Route: </h1>
+                        <h1 id="LabelForFileName">Route  </h1>
                             <h1 id = "fileName"> </h1>
-                        <h1 id="LabelForDeparture">Departure: </h1>
+                        <h1 id="LabelForDeparture">Departure  </h1>
                             <h1 id = "DepartureField"> </h1>
-                        <h1 id="LabelForReturn">Return: </h1>
+                        <h1 id="LabelForReturn">Return  </h1>
                             <h1 id = "ReturnField"> </h1>
-                        <h1 id="LabelForPrice">Best recorded price: </h1>
+                        <h1 id="LabelForPrice">Lowest recorded price  </h1>
                             <h1 id = "PriceField"> </h1>
+                            
                         <div id="showchart"></div>
                     </form>
                 </div>						
@@ -116,10 +117,10 @@ fetch("/scrapedata/"+location.hash.substr(1)).then((response) => {
     var layout = {
         autosize: false,
         width: 680,
-        height: 420,
+        height: 410,
         left: 50,
         right: 50,
-        margin: {l: 50, r: 50, b: 53, t: 10},
+        margin: {l: 30, r: 50, b: 70, t: 10},
         showlegend: false /*,
         xaxis: {
             autorange: true,
@@ -149,10 +150,12 @@ fetch("/scrapedata/"+location.hash.substr(1)).then((response) => {
         }*/
     };
 
+    var config = ({responsive: true}, {displaylogo: false});
+
     Plotly.plot(chart, [{
         y: flightPrice,
         x: flightDates
-    }], layout);
+    }], layout, config);
 });
 
 function StringifyDate(date){
