@@ -64,27 +64,26 @@
 								</div>
 								<div class="clear"></div>
 							</div>
-							
 							<!-- Pop-up message that offers users price notifications -->
 							<div class="getNotified" id="myPopUp">
 								<div id="PopUpContent" class="PopUp">
 									<div class="PopUpContentHeader">
-										<span class="closePopUp">&times;</span>
-										<h1 id="PopUpH1">Get notified!</h1>
+										<!--<span class="closePopUp">&times;</span>-->
+										<h1 id="PopUpH1">Get notified <img id="notify_icon" src="images/notify_icon.png" height="42" width="42"> </h1>
+										
 									</div>
 									<div class="PopUpBody">
 										<p>Want to get notified about future price changes for this route? </p>
 										<br>
       									<p>Specify your phone number and your desired total price for the ticket(s) below <br> Now sit back and relax - we'll take care of the rest!</p>
 										<br>
-										<label for="userTel" class="labeluserTel">Phone number</label>
 										<br>
-										<input type="tel" id="UserTel"> 
+										<input type="tel" id="UserTel" placeholder="Phone..."> 
 										<br>
 										<div class="priceMover">
-											<label for="userPrice" class="labeluserPrice">Desired price</label>
 											<br>
-											<input type="number" id="userPrice">
+											<input type="number" id="userPrice" placeholder="Desired price...">
+											<button type="button" class="closePopUp" id="OKbutton"> OK </button>
 										</div>
 									</div>
 								</div>
@@ -264,7 +263,7 @@
 
 	var modal = document.getElementById("myPopUp");
 	var btn = document.getElementById("PopUpButton");
-	var span = document.getElementsByClassName("closePopUp")[0];
+	var btn2 = document.getElementsByClassName("closePopUp")[0];
 
 	// When the user clicks the button, open the pop-up
 	btn.onclick = function() {
@@ -272,7 +271,7 @@
 	}
 
 	// When the user clicks on <span> (x), close the pop-up
-	span.onclick = function() {
+	btn2.onclick = function() {
 		modal.style.display = "none";
 	}
 

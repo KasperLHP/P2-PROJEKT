@@ -241,6 +241,12 @@ form, form[id="datatabel"] {
 	padding: 10px;
 	color:#fefefe;
 }
+
+img[id="notify_icon"]{
+	margin-top: -40px;
+	margin-bottom: -10px;
+}
+
 .getNotified {
 	display: none; /* Hidden by default */
 	position: fixed; /* Stay in place */
@@ -272,21 +278,42 @@ form, form[id="datatabel"] {
   
   .priceMover{
 	width: 23%;
-	height: 1px;
+	height: 10px;
 	margin-left: 180px;
-	margin-top: -43px;
+	margin-top: -66.5px; /* 56.5 */
 }
 
-  #userPrice{
-  	width: 75%;
-  	height: 1px;
+
+
+  /* this is the input field for desired user price */
+  #userPrice{ 
+  	width: 85%;
+  	height: 15px;
+  	background: transparent;
+    background-image: url(../images/scaled1_tag.png);
+    background-position: 5px 5px;
+    background-repeat: no-repeat;
+    padding-left: 35px;
+    border: 1.5px solid #ccc;
+    border-radius: 4px;
+    font-size: 15px;
   }
 
+  /* this is the input field for user phone number*/
   #UserTel{
-  	width: 23%;
-  	height: 19px;
+  	width: 19%;
+  	height: 32.8px;
+    border-radius: 4px;
+    background-image: url(../images/scaled1_phn.png);
+    background-position: 5px 5px;
+    background-repeat: no-repeat;
+    padding-left: 35px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    border: 1.5px solid #ccc;
+    border-radius: 4px;
+    font-size: 15px;
   }
-
   /* Add Animation */
   @-webkit-keyframes animatetop {
 	from {top:-300px; opacity:0} 
@@ -298,7 +325,12 @@ form, form[id="datatabel"] {
 	to {top:0; opacity:1}
   }
   
-  /* The Close Button */
+  /* The OK Button */
+  #OKbutton{
+	  margin-top: 2px;
+	  margin-right: -248px;
+  }
+
   .closePopUp {
 	color: white;
 	float: right;
@@ -320,9 +352,8 @@ form, form[id="datatabel"] {
 	margin-top: -25px;
   }
   
-  .PopUpBody {padding: 10px 10px 50px;}
+  .PopUpBody {padding: 10px 10px 60px;}
 /* End of pop-up message styling */
-
 
 #links > a {
 	display: block
