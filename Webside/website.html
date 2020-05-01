@@ -64,8 +64,36 @@
 								</div>
 								<div class="clear"></div>
 							</div>
+							
+							<!-- Pop-up message that offers users price notifications -->
+							<div class="getNotified" id="myPopUp">
+								<div id="PopUpContent" class="PopUp">
+									<div class="PopUpContentHeader">
+										<span class="closePopUp">&times;</span>
+										<h1 id="PopUpH1">Get notified!</h1>
+									</div>
+									<div class="PopUpBody">
+										<p>Want to get notified about future price changes for this route? </p>
+										<br>
+      									<p>Specify your phone number and your desired total price for the ticket(s) below <br> Now sit back and relax - we'll take care of the rest!</p>
+										<br>
+										<label for="userTel" class="labeluserTel">Phone number</label>
+										<br>
+										<input type="tel" id="UserTel"> 
+										<br>
+										<div class="priceMover">
+											<label for="userPrice" class="labeluserPrice">Desired price</label>
+											<br>
+											<input type="number" id="userPrice">
+										</div>
+									</div>
+								</div>
+							</div>
 							<div class="clear"></div>
-							<input id="StartScraper" type="submit" value="Search Flights">
+							<div class="MainPageButtons">
+								<input id="StartScraper" type="submit" value="Search Flights">
+								<button type="button" id="PopUpButton">Get notified - Click me!</button>
+							</div>
 						</form>		
 					</div>	
 					<!-- ONE-WAY TAB -->
@@ -128,7 +156,6 @@
 	</div>-->
 
 	<!--script for portfolio-->
-
 	<!-- Calendar -->
 	<script src="js/jquery.min.js"> </script>
 	<script src="js/easyResponsiveTabs.js" type="text/javascript"></script>
@@ -231,5 +258,31 @@
 		});
 	});
 	</script>
+
+	<!-- Pop-up message about getting notified on round-strip and one-way page -->
+	<script>
+
+	var modal = document.getElementById("myPopUp");
+	var btn = document.getElementById("PopUpButton");
+	var span = document.getElementsByClassName("closePopUp")[0];
+
+	// When the user clicks the button, open the pop-up
+	btn.onclick = function() {
+		modal.style.display = "block";
+	}
+
+	// When the user clicks on <span> (x), close the pop-up
+	span.onclick = function() {
+		modal.style.display = "none";
+	}
+
+	// When the user clicks anywhere outside of the pop-up, close it
+	window.onclick = function(event) {
+		if (event.target == modal) {
+			modal.style.display = "none";
+		}
+	}
+	</script>
+
 </body>
 </html>

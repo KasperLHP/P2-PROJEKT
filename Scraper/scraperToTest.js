@@ -51,8 +51,7 @@ async function scraperProduct(url, filename, adltsQ, datein){
     let Departureprice = (Price * adltsQ);
 
     var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: parseFloat(Departureprice) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + ' ' + d.getFullYear(), Price: Departureprice + ' ' + Currency , DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Currency: Currency};
-    var jsonData = JSON.stringify(data);
-
+    
     if(datein !== "_0"){
         //Return flight
         //Price
@@ -79,56 +78,28 @@ async function scraperProduct(url, filename, adltsQ, datein){
         let Returnprice = (Price2 * adltsQ);
             
         var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Returnprice) + parseFloat(Departureprice)) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + ' ' + d.getFullYear(), Price: Departureprice + ' ' + Currency , DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Return: FromTo2.trim(), ReturnDate: ReturnDate.slice(3, 10) + ' ' +  d.getFullYear(), Price2: Returnprice + ' ' + Currency, DepartureTime2: DepartureTime2.trim(), ArrivalTime2: ArrivalTime2.trim(), Currency: Currency};
-        var jsonData = JSON.stringify(data);
     }
 
-    console.log('Adding data to file...');
-    if(firstLine[firstLine.length -1] == false){
-        writeToFile(filename +'.json', ',' + jsonData);
-        }else{
-        writeToFile(filename +'.json', jsonData);
-    }
-        
-    firstLine[firstLine.length - 1] = false;
-    console.log('Data has been added to file!');
+    var filejsonData = [];
+    try{
+        var filedata = fs.readFileSync("../Webside/scrapedata/"+filename+'.json', 'utf8', 'r' )
+        filejsonData = JSON.parse(filedata)
+        filejsonData.push(data);
+    }catch(error) {
+        console.log(error);
+        filejsonData = data
+    } 
 
-     /* 
-    var jsonArray = [];
-    jsonArray.push(data);
+   // filejsonData = JSON.parse(filejsonData);
     
-    function jsonReader(filePath, cb) {
-        fs.readFile(filePath, (err, fileData) => {
-            if (err) {
-                return cb && cb(err)
-            }
-            try {
-                const object = JSON.parse(fileData)
-                return cb && cb(null, object)
-            } catch(err) {
-                return cb && cb(err)
-            }
-        })
-    }
+    var jsonData = JSON.stringify(filejsonData);
 
-    jsonReader("../Webside/scrapedata/"+filename+'.json', (err, ScrapeData) => {
-        if (err) {
-            console.log(err)
-            return
-        }else
-        var movedObject;
-        for(i=0; i < ScrapeData.lenght; i++){
-            movedObject = ScrapeData[i];
-            jsonArray.push(movedObject);
+    fs.writeFile("../Webside/scrapedata/"+filename+'.json', jsonData, function(err){
+        if(err){
+            console.log(err);
         }
-    })
-    
-    var jsonData = JSON.stringify(jsonArray);
-
-    fs.writeFile("../Webside/scrapedata/"+filename+'.json', jsonData, function (err) {
-        if (err) throw err;
-            console.log('Writing to file...');
     });
-    */
+    
 }
 
 // Function that inserts dates and IATA codes in the flexible link creator
@@ -159,7 +130,7 @@ function startJob(dateout, datein, cityFrom, cityTo, adltsQ){
             return;
         }else{
             console.log('The file does not exist... making a new file named: ' + cityFrom + cityTo + dateout + datein);
-            fs.writeFile("../Webside/scrapedata/"+cityFrom + cityTo + dateout + datein +'.json','[\n', function(err){
+            fs.writeFile("../Webside/scrapedata/"+cityFrom + cityTo + dateout + datein +'.json','[]', function(err){
                 if(err){
                     console.log(err);
                 }
@@ -167,7 +138,7 @@ function startJob(dateout, datein, cityFrom, cityTo, adltsQ){
         }
     });    
 
-    var j = schedule.scheduleJob('30 * * * * *', function(){
+    var j = schedule.scheduleJob('05 * * * * *', function(){
         console.log('Running scheduled job...');
         chooseRoute(dateout, datein, cityFrom, cityTo, adltsQ);
     });
@@ -477,7 +448,8 @@ function CityToIata(city){
             break;                            
     }
 }
-startJob('2020-05-10', '2020-05-17', 'London Stansted', 'Copenhagen', 1);
+
+startJob('2020-05-10', '2020-05-17', 'London Stansted', 'Copenhagen', 2);
 
 // console.log(selected_date_element.textContent, selected_date_element2.textContent, CityToIata(document.getElementById('myInput1')), CityToIata(document.getElementById('myInput2')));
 // selected_date_element.textContent - dateout

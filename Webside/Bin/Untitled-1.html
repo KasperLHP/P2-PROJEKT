@@ -1,0 +1,322 @@
+<!doctype html>
+<html>
+<head>
+    <title>Data for flight</title>
+    <link rel="stylesheet" href="C:/Users/KPsan/OneDrive/Skrivebord/GitHub/P2-PROJEKT/Webside/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ICFC</title>
+    <link rel="icon" href="icon1.png" type="image/x-icon">
+    <link rel="stylesheet" href="main.css" />
+    </head>
+<body>
+
+<h1 id = "fileName"> </h1>
+<table border="1" id = "dataTabel">
+    <tr>
+        <th>Scrape Date</th>
+        <th>Total Price</th>
+        <th>Departure</th>
+        <th>Return</th>
+    </tr>
+</table>
+</body>
+</html>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<canvas id="myChart" width ="50" height="50" style="border: 1px;"></canvas>
+<script>document.getElementById('myChart').width= 200 </script>
+
+<script>
+function insertTd(td, dom){
+    var node = document.createElement("td");
+    var text = document.createTextNode(td);
+    node.appendChild(text);
+    dom.appendChild(node);
+}
+
+fetch("../scrapedata/"+location.hash.substr(1)).then((response) => {
+    return response.json();
+}).then((data) => {
+    document.getElementById("fileName").textContent = location.hash.substr(1);
+    var dataTabel = document.getElementById("dataTabel");
+    for(var flight of data) {
+        var tr = document.createElement("tr");
+        insertTd(flight.ScrapeDate, tr);
+        insertTd(flight.TotalPrice, tr);
+        insertTd(flight.Departure, tr);
+        insertTd(flight.Return, tr);
+        dataTabel.appendChild(tr);
+    }
+
+    // GRAF 
+    console.log(data);
+    var flightPrice = [];
+        var flightDates = [];
+        for(i=0;i<data.length;i++){
+            var movedElement = parseFloat(data[i].TotalPrice); 
+            var movedElement2 = data[i].ScrapeDate.slice(0, 25);
+            flightPrice.push(movedElement);
+            flightDates.push(movedElement2);
+        }
+
+        console.log(flightPrice); 
+        newGraph(flightPrice, flightDates);
+});
+  
+function newGraph(data,data2){
+	var ctx = document.getElementById('myChart').getContext('2d');
+	var myChart = new Chart(ctx, {
+	    type: 'line',
+		data: {
+			labels: data2,
+			datasets: [{
+				label: 'Price',
+				data: data,
+				backgroundColor: [
+					'rgba(0, 0, 0, 0.0)',
+					  
+				],
+				borderColor: [
+					'rgba(255, 99, 132, 1)',
+					  
+				],
+				borderWidth: 1
+			}]
+		}, 
+		options: {
+			responsive: true,
+			layout: {			
+			}
+		}
+	});
+}  
+</script>
+
+
+<script>
+var layout = {
+    title: 'Time Series with Rangeslider',
+    xaxis: {
+        autorange: true,
+        range: [data[1].ScrapeDate, data[i].ScrapeDate[data[i].length - 1]],
+        rangeselector: {buttons: [
+            {
+            count: 1,
+            label: '1w',
+            step: 'week',
+            stepmode: 'backward'
+            },
+            {
+            count: 2,
+            label: '2w',
+            step: 'week',
+            stepmode: 'backward'
+            },
+            {
+            count: 1,
+            label: '1m',
+            step: 'month',
+            stepmode: 'backward'
+            },
+            {
+            count: 3,
+            label: '3m',
+            step: 'month',
+            stepmode: 'backward'
+            },
+            {step: 'all'}
+        ]},
+        rangeslider: {range: [data[1].ScrapeDate, data[i].ScrapeDate[data[i].length - 1]]},
+        type: 'date'
+    },
+    yaxis: {
+        autorange: true,
+        range: [0, math.max(data[i].TotalPrice) + 200],
+        type: 'linear'
+    }
+};
+
+function StringifyDate(date){
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    var DateBefore = [year, month, day].join('-');
+    var DateAfter = JSON.stringify(DateBefore);
+
+    return DateAfter;
+}
+
+
+
+</script>
+
+@media (max-width:1920px){
+	.checkbox {
+		font-size: 0.9em;
+	}
+
+	.main-svg{
+		width: 675px; 
+		height: 390px;
+	}
+ 
+	.svg-container{
+	 float: right;
+	 bottom: 205px;
+	 left: 35px; 
+	}
+ 
+	.modebar-container{
+		left: 150px;
+	}
+
+	#LabelForFileName{
+		color:#FFC107;
+		font-family: 'Montserrat', sans-serif;
+		font-size: 1.0em;
+		margin-top:-185px;
+		margin-bottom:125px;
+		margin-right: 85px;
+		margin-left: -815px;
+	}
+		#fileName{
+			color:#fff;
+			font-family: 'Montserrat', sans-serif;
+			font-size: 0.9em;
+			margin-top:-120px;
+			margin-bottom:212px;
+			margin-right: 85px;
+			margin-left: -655px;
+		}
+	/* Departure date field on graph page */
+	#LabelForDeparture{
+		color:#FFC107;
+		font-family: 'Montserrat', sans-serif;
+		font-size: 1.0em;
+		margin-top:-185px;
+		margin-bottom:125px;
+		margin-right: 85px;
+		margin-left: -785px;
+	}
+		#DepartureField{
+			color:#fff;
+			font-family: 'Montserrat', sans-serif;
+			font-size: 0.9em;
+			margin-top:-120px;
+			margin-bottom:212px;
+			margin-right: 85px;
+			margin-left: -718px;
+		}
+	/* Return date field on graph page */
+	#LabelForReturn{
+		color:#FFC107;
+		font-family: 'Montserrat', sans-serif;
+		font-size: 1.0em;
+		margin-top:-185px;
+		margin-bottom:125px;
+		margin-right: 85px;
+		margin-left: -808px;
+	}
+		#ReturnField{
+			color:#fff;
+			font-family: 'Montserrat', sans-serif;
+			font-size: 0.9em;
+			margin-top:-120px;
+			margin-bottom:212px;
+			margin-right: 85px;
+			margin-left: -719px;
+		}
+	/* Price field on graph page */
+	#LabelForPrice{
+		color:#FFC107;
+		font-family: 'Montserrat', sans-serif;
+		font-size: 1.0em;
+		margin-top:-185px;
+		margin-bottom:125px;
+		margin-right: 85px;
+		margin-left: -700px;
+	}
+		#PriceField{
+			color:#fff;
+			font-family: 'Montserrat', sans-serif;
+			font-size: 0.9em;
+			margin-top:-120px;
+			margin-bottom:-30px;
+			margin-right: 85px;
+			margin-left: -703px;
+		}
+}
+
+require('dotenv').config();
+const fs = require('fs');
+const twilio = require('twilio');
+var twilioSID = process.env.TWILIO_ACCOUNT_SID;
+var twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
+const client = new twilio(twilioSID, twilioAuthToken);
+
+function jsonReader(filePath, cb){
+    fs.readFile(filePath, (err, fileData) => {
+        if (err){
+            return cb && cb(err)
+        }
+        try{
+            const object = JSON.parse(fileData);
+            return cb && cb(null, object)
+        }catch(err){
+            return cb && cb(err)
+        }
+    })
+}
+
+function PriceCheck(dateout, datein, cityFrom, cityTo, CustomerSpecifiedPrice, IsReturn){
+      jsonReader(cityFrom + cityTo + dateout + datein + '.json', (err, ScrapedData) => {
+        if(err){
+            console.log(err);
+            return;
+        }else{
+            for(i = 0; i < ScrapedData.length; i++){
+                // If user picks a return trip - will take the total price
+                if(IsReturn == 'true'){
+                    if(parseFloat(ScrapedData[i].TotalPrice) <= CustomerSpecifiedPrice){
+                        console.log('Price equal to or lower than '+ CustomerSpecifiedPrice + ' has been recorded at: ' + ScrapedData[i].ScrapeDate);
+                        console.log('Sending notification to user...');
+                        client.messages.create({
+                            to: '+4542313187',
+                            from: '+12512200734',
+                            body: 'HeyHo!\n\nThe route: ' + ScrapedData[i].Departure + ' and ' + ScrapedData[i].Return + ' from ' + ScrapedData[i].DepartureDate + ' to ' + ScrapedData[i].ReturnDate + ' has price dropped to ' + ScrapedData[i].TotalPrice + ', which is under or equal to your desired price at ' + CustomerSpecifiedPrice + ' ' + ScrapedData[i].Currency + '.\n\nAct fast and buy before it gets sold out!\n\nVisit this link to buy: https://www.ryanair.com/dk/da/trip/flights/select?adults=1&teens=0&children=0&infants=0&dateOut='+dateout+'&'+'dateIn='+datein+'&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn='+ IsReturn +'&discount=0'  
+                        });
+                        console.log('Notification sent!');
+                    }else{
+                        console.log('No price changes so far...');
+                    }
+                
+                // If user picks a one-way flight - will take the price for the one way flight
+                }else if(IsReturn == 'false'){
+                    if(parseFloat(ScrapedData[i].Price) <= CustomerSpecifiedPrice){
+                        console.log('Price equal to or lower than '+ CustomerSpecifiedPrice + ' has been recorded at: ' + ScrapedData[i].ScrapeDate);
+                        console.log('Sending notification to user...');
+                        client.messages.create({
+                            to: '+4542313187',
+                            from: '+12512200734',
+                            body: 'HeyHo!\n\nThe route: ' + ScrapedData[i].Departure + ' on the ' + ScrapedData[i].DepartureDate + ' has price dropped to ' + ScrapedData[i].Price + ', which is under or equal to your desired price at ' + CustomerSpecifiedPrice + ' ' + ScrapedData[i].Currency + '.\n\nAct fast and buy before it gets sold out!\n\nVisit this link to buy: https://www.ryanair.com/dk/da/trip/flights/select?adults=1&teens=0&children=0&infants=0&dateOut='+dateout+'&'+'dateIn='+datein+'&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn='+ IsReturn +'&discount=0'  
+                        });
+                        console.log('Notification sent!');
+                    }else{
+                        console.log('No price changes so far...');
+                    }
+                }
+            }
+        } 
+    });
+}
+
+PriceCheck('2020-05-10', '2020-05-17', 'CPH', 'STN', 200, 'false');

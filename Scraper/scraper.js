@@ -114,7 +114,6 @@ async function scraperProduct(url, filename, adltsQ, datein){
 
     var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: parseFloat(Departureprice) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + ' ' + d.getFullYear(), Price: Departureprice + ' ' + Currency , DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Currency: Currency};
     
-
     if(datein !== "_0"){
         //Return flight
         //Price
@@ -141,17 +140,14 @@ async function scraperProduct(url, filename, adltsQ, datein){
         let Returnprice = (Price2 * adltsQ);
             
         var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Returnprice) + parseFloat(Departureprice)) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + ' ' + d.getFullYear(), Price: Departureprice + ' ' + Currency , DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Return: FromTo2.trim(), ReturnDate: ReturnDate.slice(3, 10) + ' ' +  d.getFullYear(), Price2: Returnprice + ' ' + Currency, DepartureTime2: DepartureTime2.trim(), ArrivalTime2: ArrivalTime2.trim(), Currency: Currency};
-        
     }
 
     var filejsonData = [];
     try{
         var filedata = fs.readFileSync("../Webside/scrapedata/"+filename+'.json', 'utf8', 'r' )
         filejsonData = JSON.parse(filedata)
-        console.log(filejsonData);
         filejsonData.push(data);
-    }
-    catch(error) {
+    }catch(error) {
         console.log(error);
         filejsonData = data
     } 
@@ -160,7 +156,7 @@ async function scraperProduct(url, filename, adltsQ, datein){
     
     var jsonData = JSON.stringify(filejsonData);
 
-    fs.writeFile("../Webside/scrapedata/"+filename +'.json', jsonData, function(err){
+    fs.writeFile("../Webside/scrapedata/"+filename+'.json', jsonData, function(err){
         if(err){
             console.log(err);
         }
@@ -514,6 +510,10 @@ function CityToIata(city){
             break;                            
     }
 }
+
+
+
+
 
 // startJob('2020-05-15', '2020-05-17', 'Copenhagen', 'London Stansted');
 // console.log(selected_date_element.textContent, selected_date_element2.textContent, CityToIata(document.getElementById('myInput1')), CityToIata(document.getElementById('myInput2')));

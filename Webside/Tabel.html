@@ -97,7 +97,7 @@ fetch("/scrapedata/"+location.hash.substr(1)).then((response) => {
         document.getElementById("ReturnField").textContent = data[1].ReturnDate + ' @ ' + data[1].DepartureTime2;
     }else if(data[1].Return == undefined || "" || null){
         document.getElementById("ReturnField").textContent = "False";
-        document.getElementById("ReturnField").style = "color:#fff; font-family: 'Montserrat', sans-serif; font-size: 1.0em; margin-top:-120px; margin-bottom:212px; margin-right: 85px; margin-left: -805px;"
+        document.getElementById("ReturnField").style = "color:#fff; font-family: 'Montserrat', sans-serif; font-size: 0.9em; margin-top:-120px; margin-bottom:212px; margin-right: 85px; margin-left: -623px;"
     } 
 
     var lowestIndex = 0;
