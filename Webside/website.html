@@ -23,7 +23,29 @@
 					<li class="resp-tab-item"><span>One way</span></li>
 					<li class="resp-tab-item"><span>Overview of jobs</span></li>		
 				</ul>	
-				<div class="clearfix"></div>	
+				<div class="clearfix"></div>
+				<!-- Pop-up message that offers users price notifications -->
+				<div class="getNotified" id="myPopUp">
+					<div id="PopUpContent" class="PopUp">
+						<div class="PopUpContentHeader">
+							<h1 id="PopUpH1">Get notified <img id="notify_icon" src="images/notify_icon.png" height="42" width="42"> </h1>
+						</div>
+						<div class="PopUpBody">
+							<p>Want to get notified about future price changes for this route? </p>
+							<br>
+							  <p>Leave your phone number and your desired total price for the ticket(s) below. <br> Now sit back and relax - we'll take care of the rest!</p>
+							<br>
+							<br>
+							<input type="tel" id="UserTel" placeholder="Phone number.."> 
+							<br>
+							<div class="priceMover">
+								<br>
+								<input type="number" id="userPrice" placeholder="Price..">
+								<button type="button" class="closePopUp" id="OKbutton"> OK </button>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="resp-tabs-container">
 					<!-- ROUND-TRIP TAB -->
 					<div class="tab-1 resp-tab-content roundtrip">
@@ -52,7 +74,6 @@
 								<div class="clear"></div>
 							</div>
 							<div class="clear"></div>
-							
 							<div class="numofppl">
 								<div class="adults">
 									<h3>Adult (15+ yrs): </h3>
@@ -64,30 +85,7 @@
 								</div>
 								<div class="clear"></div>
 							</div>
-							<!-- Pop-up message that offers users price notifications -->
-							<div class="getNotified" id="myPopUp">
-								<div id="PopUpContent" class="PopUp">
-									<div class="PopUpContentHeader">
-										<!--<span class="closePopUp">&times;</span>-->
-										<h1 id="PopUpH1">Get notified <img id="notify_icon" src="images/notify_icon.png" height="42" width="42"> </h1>
-										
-									</div>
-									<div class="PopUpBody">
-										<p>Want to get notified about future price changes for this route? </p>
-										<br>
-      									<p>Specify your phone number and your desired total price for the ticket(s) below <br> Now sit back and relax - we'll take care of the rest!</p>
-										<br>
-										<br>
-										<input type="tel" id="UserTel" placeholder="Phone..."> 
-										<br>
-										<div class="priceMover">
-											<br>
-											<input type="number" id="userPrice" placeholder="Desired price...">
-											<button type="button" class="closePopUp" id="OKbutton"> OK </button>
-										</div>
-									</div>
-								</div>
-							</div>
+							<!-- Pop-up was here -->
 							<div class="clear"></div>
 							<div class="MainPageButtons">
 								<input id="StartScraper" type="submit" value="Search Flights">
@@ -135,7 +133,10 @@
 								<div class="clear"></div>
 							</div>
 							<div class="clear"></div>
-							<input id="StartScraper1" type="submit" value="Search Flights">
+							<div class="MainPageButtons">
+								<input id="StartScraper1" type="submit" value="Search Flights">
+								<button type="button" id="PopUpButton1">Get notified - Click me!</button>
+							</div>
 						</form>		
 					</div>
 					<!-- JOBS OVERVIEW -->
@@ -264,9 +265,14 @@
 	var modal = document.getElementById("myPopUp");
 	var btn = document.getElementById("PopUpButton");
 	var btn2 = document.getElementsByClassName("closePopUp")[0];
+	var btn3 = document.getElementById("PopUpButton1");
 
 	// When the user clicks the button, open the pop-up
 	btn.onclick = function() {
+		modal.style.display = "block";
+	}
+
+	btn3.onclick = function() {
 		modal.style.display = "block";
 	}
 

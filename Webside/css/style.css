@@ -222,7 +222,7 @@ form, form[id="datatabel"] {
 
 /* Pop-up message about getting notifed styling */
 /* The Modal (background) */
-#PopUpButton{
+#PopUpButton, #PopUpButton1{
 	display: inline-block;
 	height: 37px;
 	margin-bottom: -1px;
@@ -231,27 +231,23 @@ form, form[id="datatabel"] {
     margin-right: 100px;
 	background-color: black;
 }
-
-#PopUpButton:hover{
+#PopUpButton:hover, #PopUpButton1:hover{
 	background-color: #ffc107
 }
-
 #PopUpH1{
 	font-size: 25px;
 	padding: 10px;
 	color:#fefefe;
 }
-
 img[id="notify_icon"]{
 	margin-top: -40px;
-	margin-bottom: -10px;
+	margin-bottom: -12.5px;
 }
-
 .getNotified {
 	display: none; /* Hidden by default */
-	position: fixed; /* Stay in place */
+	position: fixed;  /* Stay in place*/
 	z-index: 1; /* Sit on top */
-	padding-top: 200px; /* Location of the box */
+	padding-top: 210px; /* Location of the box */
 	left: 0;
 	top: 0;
 	width: 100%; /* Full width */
@@ -267,27 +263,23 @@ img[id="notify_icon"]{
 	background-color: #fefefe;
 	margin: auto;
 	padding: 0;
-	border: 1px solid #888;
-	width: 40%;
+	border: 1px solid rgb(14, 1, 1);
+	width: 37%;
 	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
 	-webkit-animation-name: animatetop;
 	-webkit-animation-duration: 0.4s;
 	animation-name: animatetop;
 	animation-duration: 0.4s
   }
-  
   .priceMover{
 	width: 23%;
 	height: 10px;
 	margin-left: 180px;
 	margin-top: -66.5px; /* 56.5 */
 }
-
-
-
   /* this is the input field for desired user price */
   #userPrice{ 
-  	width: 85%;
+  	width: 37%;
   	height: 15px;
   	background: transparent;
     background-image: url(../images/scaled1_tag.png);
@@ -298,10 +290,9 @@ img[id="notify_icon"]{
     border-radius: 4px;
     font-size: 15px;
   }
-
   /* this is the input field for user phone number*/
   #UserTel{
-  	width: 19%;
+  	width: 23%;
   	height: 32.8px;
     border-radius: 4px;
     background-image: url(../images/scaled1_phn.png);
@@ -319,40 +310,34 @@ img[id="notify_icon"]{
 	from {top:-300px; opacity:0} 
 	to {top:0; opacity:1}
   }
-  
   @keyframes animatetop {
 	from {top:-300px; opacity:0}
 	to {top:0; opacity:1}
   }
-  
   /* The OK Button */
   #OKbutton{
-	  margin-top: 2px;
-	  margin-right: -248px;
+	  margin-top: 1px;
+	  margin-right: -242px;
   }
-
   .closePopUp {
 	color: white;
 	float: right;
 	font-size: 28px;
 	font-weight: bold;
   }
-  
   .closePopUp:hover, .closePopUp:focus {
 	color: #000;
 	text-decoration: none;
 	cursor: pointer;
   }
-  
   .PopUpContentHeader {
 	padding: -1px 16px;
 	background-color: #ffc107;
-	color: white;
+	color: #f6f4f4;
 	margin-bottom: -45px;
 	margin-top: -25px;
   }
-  
-  .PopUpBody {padding: 10px 10px 60px;}
+  .PopUpBody {padding: 10px 10px 56.5px;}
 /* End of pop-up message styling */
 
 #links > a {
