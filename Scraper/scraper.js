@@ -29,16 +29,22 @@ http.createServer(function (req, res) {
         });
         
         req.on('end', function () {
-            var post = qs.parse(body);
-            if(req.url == "/website.html"){     
-                if(post.datepicker3 == ""){
-                    startJob(post.datepicker2, undefined, post.myInput3, post.myInput4, post.adltsQ1);
-                    console.log({departDate: post.datepicker2, fromCity: post.myInput3, toCity: post.myInput4, AmountAdults: post.adltsQ1});
-                    res.writeHead(200);
-                }else{
-                    startJob(post.datepicker, post.datepicker1, post.myInput1, post.myInput2, post.adltsQ);
-                    console.log({departDate: post.datepicker, returnDate: post.datepicker1, fromCity: post.myInput1, toCity: post.myInput2, AmountAdults: post.adltsQ});
-                    res.writeHead(200);
+            var post = qs.parse(body);  
+
+            if(req.url == "/website.html"){
+                console.log({UserTel: post.theHiddenTel, UserPrice:post.theHiddenPrice, UserTel1: post.theHiddenTel1, UserPrice1: post.theHiddenPrice1});
+                if(post.datepicker !== ""){
+                    // Oneway
+                    if(post.datepicker3 == ""){
+                        startJob(post.datepicker2, undefined, post.myInput3, post.myInput4, post.adltsQ1);
+                        console.log({departDate: post.datepicker2, fromCity: post.myInput3, toCity: post.myInput4, AmountAdults: post.adltsQ1});
+                        res.writeHead(200);
+                    // Round trip
+                    }else{
+                        startJob(post.datepicker, post.datepicker1, post.myInput1, post.myInput2, post.adltsQ);
+                        console.log({departDate: post.datepicker, returnDate: post.datepicker1, fromCity: post.myInput1, toCity: post.myInput2, AmountAdults: post.adltsQ});
+                        res.writeHead(200);
+                    }
                 }
             }
 
@@ -161,7 +167,6 @@ async function scraperProduct(url, filename, adltsQ, datein){
             console.log(err);
         }
     });
-    
 }
 
 // Function that inserts dates and IATA codes in the flexible link creator

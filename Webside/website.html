@@ -33,14 +33,14 @@
 						<div class="PopUpBody">
 							<p>Want to get notified about future price changes for this route? </p>
 							<br>
-							  <p>Leave your phone number and your desired total price for the ticket(s) below. <br> Now sit back and relax - we'll take care of the rest!</p>
+							<p>Leave your phone number and your desired total price for the ticket(s) below. <br> Now sit back and relax - we'll take care of the rest!</p>
 							<br>
 							<br>
-							<input type="tel" id="UserTel" placeholder="Phone number.."> 
+							<input type="tel" id="UserTel" name="UserTel" placeholder="Phone number.."> 
 							<br>
 							<div class="priceMover">
 								<br>
-								<input type="number" id="userPrice" placeholder="Price..">
+								<input type="number" id="userPrice" name="userPrice" placeholder="Price..">
 								<button type="button" class="closePopUp" id="OKbutton"> OK </button>
 							</div>
 						</div>
@@ -85,11 +85,12 @@
 								</div>
 								<div class="clear"></div>
 							</div>
-							<!-- Pop-up was here -->
 							<div class="clear"></div>
 							<div class="MainPageButtons">
 								<input id="StartScraper" type="submit" value="Search Flights">
 								<button type="button" id="PopUpButton">Get notified - Click me!</button>
+								<input hidden type="tel" id="theHiddenTel" name="theHiddenTel">
+								<input hidden type="number" id="theHiddenPrice" name="theHiddenPrice">
 							</div>
 						</form>		
 					</div>	
@@ -120,7 +121,6 @@
 								<div class="clear"></div>
 							</div>
 							<div class="clear"></div>
-							
 							<div class="numofppl">
 								<div class="adults">
 									<h3>Adult (15+ yrs): </h3>
@@ -136,6 +136,8 @@
 							<div class="MainPageButtons">
 								<input id="StartScraper1" type="submit" value="Search Flights">
 								<button type="button" id="PopUpButton1">Get notified - Click me!</button>
+								<input hidden type="tel" id="theHiddenTel1" name="theHiddenTel1">
+								<input hidden type="number" id="theHiddenPrice1" name="theHiddenPrice1">
 							</div>
 						</form>		
 					</div>
@@ -261,33 +263,53 @@
 
 	<!-- Pop-up message about getting notified on round-strip and one-way page -->
 	<script>
+		var modal = document.getElementById("myPopUp");
+		var btn = document.getElementById("PopUpButton");
+		var btn2 = document.getElementsByClassName("closePopUp")[0];
+		var btn3 = document.getElementById("PopUpButton1");
 
-	var modal = document.getElementById("myPopUp");
-	var btn = document.getElementById("PopUpButton");
-	var btn2 = document.getElementsByClassName("closePopUp")[0];
-	var btn3 = document.getElementById("PopUpButton1");
+		// When the user clicks the button, open the pop-up
+		btn.onclick = function() {
+			modal.style.display = "block";
+		}
 
-	// When the user clicks the button, open the pop-up
-	btn.onclick = function() {
-		modal.style.display = "block";
-	}
+		btn3.onclick = function() {
+			modal.style.display = "block";
+		}
 
-	btn3.onclick = function() {
-		modal.style.display = "block";
-	}
-
-	// When the user clicks on <span> (x), close the pop-up
-	btn2.onclick = function() {
-		modal.style.display = "none";
-	}
-
-	// When the user clicks anywhere outside of the pop-up, close it
-	window.onclick = function(event) {
-		if (event.target == modal) {
+		// When the user clicks on OK button, close the pop-up
+		btn2.onclick = function() {
 			modal.style.display = "none";
 		}
-	}
+
+		// When the user clicks anywhere outside of the pop-up, close it
+		window.onclick = function(event) {
+			if (event.target == modal) {
+				modal.style.display = "none";
+			}
+		}
 	</script>
 
+	<script>
+		$(document).ready(function(){
+			$('#OKbutton').click(function(){
+				var tempTel = $("#myPopUp #UserTel").val();
+				var tempPrice = $("#myPopUp #userPrice").val();
+				
+				$("#theHiddenTel").val(tempTel) && $("#theHiddenTel1").val(tempTel);
+				$("#theHiddenPrice").val(tempPrice) && $("#theHiddenPrice1").val(tempPrice);
+
+				document.getElementById('theHiddenTel').value = tempTel;
+				document.getElementById('theHiddenTel1').value = tempTel;
+				document.getElementById('theHiddenPrice').value = tempPrice;
+				document.getElementById('theHiddenPrice1').value = tempPrice;
+				
+				console.log({Tel: document.getElementById('theHiddenTel').value});
+				console.log({Price: document.getElementById('theHiddenPrice').value});
+				console.log({Tel1: document.getElementById('theHiddenTel1').value});
+				console.log({Price1: document.getElementById('theHiddenPrice1').value});
+			});
+		});
+	</script>
 </body>
 </html>

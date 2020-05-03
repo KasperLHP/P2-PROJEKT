@@ -50,6 +50,35 @@ h1{
 	margin-bottom:50px;
 	text-align:center;
 }
+
+/* Fuckery starts */
+input[id="theHiddenTel"]{
+	background: #3e131300;
+	border: none;
+	width: 0%;
+	height: 0.0001px;
+	cursor:context-menu;
+	color:  #3e131300;
+}
+
+input[id="theHiddenTel"]:focus{
+	 outline: none !important;
+}
+
+input[id="theHiddenPrice"]{
+	background: #37495105;
+	border: none;
+	width: 0px;
+	height: 0.0001px;
+	cursor:context-menu;
+	color:  #3e131300;
+}
+
+input[id="theHiddenPrice"]:focus{
+	outline: none !important;
+}
+/* Fuckery ends */
+
 .main-agileinfo{
 	margin:50px auto;
 	width:50%;
@@ -243,7 +272,7 @@ img[id="notify_icon"]{
 	margin-top: -40px;
 	margin-bottom: -12.5px;
 }
-.getNotified {
+.getNotified, #myPopUp{
 	display: none; /* Hidden by default */
 	position: fixed;  /* Stay in place*/
 	z-index: 1; /* Sit on top */
