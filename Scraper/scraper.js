@@ -8,6 +8,13 @@ const nStatic = require('node-static');
 const qs = require('querystring');
 const path = require('path');
 
+//Reqs for PriceNotifier
+require('dotenv').config();
+const twilio = require('twilio');
+var twilioSID = process.env.TWILIO_ACCOUNT_SID;
+var twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
+const client = new twilio(twilioSID, twilioAuthToken);
+
 var d = new Date();
 let firstLine = [];
 var fileServer = new nStatic.Server('../Webside');
@@ -32,17 +39,16 @@ http.createServer(function (req, res) {
             var post = qs.parse(body);  
 
             if(req.url == "/website.html"){
-                console.log({UserTel: post.theHiddenTel, UserPrice:post.theHiddenPrice, UserTel1: post.theHiddenTel1, UserPrice1: post.theHiddenPrice1});
                 if(post.datepicker !== ""){
                     // Oneway
                     if(post.datepicker3 == ""){
-                        startJob(post.datepicker2, undefined, post.myInput3, post.myInput4, post.adltsQ1);
-                        console.log({departDate: post.datepicker2, fromCity: post.myInput3, toCity: post.myInput4, AmountAdults: post.adltsQ1});
+                        startJob(post.datepicker2, undefined, post.myInput3, post.myInput4, post.adltsQ1, post.theHiddenPrice1);
+                        console.log({departDate: post.datepicker2, fromCity: post.myInput3, toCity: post.myInput4, AmountAdults: post.adltsQ1, UserTel1: post.theHiddenTel1, UserPrice1: post.theHiddenPrice1});
                         res.writeHead(200);
                     // Round trip
                     }else{
-                        startJob(post.datepicker, post.datepicker1, post.myInput1, post.myInput2, post.adltsQ);
-                        console.log({departDate: post.datepicker, returnDate: post.datepicker1, fromCity: post.myInput1, toCity: post.myInput2, AmountAdults: post.adltsQ});
+                        startJob(post.datepicker, post.datepicker1, post.myInput1, post.myInput2, post.adltsQ, post.theHiddenPrice);
+                        console.log({departDate: post.datepicker, returnDate: post.datepicker1, fromCity: post.myInput1, toCity: post.myInput2, AmountAdults: post.adltsQ, UserTel: post.theHiddenTel, UserPrice:post.theHiddenPrice});
                         res.writeHead(200);
                     }
                 }
@@ -167,6 +173,7 @@ async function scraperProduct(url, filename, adltsQ, datein){
             console.log(err);
         }
     });
+    console.log('Data has been added to file!');
 }
 
 // Function that inserts dates and IATA codes in the flexible link creator
@@ -179,7 +186,7 @@ function chooseRoute(dateout, datein, cityFrom, cityTo, adltsQ){
 }
 
 // Function that allows us to run scraper at scheduled times + creates new file if a file doesnt already exist
-function startJob(dateout, datein, cityFrom, cityTo, adltsQ){
+function startJob(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice){
     console.log('Checking if the given file exists...');
     
     if(datein == undefined || false){
@@ -208,6 +215,9 @@ function startJob(dateout, datein, cityFrom, cityTo, adltsQ){
     var j = schedule.scheduleJob('05 * * * * *', function(){
         console.log('Running scheduled job...');
         chooseRoute(dateout, datein, cityFrom, cityTo, adltsQ);
+        setTimeout(function (){
+            RunPriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice);
+        }, 15000);
     });
 }
 
@@ -516,8 +526,68 @@ function CityToIata(city){
     }
 }
 
+function jsonReader(filePath, cb){
+    fs.readFile(filePath, (err, fileData) => {
+        if (err){
+            return cb && cb(err)
+        }
+        try{
+            const object = JSON.parse(fileData);
+            return cb && cb(null, object)
+        }catch(err){
+            return cb && cb(err)
+        }
+    })
+}
 
+function PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice){
+    jsonReader("../Webside/scrapedata/" + cityFrom + cityTo + dateout + datein + '.json', (err, ScrapedData) => {
+      if(err){
+          console.log(err);
+          return;
+      }else{
+          for(i = 0; i < ScrapedData.length; i++){
+              // If user picks a return trip - will take the total price
+              if(datein !== "_0"){
+                  if(parseFloat(ScrapedData[i].TotalPrice) <= CustomerSpecifiedPrice){
+                      console.log('Price equal to or lower than '+ CustomerSpecifiedPrice + ' has been recorded at: ' + ScrapedData[i].ScrapeDate);
+                      console.log('Sending notification to user...');
+                      client.messages.create({
+                          to: '+4542313187',
+                          from: '+12512200734',
+                          body: 'HeyHo!\n\nThe route: ' + ScrapedData[i].Departure + ' and ' + ScrapedData[i].Return + ' from ' + ScrapedData[i].DepartureDate + ' to ' + ScrapedData[i].ReturnDate + ' has price dropped to ' + ScrapedData[i].TotalPrice + ', which is under or equal to your desired price at ' + CustomerSpecifiedPrice + ' ' + ScrapedData[i].Currency + '.\n\nAct fast and buy before it gets sold out!\n\nVisit this link to buy: https://www.ryanair.com/dk/da/trip/flights/select?adults='+adltsQ+'&teens=0&children=0&infants=0&dateOut='+dateout+'&'+'dateIn='+datein+'&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn=true&discount=0'  
+                      });
+                      console.log('Notification sent!');
+                  }else{
+                      console.log('(round-trip) No price changes so far...');
+                  }
+              
+              // If user picks a one-way flight - will take the price for the one way flight
+              }else if(datein == "_0"){
+                  if(parseFloat(ScrapedData[i].TotalPrice) <= CustomerSpecifiedPrice){
+                      console.log('Price equal to or lower than '+ CustomerSpecifiedPrice + ' has been recorded at: ' + ScrapedData[i].ScrapeDate);
+                      console.log('Sending notification to user...');
+                      client.messages.create({
+                          to: '+4542313187',
+                          from: '+12512200734',
+                          body: 'HeyHo!\n\nThe route: ' + ScrapedData[i].Departure + ' on the ' + ScrapedData[i].DepartureDate + ' has price dropped to ' + ScrapedData[i].TotalPrice + ', which is under or equal to your desired price at ' + CustomerSpecifiedPrice + ' ' + ScrapedData[i].Currency + '.\n\nAct fast and buy before it gets sold out!\n\nVisit this link to buy: https://www.ryanair.com/dk/da/trip/flights/select?adults='+adltsQ+'&teens=0&children=0&infants=0&dateOut='+dateout+'&'+'dateIn=&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn=false&discount=0'  
+                      });
+                      console.log('Notification sent!');
+                  }else{
+                      console.log('(one-way) No price changes so far...');
+                  }
+              }
+          }
+      } 
+  });
+}
 
+function RunPriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice){
+    console.log('Running scheduled price comparison...');
+    console.log('Looking at route: ' + cityFrom + ' to ' + cityTo);
+    console.log('User desires a totalprice of: ' + CustomerSpecifiedPrice);
+    PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice);
+}
 
 
 // startJob('2020-05-15', '2020-05-17', 'Copenhagen', 'London Stansted');
