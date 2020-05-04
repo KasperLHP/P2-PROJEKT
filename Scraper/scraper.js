@@ -215,9 +215,11 @@ function startJob(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPr
     var j = schedule.scheduleJob('05 * * * * *', function(){
         console.log('Running scheduled job...');
         chooseRoute(dateout, datein, cityFrom, cityTo, adltsQ);
-        setTimeout(function (){
-            RunPriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice);
-        }, 15000);
+        if(CustomerSpecifiedPrice != 0){
+            setTimeout(function (){
+                RunPriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice);
+            }, 15000);
+        }
     });
 }
 
