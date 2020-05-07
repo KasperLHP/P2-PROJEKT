@@ -15,6 +15,11 @@ var twilioSID = process.env.TWILIO_ACCOUNT_SID;
 var twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
 const client = new twilio(twilioSID, twilioAuthToken);
 
+// Money converter
+var fx = require("money");
+fx.base = "DKK";
+fx.rates = {DKK: 1.00000, EUR: 0.13404, USD: 0.14477, GBP: 0.11724};
+
 var d = new Date();
 let firstLine = [];
 var fileServer = new nStatic.Server('../Webside');
@@ -42,12 +47,12 @@ http.createServer(function (req, res) {
                 if(post.datepicker !== ""){
                     // Oneway
                     if(post.datepicker3 == ""){
-                        startJob(post.datepicker2, undefined, post.myInput3, post.myInput4, post.adltsQ1, post.theHiddenPrice1);
+                        startJob(post.datepicker2, undefined, post.myInput3, post.myInput4, post.adltsQ1, post.theHiddenPrice1, post.theHiddenTel1);
                         console.log({departDate: post.datepicker2, fromCity: post.myInput3, toCity: post.myInput4, AmountAdults: post.adltsQ1, UserTel1: post.theHiddenTel1, UserPrice1: post.theHiddenPrice1});
                         res.writeHead(200);
                     // Round trip
                     }else{
-                        startJob(post.datepicker, post.datepicker1, post.myInput1, post.myInput2, post.adltsQ, post.theHiddenPrice);
+                        startJob(post.datepicker, post.datepicker1, post.myInput1, post.myInput2, post.adltsQ, post.theHiddenPrice, post.theHiddenTel);
                         console.log({departDate: post.datepicker, returnDate: post.datepicker1, fromCity: post.myInput1, toCity: post.myInput2, AmountAdults: post.adltsQ, UserTel: post.theHiddenTel, UserPrice:post.theHiddenPrice});
                         res.writeHead(200);
                     }
@@ -120,11 +125,33 @@ async function scraperProduct(url, filename, adltsQ, datein){
     //Currency
     const [el12] = await page.$x('/html/body/flights-root/div/div/div/div/flights-summary-container/flights-summary/div/div[1]/journey-container/journey/div/div[2]/carousel-container/carousel/div/ul/li[3]/carousel-item/button/div[2]/ry-price/span[1]');
     const txt12 = await el12.getProperty('textContent');
-    const Currency = await txt12.jsonValue();
-    // Price element + currency element (euro, pounds, etc..)
-    let Departureprice = (Price * adltsQ);
+    var Currency = await txt12.jsonValue();
+    // Price element - price times amount of people
+    var Departureprice = (Price * adltsQ);
+    
+    if(Currency == "€"){
+        var ConvertedPriceDep = (fx.convert(Departureprice, {from: "EUR", to: "DKK"}, fx.rates)).toFixed(2);
+        if(datein == "_0"){
+            var Currency = "DKK";
+        }
+    }else if(Currency == "£"){
+        var ConvertedPriceDep = (fx.convert(Departureprice, {from: "GBP", to: "DKK"}, fx.rates)).toFixed(2);
+        if(datein == "_0"){
+            var Currency = "DKK";
+        }
+    }else if(Currency == "Dkr"){
+        var ConvertedPriceDep = (fx.convert(Departureprice, {from: "DKK", to: "DKK"}, fx.rates)).toFixed(2);
+        if(datein == "_0"){
+            var Currency = "DKK";
+        }
+    }else if(Currency == "$"){
+        var ConvertedPriceDep = (fx.convert(Departureprice, {from: "USD", to: "DKK"}, fx.rates)).toFixed(2);
+        if(datein == "_0"){
+            var Currency = "DKK";
+        }
+    }
 
-    var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: parseFloat(Departureprice) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + ' ' + d.getFullYear(), Price: Departureprice + ' ' + Currency , DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Currency: Currency};
+    var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: parseFloat(ConvertedPriceDep) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + ' ' + d.getFullYear(), Price: parseFloat(ConvertedPriceDep) + ' ' + Currency, DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Quantity: adltsQ, Currency: Currency};
     
     if(datein !== "_0"){
         //Return flight
@@ -148,10 +175,24 @@ async function scraperProduct(url, filename, adltsQ, datein){
         const [el10] = await page.$x('/html/body/flights-root/div/div/div/div/flights-summary-container/flights-summary/div/div[2]/journey-container/journey/flight-list/div/flight-card[1]/div/div/div[1]/div/flight-info/div[3]/span[1]');
         const txt10 = await el10.getProperty('textContent');
         const ArrivalTime2 = await txt10.jsonValue();
-        // Price element + currency element (euro, pounds, etc..)
+        // Price element and amount of people
         let Returnprice = (Price2 * adltsQ);
-            
-        var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Returnprice) + parseFloat(Departureprice)) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + ' ' + d.getFullYear(), Price: Departureprice + ' ' + Currency , DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Return: FromTo2.trim(), ReturnDate: ReturnDate.slice(3, 10) + ' ' +  d.getFullYear(), Price2: Returnprice + ' ' + Currency, DepartureTime2: DepartureTime2.trim(), ArrivalTime2: ArrivalTime2.trim(), Currency: Currency};
+
+        if(Currency == "€"){
+            var ConvertedPriceRet = (fx.convert(Returnprice, {from: "EUR", to: "DKK"}, fx.rates)).toFixed(2);
+            var Currency = "DKK";
+        }else if(Currency == "£"){
+            var ConvertedPriceRet = (fx.convert(Returnprice, {from: "GBP", to: "DKK"}, fx.rates)).toFixed(2);
+            var Currency = "DKK";
+        }else if(Currency == "Dkr"){
+            var ConvertedPriceRet = (fx.convert(Returnprice, {from: "DKK", to: "DKK"}, fx.rates)).toFixed(2);
+            var Currency = "DKK";
+        }else if(Currency == "$"){
+            var ConvertedPriceRet = (fx.convert(Returnprice, {from: "USD", to: "DKK"}, fx.rates)).toFixed(2);
+            var Currency = "DKK";
+        }
+       
+        var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(ConvertedPriceRet) + parseFloat(ConvertedPriceDep)).toFixed(2) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + ' ' + d.getFullYear(), Price: parseFloat(ConvertedPriceDep) + ' ' + Currency, DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Return: FromTo2.trim(), ReturnDate: ReturnDate.slice(3, 10) + ' ' +  d.getFullYear(), Price2: parseFloat(ConvertedPriceRet) + ' ' + Currency, DepartureTime2: DepartureTime2.trim(), ArrivalTime2: ArrivalTime2.trim(), Quantity: adltsQ, Currency: Currency};
     }
 
     var filejsonData = [];
@@ -186,7 +227,7 @@ function chooseRoute(dateout, datein, cityFrom, cityTo, adltsQ){
 }
 
 // Function that allows us to run scraper at scheduled times + creates new file if a file doesnt already exist
-function startJob(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice){
+function startJob(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel){
     console.log('Checking if the given file exists...');
     
     if(datein == undefined || false){
@@ -215,9 +256,9 @@ function startJob(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPr
     var j = schedule.scheduleJob('05 * * * * *', function(){
         console.log('Running scheduled job...');
         chooseRoute(dateout, datein, cityFrom, cityTo, adltsQ);
-        if(CustomerSpecifiedPrice != 0){
+        if(CustomerSpecifiedPrice != 0 || undefined || "" || null){
             setTimeout(function (){
-                RunPriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice);
+                RunPriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel);
             }, 15000);
         }
     });
@@ -542,7 +583,7 @@ function jsonReader(filePath, cb){
     })
 }
 
-function PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice){
+function PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel){
     jsonReader("../Webside/scrapedata/" + cityFrom + cityTo + dateout + datein + '.json', (err, ScrapedData) => {
       if(err){
           console.log(err);
@@ -555,7 +596,7 @@ function PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecified
                       console.log('Price equal to or lower than '+ CustomerSpecifiedPrice + ' has been recorded at: ' + ScrapedData[i].ScrapeDate);
                       console.log('Sending notification to user...');
                       client.messages.create({
-                          to: '+4542313187',
+                          to: '+45'+CustomerTel,
                           from: '+12512200734',
                           body: 'HeyHo!\n\nThe route: ' + ScrapedData[i].Departure + ' and ' + ScrapedData[i].Return + ' from ' + ScrapedData[i].DepartureDate + ' to ' + ScrapedData[i].ReturnDate + ' has price dropped to ' + ScrapedData[i].TotalPrice + ', which is under or equal to your desired price at ' + CustomerSpecifiedPrice + ' ' + ScrapedData[i].Currency + '.\n\nAct fast and buy before it gets sold out!\n\nVisit this link to buy: https://www.ryanair.com/dk/da/trip/flights/select?adults='+adltsQ+'&teens=0&children=0&infants=0&dateOut='+dateout+'&'+'dateIn='+datein+'&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn=true&discount=0'  
                       });
@@ -570,7 +611,7 @@ function PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecified
                       console.log('Price equal to or lower than '+ CustomerSpecifiedPrice + ' has been recorded at: ' + ScrapedData[i].ScrapeDate);
                       console.log('Sending notification to user...');
                       client.messages.create({
-                          to: '+4542313187',
+                          to: '+45'+CustomerTel,
                           from: '+12512200734',
                           body: 'HeyHo!\n\nThe route: ' + ScrapedData[i].Departure + ' on the ' + ScrapedData[i].DepartureDate + ' has price dropped to ' + ScrapedData[i].TotalPrice + ', which is under or equal to your desired price at ' + CustomerSpecifiedPrice + ' ' + ScrapedData[i].Currency + '.\n\nAct fast and buy before it gets sold out!\n\nVisit this link to buy: https://www.ryanair.com/dk/da/trip/flights/select?adults='+adltsQ+'&teens=0&children=0&infants=0&dateOut='+dateout+'&'+'dateIn=&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn=false&discount=0'  
                       });
@@ -584,11 +625,11 @@ function PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecified
   });
 }
 
-function RunPriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice){
+function RunPriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel){
     console.log('Running scheduled price comparison...');
     console.log('Looking at route: ' + cityFrom + ' to ' + cityTo);
     console.log('User desires a totalprice of: ' + CustomerSpecifiedPrice);
-    PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice);
+    PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel);
 }
 
 
