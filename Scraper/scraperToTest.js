@@ -523,7 +523,8 @@ function PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecified
           console.log(err);
           return;
       }else{
-          for(i = 0; i < ScrapedData.length; i++){
+          for(i = ScrapedData.length - 1; i < ScrapedData.length; i++){
+              console.log("Looking at: " + ScrapedData[i].ScrapeDate);
               // If user picks a return trip - will take the total price
               if(datein !== "_0"){
                   if(parseFloat(ScrapedData[i].TotalPrice) <= CustomerSpecifiedPrice){
@@ -566,7 +567,7 @@ function RunPriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecif
     PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel);
 }
 
-startJob('2020-06-01', '2020-06-08', 'Copenhagen', 'London Stansted', 1, 400, 42313187);
+startJob('2020-07-04', undefined, 'Copenhagen', 'London Stansted', 1, 260, 42313187);
 
 // console.log(selected_date_element.textContent, selected_date_element2.textContent, CityToIata(document.getElementById('myInput1')), CityToIata(document.getElementById('myInput2')));
 // selected_date_element.textContent - dateout

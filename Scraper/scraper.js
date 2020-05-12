@@ -589,7 +589,7 @@ function PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecified
           console.log(err);
           return;
       }else{
-          for(i = 0; i < ScrapedData.length; i++){
+        for(i = ScrapedData.length - 1; i < ScrapedData.length; i++){
               // If user picks a return trip - will take the total price
               if(datein !== "_0"){
                   if(parseFloat(ScrapedData[i].TotalPrice) <= CustomerSpecifiedPrice){
