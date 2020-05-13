@@ -121,40 +121,28 @@ fetch("/scrapedata/"+location.hash.substr(1)).then((response) => {
         left: 50,
         right: 50,
         margin: {l: 30, r: 50, b: 70, t: 10},
-        showlegend: false /*,
+        showlegend: false,
+        plot_bgcolor:"transparent",
+        paper_bgcolor:"transparent",
         xaxis: {
-            autorange: true,
-            range: ['2020-04-09', '2020-04-15'], // StringifyDate(data[1].ScrapeDate), StringifyDate(data[i].ScrapeDate[data[i].length - 1])
-            rangeselector: {buttons: [
-                {
-                count: 1,
-                label: '1m',
-                step: 'month',
-                stepmode: 'backward'
-                },
-                {
-                count: 6,
-                label: '6m',
-                step: 'month',
-                stepmode: 'backward'
-                },
-                {step: 'all'}
-            ]}, 
-            rangeslider: {range: ['2020-04-09', '2020-04-15']}, //StringifyDate(data[1].ScrapeDate), StringifyDate(data[i].ScrapeDate[data[i].length - 1])
-            type: 'date'
+            gridcolor: "#878787"
         },
         yaxis: {
-            autorange: true,
-            range: [0, 2500], // math.max(data[i].TotalPrice) + 200
-            type: 'linear'
-        }*/
+            gridcolor: "#878787"
+        },
+        font: {
+            color: 'white'
+        }
     };
 
     var config = ({responsive: true}, {displaylogo: false});
 
     Plotly.plot(chart, [{
         y: flightPrice,
-        x: flightDates
+        x: flightDates,
+        line: {
+            color: "#ede5da"
+        }
     }], layout, config);
 });
 
