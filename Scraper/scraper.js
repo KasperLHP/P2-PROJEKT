@@ -1,3 +1,20 @@
+//load in our env variables
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
+} 
+
+const express = require('express')
+const app = express()
+const bcrypt = require('bcrypt')
+const passport = require('passport')
+const flash = require('express-flash')
+const session = require('express-session')
+const methodOverride = require('method-override')
+require('./passport-config1')(passport)
+const mongoose = require('mongoose')
+var User = require('./user-models');
+let loggedInEmail;
+
 const puppeteer = require('puppeteer');
 const os = require('os');
 const fs2 = require('fs-extra');
@@ -10,16 +27,16 @@ const path = require('path');
 
 //Reqs for PriceNotifier
 require('dotenv').config();
-const twilio = require('twilio');
+/* const twilio = require('twilio');
 var twilioSID = process.env.TWILIO_ACCOUNT_SID;
 var twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
 const client = new twilio(twilioSID, twilioAuthToken);
-
+*/
 var d = new Date();
 let firstLine = [];
-var fileServer = new nStatic.Server('../Webside');
+ /* var fileServer = new nStatic.Server('../Webside');*/
 
-var http = require('http');
+var http = require('http'); /*
 http.createServer(function (req, res) {
     if(req.method == 'POST') {
         console.log(req.url);
@@ -55,7 +72,7 @@ http.createServer(function (req, res) {
             }
 
         });
-    }else if (req.method == 'GET') {
+    }  else if (req.method == 'GET') {
         if(req.url == '/getFlightData') {
             var directoryPath = path.join(__dirname, '../Webside/scrapedata');
             fs.readdir(directoryPath, function (err, files) {
@@ -64,30 +81,162 @@ http.createServer(function (req, res) {
                 if (err) {
                     return console.log('Unable to scan directory: ' + err);
                 } 
-                //listing all files using forEach
-               /* files.forEach(function (file) {
-                    // Do whatever you want to do with the file
-                    res.write(file); 
-                    res.write("test");
-                });
-                */
                 res.writeHead(200);
                     res.end(JSON.stringify(files));
             });
           
-        }else{
+        } else{
             fileServer.serve(req, res);
         }
+    })
+*/
+app.listen(8080);
+app.set('views', path.join(__dirname, '../Webside'))
+app.engine('html', require('ejs').renderFile)
+app.set('view engine', 'html')
+
+//tells our application that we can access our login details inside our req inside post
+app.use(express.static("../Webside"))
+app.use(express.urlencoded({ extended: false }))
+app.use(flash())
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+  }))
+ 
+app.use(passport.initialize())
+//store variables across all pages
+app.use(passport.session())
+app.use(methodOverride('_method'))
+      
+app.get('/', checkAuthenticated, (req, res) => {
+    res.render('website.html')
+})
+
+app.get('/login', checkNotAuthenticated, (req, res) => {
+    res.render('login.html')
+})
+
+app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true
+}))
+
+app.get('/register', checkNotAuthenticated, (req, res) => {
+    res.render('register.html')
+})
+
+app.post('/register', checkNotAuthenticated, (req, res) => {
+    
+    //const hashedPassword = bcrypt.hash(req.body.password, 10)
+    newUser = new User ({
+        name: req.body.navn,
+        email: req.body.email,
+        phone_number: req.body.phone_number,
+        password: req.body.password,
+        files: [('hej')]
+        })
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newUser.password, salt, (err, hash) => {
+              if (err) throw err;
+              newUser.password = hash;
+              newUser
+                .save()
+                .then(user => {
+                  console.log(newUser)
+                  res.redirect('/login');
+                })
+                .catch(err => console.log(err));
+            });
+})
+})
+
+app.get('/getFlightData', checkAuthenticated, (req, res) => {
+    var directoryPath = path.join(__dirname, '../Webside/scrapedata');
+   fs.readdir(directoryPath, function (err, files) {
+       console.log(files)
+       //handling error
+       if (err) {
+           return console.log('Unable to scan directory: ' + err);
+       } 
+       res.writeHead(200);
+       res.end(JSON.stringify(files));
+   }); 
+});
+
+app.post('/', checkAuthenticated, (req, res) => {
+   if(req.body.datepicker !== ""){
+       // Oneway
+       if(req.body.datepicker3 == ""){
+           startJob(req, req.body.datepicker2, undefined, req.body.myInput3, req.body.myInput4, req.body.adltsQ1, req.body.theHiddenPrice1);
+           console.log({departDate: req.body.datepicker2, fromCity: req.body.myInput3, toCity: req.body.myInput4, AmountAdults: req.body.adltsQ1, UserTel1: req.body.theHiddenTel1, UserPrice1: req.body.theHiddenPrice1});
+           res.writeHead(200);
+       // Round trip
+       }else{
+           startJob(req, req.body.datepicker, req.body.datepicker1, req.body.myInput1, req.body.myInput2, req.body.adltsQ, req.body.theHiddenPrice);
+           console.log({departDate: req.body.datepicker, returnDate: req.body.datepicker1, fromCity: req.body.myInput1, toCity: req.body.myInput2, AmountAdults: req.body.adltsQ, UserTel: req.body.theHiddenTel, UserPrice:req.body.theHiddenPrice});
+           res.writeHead(200);
+       }
+   }
+})
+
+function save_scrapedata_to_user(req, filename) {
+    User.findOne({email: req.user.email}, function (err, User) {
+        if (err) return done(err);
+        // Create the new field if it doesn't exist yet
+        User.files || (User.files = []);
+        User.files.push(filename);
+        console.log('hej1');
+        User.save();
+    });
+}
+
+    
+
+/*
+app.get('/listfiles', (req, res) => {
+    const filter = {email: 'john@densaj.com'}
+    const update = {name: 'j'}
+    User.findOneAndUpdate(filter, update, {
+        new: true
+    })
+    console.log('hej')
+})
+*/
+
+// logout funktion, noget passport gør for os
+app.delete('/logout', (req, res) => {
+    req.logOut()
+    res.redirect('/login')
+})
+
+// tjekker for om man er logget ind ved hvert kald
+function checkAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next()
     }
-}).listen(8080);
+
+    res.redirect('/login')
+}
+
+function checkNotAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return   res.redirect('/')
+    }
+    next()
+}
 
 async function writeToFile(file, text){
     await fs2.outputFile(file, `${text}${os.EOL}`, options);
 }
 
 // Actual scraper - takes Xpath elements of website
-async function scraperProduct(url, filename, adltsQ, datein){
+async function scraperProduct(req, url, filename, adltsQ, datein){
     console.log('Starting scraper...');
+
+    save_scrapedata_to_user(req, filename);
     
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -153,7 +302,7 @@ async function scraperProduct(url, filename, adltsQ, datein){
             
         var data = {ScrapeDate: Date().toLocaleString(), TotalPrice: (parseFloat(Returnprice) + parseFloat(Departureprice)) + ' ' + Currency, Departure: FromTo.trim(), DepartureDate: DepartureDate + ' ' + d.getFullYear(), Price: Departureprice + ' ' + Currency , DepartureTime: DepartureTime.trim(), ArrivalTime: ArrivalTime.trim(), Return: FromTo2.trim(), ReturnDate: ReturnDate.slice(3, 10) + ' ' +  d.getFullYear(), Price2: Returnprice + ' ' + Currency, DepartureTime2: DepartureTime2.trim(), ArrivalTime2: ArrivalTime2.trim(), Currency: Currency};
     }
-
+    
     var filejsonData = [];
     try{
         var filedata = fs.readFileSync("../Webside/scrapedata/"+filename+'.json', 'utf8', 'r' )
@@ -177,16 +326,16 @@ async function scraperProduct(url, filename, adltsQ, datein){
 }
 
 // Function that inserts dates and IATA codes in the flexible link creator
-function chooseRoute(dateout, datein, cityFrom, cityTo, adltsQ){
+function chooseRoute(req, dateout, datein, cityFrom, cityTo, adltsQ){
     if(datein == "_0"){
-        scraperProduct('https://www.ryanair.com/dk/da/trip/flights/select?adults='+adltsQ+'&teens=0&children=0&infants=0&dateOut='+dateout+'&dateIn=&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn=false&discount=0', cityFrom + cityTo + dateout + datein, adltsQ, datein);
+        scraperProduct(req, 'https://www.ryanair.com/dk/da/trip/flights/select?adults='+adltsQ+'&teens=0&children=0&infants=0&dateOut='+dateout+'&dateIn=&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn=false&discount=0', cityFrom + cityTo + dateout + datein, adltsQ, datein);
     }else if(datein !== "_0"){
-        scraperProduct('https://www.ryanair.com/dk/da/trip/flights/select?adults='+adltsQ+'&teens=0&children=0&infants=0&dateOut='+dateout+'&dateIn='+datein+'&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn=true&discount=0', cityFrom + cityTo + dateout + datein, adltsQ, datein);
+        scraperProduct(req, 'https://www.ryanair.com/dk/da/trip/flights/select?adults='+adltsQ+'&teens=0&children=0&infants=0&dateOut='+dateout+'&dateIn='+datein+'&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn=true&discount=0', cityFrom + cityTo + dateout + datein, adltsQ, datein);
     }
 }
 
 // Function that allows us to run scraper at scheduled times + creates new file if a file doesnt already exist
-function startJob(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice){
+function startJob(req, dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice){
     console.log('Checking if the given file exists...');
     
     if(datein == undefined || false){
@@ -214,12 +363,12 @@ function startJob(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPr
 
     var j = schedule.scheduleJob('05 * * * * *', function(){
         console.log('Running scheduled job...');
-        chooseRoute(dateout, datein, cityFrom, cityTo, adltsQ);
-        if(CustomerSpecifiedPrice != 0){
+        chooseRoute(req, dateout, datein, cityFrom, cityTo, adltsQ);
+        /*if(CustomerSpecifiedPrice != 0){
             setTimeout(function (){
                 RunPriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice);
             }, 15000);
-        }
+        } */
     });
 }
 
