@@ -1,17 +1,12 @@
-//load in our env variables
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config()
-} 
-
-const express = require('express')
-const app = express()
-const bcrypt = require('bcrypt')
-const passport = require('passport')
-const flash = require('express-flash')
-const session = require('express-session')
-const methodOverride = require('method-override')
-require('./passport-config1')(passport)
-const mongoose = require('mongoose')
+const express = require('express');
+const app = express();
+const bcrypt = require('bcrypt'); 
+const passport = require('passport');
+const flash = require('express-flash');
+const session = require('express-session');
+const methodOverride = require('method-override');
+require('./passport-config1')(passport);
+const mongoose = require('mongoose');
 var User = require('./user-models');
 let loggedInEmail;
 
@@ -26,10 +21,11 @@ const qs = require('querystring');
 const path = require('path');
 
 //Reqs for PriceNotifier
-require('dotenv').config();
+require('dotenv').config({path: '../twilio.env'});
 const twilio = require('twilio');
 var twilioSID = process.env.TWILIO_ACCOUNT_SID;
 var twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
+console.log({twilioID: twilioSID, twilioToken: twilioAuthToken});
 const client = new twilio(twilioSID, twilioAuthToken);
 
 // Money converter
@@ -53,7 +49,7 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false
-  }))
+  }));
  
 app.use(passport.initialize())
 //store variables across all pages

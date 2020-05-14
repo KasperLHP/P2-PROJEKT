@@ -113,17 +113,10 @@ fetch("/scrapedata/"+location.hash.substr(1)).then((response) => {
     document.getElementById("PriceField").textContent = PriceAndDate; // + '' + data[i].Currency;
 
     var chart = document.getElementById('showchart');
-    
     var layout = {
-        autosize: false,
-        width: 680,
-        height: 410,
-        left: 50,
-        right: 50,
-        margin: {l: 30, r: 50, b: 70, t: 10},
-        showlegend: false,
-        plot_bgcolor:"transparent",
-        paper_bgcolor:"transparent",
+        autosize: false, width: 680, height: 410, left: 50, right: 50,
+        margin: {l: 30, r: 50, b: 70, t: 10}, showlegend: false,
+        plot_bgcolor:"transparent", paper_bgcolor:"transparent",
         xaxis: {
             gridcolor: "#878787"
         },
@@ -136,7 +129,6 @@ fetch("/scrapedata/"+location.hash.substr(1)).then((response) => {
     };
 
     var config = ({responsive: true}, {displaylogo: false});
-
     Plotly.plot(chart, [{
         y: flightPrice,
         x: flightDates,
