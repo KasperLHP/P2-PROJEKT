@@ -143,7 +143,6 @@ function save_scrapedata_to_user(req, filename) {
     });
 }
 
-    
 
 /*
 app.get('/listfiles', (req, res) => {
@@ -354,7 +353,7 @@ function startJob(req, dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecif
             setTimeout(function (){
                 RunPriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel);
             }, 15000);
-        } */
+        } 
     });
 }
 
