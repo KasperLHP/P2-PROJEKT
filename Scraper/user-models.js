@@ -2,7 +2,7 @@
 const mongoose = require('mongoose')
 var Schema = mongoose.Schema
 const db = mongoose.connection
-var mongoDB = 'mongodb://localhost/Profile_DB'
+var mongoDB = 'mongodb+srv://dbJohn:123@dbb2-7fmcy.mongodb.net/test?retryWrites=true&w=majority'
 
 mongoose.connect(mongoDB, {useUnifiedTopology: true, useNewUrlParser: true})
 db.on('error', error => console.error(error))
