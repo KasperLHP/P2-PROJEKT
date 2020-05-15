@@ -98,12 +98,12 @@ app.post('/register', checkNotAuthenticated, (req, res) => {
 })
 })
 
+//Function that upon comparison of scrapedata folder contents and User files (in MongoDB) will only display the jobs that the current user has started
 app.get('/getFlightData', checkAuthenticated, (req, res) => {
     var directoryPath = path.join(__dirname, '../Webside/scrapedata');
-    fs.readdir(directoryPath, function (err, files) {
+    fs.readdir(directoryPath, function (err, files) { 
         if (err) return console.log('Unable to scan directory: ' + err);
-
-        User.findOne({email: "kasper@densaj.com"}, function (err, User) {
+        User.findOne({email: "kasper@densaj.com"}, function (err, User) { 
             if (err) return done(err);
             files.forEach(file => {
                 for(i = 0; i < User.files.length; i++){
@@ -718,9 +718,4 @@ function RunPriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecif
     console.log('Looking at route: ' + cityFrom + ' to ' + cityTo);
     console.log('User desires a totalprice of: ' + CustomerSpecifiedPrice);
     PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel, JobID);
-}
-
-function CompareJobsWithUserJob (){
-    var files = fs.readdirSync('../Webside/scrapedata');
-
 }
