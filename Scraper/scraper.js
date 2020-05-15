@@ -100,14 +100,22 @@ app.post('/register', checkNotAuthenticated, (req, res) => {
 
 app.get('/getFlightData', checkAuthenticated, (req, res) => {
     var directoryPath = path.join(__dirname, '../Webside/scrapedata');
-   fs.readdir(directoryPath, function (err, files) {
-       console.log(files)
-       //handling error
-       if (err) {
-           return console.log('Unable to scan directory: ' + err);
-       } 
-       res.writeHead(200);
-       res.end(JSON.stringify(files));
+    fs.readdir(directoryPath, function (err, files) {
+        if (err) return console.log('Unable to scan directory: ' + err);
+
+        User.findOne({email: "kasper@densaj.com"}, function (err, User) {
+            if (err) return done(err);
+            files.forEach(file => {
+                for(i = 0; i < User.files.length; i++){
+                    if(User.files[i] == file){
+                        var Matchedfiles = User.files[i];
+                        console.log(Matchedfiles);
+                    }    
+                }
+            });
+        });
+    res.writeHead(200);
+    res.end(JSON.stringify(files));
    }); 
 });
 
@@ -289,7 +297,6 @@ async function scraperProduct(url, filename, adltsQ, datein){
         }
     });
     console.log('Data has been added to file!');
-    
 }
 
 // Function that inserts dates and IATA codes in the flexible link creator
@@ -713,11 +720,7 @@ function RunPriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecif
     PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel, JobID);
 }
 
+function CompareJobsWithUserJob (){
+    var files = fs.readdirSync('../Webside/scrapedata');
 
-// startJob('2020-05-15', '2020-05-17', 'Copenhagen', 'London Stansted');
-// console.log(selected_date_element.textContent, selected_date_element2.textContent, CityToIata(document.getElementById('myInput1')), CityToIata(document.getElementById('myInput2')));
-// startJob('2020-05-09', '2020-05-16', 'London Stansted', 'Copenhagen');
-// selected_date_element.textContent - dateout
-// selected_date_element2.textContent - datein
-// CityToIata(document.getElementById('myInput1')) - cityfrom
-// CityToIata(document.getElementById('myInput2')) - city to
+}
