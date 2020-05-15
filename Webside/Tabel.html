@@ -65,6 +65,7 @@ function insertTd(td, dom){
     dom.appendChild(node);
 }
 
+
 fetch("/scrapedata/"+location.hash.substr(1)).then((response) => {
     return response.json();
 }).then((data) => {
@@ -78,6 +79,7 @@ fetch("/scrapedata/"+location.hash.substr(1)).then((response) => {
         insertTd(flight.Return, tr);
         dataTabel.appendChild(tr);
     }
+
     // GRAF 
     console.log(data);
     var flightPrice = [];
