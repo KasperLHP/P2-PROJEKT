@@ -8,7 +8,6 @@ const methodOverride = require('method-override');
 require('./passport-config1')(passport);
 const mongoose = require('mongoose');
 var User = require('./user-models');
-let loggedInEmail;
 
 const puppeteer = require('puppeteer');
 const os = require('os');
@@ -139,18 +138,6 @@ function save_scrapedata_to_user(req, filename) {
     });
 }
 
-
-/*
-app.get('/listfiles', (req, res) => {
-    const filter = {email: 'john@densaj.com'}
-    const update = {name: 'j'}
-    User.findOneAndUpdate(filter, update, {
-        new: true
-    })
-    console.log('hej')
-})
-*/
-
 // logout funktion, noget passport gør for os
 app.delete('/logout', (req, res) => {
     req.logOut()
@@ -180,8 +167,6 @@ async function writeToFile(file, text){
 // Actual scraper - takes Xpath elements of website
 async function scraperProduct(req, url, filename, adltsQ, datein){
     console.log('Starting scraper...');
-
-    save_scrapedata_to_user(req, filename);
     
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -304,6 +289,8 @@ async function scraperProduct(req, url, filename, adltsQ, datein){
         }
     });
     console.log('Data has been added to file!');
+    save_scrapedata_to_user(req, filename);
+    
 }
 
 // Function that inserts dates and IATA codes in the flexible link creator
