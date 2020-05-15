@@ -151,11 +151,11 @@ async function scraperProduct(url, filename, adltsQ, datein){
 }
 
 // Function that inserts dates and IATA codes in the flexible link creator
-function chooseRoute(dateout, datein, cityFrom, cityTo, adltsQ){
+function chooseRoute(dateout, datein, cityFrom, cityTo, adltsQ, JobID){
     if(datein == "_0"){
-        scraperProduct('https://www.ryanair.com/dk/da/trip/flights/select?adults='+adltsQ+'&teens=0&children=0&infants=0&dateOut='+dateout+'&dateIn=&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn=false&discount=0', cityFrom + cityTo + dateout + datein, adltsQ, datein);
+        scraperProduct('https://www.ryanair.com/dk/da/trip/flights/select?adults='+adltsQ+'&teens=0&children=0&infants=0&dateOut='+dateout+'&dateIn=&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn=false&discount=0', cityFrom + cityTo + dateout + datein + '_' + JobID, adltsQ, datein);
     }else if(datein !== "_0"){
-        scraperProduct('https://www.ryanair.com/dk/da/trip/flights/select?adults='+adltsQ+'&teens=0&children=0&infants=0&dateOut='+dateout+'&dateIn='+datein+'&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn=true&discount=0', cityFrom + cityTo + dateout + datein, adltsQ, datein);
+        scraperProduct('https://www.ryanair.com/dk/da/trip/flights/select?adults='+adltsQ+'&teens=0&children=0&infants=0&dateOut='+dateout+'&dateIn='+datein+'&originIata='+cityFrom+'&destinationIata='+cityTo+'&isConnectedFlight=false&isReturn=true&discount=0', cityFrom + cityTo + dateout + datein + '_' + JobID, adltsQ, datein);
     }
 }
 
@@ -163,22 +163,24 @@ function chooseRoute(dateout, datein, cityFrom, cityTo, adltsQ){
 function startJob(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel){
     console.log('Checking if the given file exists...');
     
+    JobID = Date.now().toString();
+
     if(datein == undefined || false){
         datein = "_0";
     }
-    
+
     cityFrom = CityToIata(cityFrom);
     cityTo = CityToIata(cityTo);
     
     firstLine.push(true);
 
-    fs.access("../Webside/scrapedata/"+cityFrom + cityTo + dateout + datein +".json", (err) => {
+    fs.access("../Webside/scrapedata/" + cityFrom + cityTo + dateout + datein + '_' + JobID + ".json", (err) => {
         if(!err){
-            console.log('File named: ' + cityFrom + cityTo + dateout + datein + ' already exists!');
+            console.log('File named: ' + cityFrom + cityTo + dateout + datein + '_' + JobID + ' already exists!');
             return;
         }else{
-            console.log('The file does not exist... making a new file named: ' + cityFrom + cityTo + dateout + datein);
-            fs.writeFile("../Webside/scrapedata/"+cityFrom + cityTo + dateout + datein +'.json','[]', function(err){
+            console.log('The file does not exist... making a new file named: ' + cityFrom + cityTo + dateout + datein + '_' + JobID);
+            fs.writeFile("../Webside/scrapedata/"+cityFrom + cityTo + dateout + datein + '_' + JobID + '.json','[]', function(err){
                 if(err){
                     console.log(err);
                 }
@@ -188,11 +190,11 @@ function startJob(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPr
 
     var j = schedule.scheduleJob('05 * * * * *', function(){
         console.log('Running scheduled job...');
-        chooseRoute(dateout, datein, cityFrom, cityTo, adltsQ);
+        chooseRoute(dateout, datein, cityFrom, cityTo, adltsQ, JobID);
         
-        if(CustomerSpecifiedPrice != 0){
+        if(CustomerSpecifiedPrice != 0 || undefined || "" || null){
             setTimeout(function (){
-                RunPriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel);
+                RunPriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel, JobID);
             }, 15000);
         }
     });
@@ -517,8 +519,8 @@ function jsonReader(filePath, cb){
     })
 }
 
-function PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel){
-    jsonReader("../Webside/scrapedata/" + cityFrom + cityTo + dateout + datein + '.json', (err, ScrapedData) => {
+function PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel, JobID){
+    jsonReader("../Webside/scrapedata/" + cityFrom + cityTo + dateout + datein + '_' + JobID + '.json', (err, ScrapedData) => {
       if(err){
           console.log(err);
           return;
@@ -560,14 +562,14 @@ function PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecified
   });
 }
 
-function RunPriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel){
+function RunPriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel, JobID){
     console.log('Running scheduled price comparison...');
     console.log('Looking at route: ' + cityFrom + ' to ' + cityTo);
     console.log('User desires a totalprice of: ' + CustomerSpecifiedPrice);
-    PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel);
+    PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel, JobID);
 }
 
-startJob('2020-07-04', undefined, 'Copenhagen', 'London Stansted', 1, 260, 42313187);
+startJob('2020-07-06', '2020-07-13', 'London Stansted', 'Copenhagen', 1, 530, 42313187); //260, 42313187
 
 // console.log(selected_date_element.textContent, selected_date_element2.textContent, CityToIata(document.getElementById('myInput1')), CityToIata(document.getElementById('myInput2')));
 // selected_date_element.textContent - dateout
