@@ -337,7 +337,7 @@ function startJob(req, dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecif
         }
     });    
     
-    save_scrapedata_to_user(req, cityFrom + cityTo + dateout + datein + '_' + JobID + '.json');
+    save_scrapedata_to_user(req, cityFrom + cityTo + dateout + datein + '_' + JobID + ".json");
 
     var j = schedule.scheduleJob('05 * * * * *', function(){
         console.log('Running scheduled job...');
