@@ -212,22 +212,22 @@ async function scraperProduct(url, filename, adltsQ, datein){
     var Departureprice = (Price * adltsQ);
     
     if(Currency == "€"){
-        var ConvertedPriceDep = (fx.convert(Departureprice, {from: "EUR", to: "DKK"}, fx.rates)).toFixed(2);
+        var ConvertedPriceDep = (fx.convert(Departureprice, {from: "EUR", to: "DKK"}, fx.rates)).toFixed(0);
         if(datein == "_0"){
             var Currency = "DKK";
         }
     }else if(Currency == "£"){
-        var ConvertedPriceDep = (fx.convert(Departureprice, {from: "GBP", to: "DKK"}, fx.rates)).toFixed(2);
+        var ConvertedPriceDep = (fx.convert(Departureprice, {from: "GBP", to: "DKK"}, fx.rates)).toFixed(0);
         if(datein == "_0"){
             var Currency = "DKK";
         }
     }else if(Currency == "Dkr"){
-        var ConvertedPriceDep = (fx.convert(Departureprice, {from: "DKK", to: "DKK"}, fx.rates)).toFixed(2);
+        var ConvertedPriceDep = (fx.convert(Departureprice, {from: "DKK", to: "DKK"}, fx.rates)).toFixed(0);
         if(datein == "_0"){
             var Currency = "DKK";
         }
     }else if(Currency == "$"){
-        var ConvertedPriceDep = (fx.convert(Departureprice, {from: "USD", to: "DKK"}, fx.rates)).toFixed(2);
+        var ConvertedPriceDep = (fx.convert(Departureprice, {from: "USD", to: "DKK"}, fx.rates)).toFixed(0);
         if(datein == "_0"){
             var Currency = "DKK";
         }
@@ -261,16 +261,16 @@ async function scraperProduct(url, filename, adltsQ, datein){
         let Returnprice = (Price2 * adltsQ);
 
         if(Currency == "€"){
-            var ConvertedPriceRet = (fx.convert(Returnprice, {from: "EUR", to: "DKK"}, fx.rates)).toFixed(2);
+            var ConvertedPriceRet = (fx.convert(Returnprice, {from: "EUR", to: "DKK"}, fx.rates)).toFixed(0);
             var Currency = "DKK";
         }else if(Currency == "£"){
-            var ConvertedPriceRet = (fx.convert(Returnprice, {from: "GBP", to: "DKK"}, fx.rates)).toFixed(2);
+            var ConvertedPriceRet = (fx.convert(Returnprice, {from: "GBP", to: "DKK"}, fx.rates)).toFixed(0);
             var Currency = "DKK";
         }else if(Currency == "Dkr"){
-            var ConvertedPriceRet = (fx.convert(Returnprice, {from: "DKK", to: "DKK"}, fx.rates)).toFixed(2);
+            var ConvertedPriceRet = (fx.convert(Returnprice, {from: "DKK", to: "DKK"}, fx.rates)).toFixed(0);
             var Currency = "DKK";
         }else if(Currency == "$"){
-            var ConvertedPriceRet = (fx.convert(Returnprice, {from: "USD", to: "DKK"}, fx.rates)).toFixed(2);
+            var ConvertedPriceRet = (fx.convert(Returnprice, {from: "USD", to: "DKK"}, fx.rates)).toFixed(0);
             var Currency = "DKK";
         }
        
@@ -337,7 +337,7 @@ function startJob(req, dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecif
         }
     });    
     
-    save_scrapedata_to_user(req, cityFrom + cityTo + dateout + datein + '_' + JobID + ".json");
+    save_scrapedata_to_user(req, cityFrom + cityTo + dateout + datein + '_' + JobID + '.json');
 
     var j = schedule.scheduleJob('05 * * * * *', function(){
         console.log('Running scheduled job...');
