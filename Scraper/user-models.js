@@ -31,14 +31,6 @@ var userSchema = new Schema({
   }]
 });
 
-userSchema.methods.hashedPassword = async function (password) {
-    return await bcrypt.hash(req.body.password, 10)
-}
-
-userSchema.methods.compPassword = async function (password) {
-    return await bcrypt.compare(password, user.password)
-}
-
 var User = mongoose.model('User', userSchema)
 
 module.exports = User
