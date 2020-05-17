@@ -98,9 +98,10 @@ app.post('/register', checkNotAuthenticated, (req, res) => {
 })
 })
 
+//Function that upon comparison of scrapedata folder contents and User files (in MongoDB) will only display the jobs that the current user has started
 app.get('/getFlightData', checkAuthenticated, (req, res) => {
     var directoryPath = path.join(__dirname, '../Webside/scrapedata');
-    fs.readdir(directoryPath, function (err, files) {
+    fs.readdir(directoryPath, function (err, files) { 
         if (err) return console.log('Unable to scan directory: ' + err);
         User.findOne({email: "kasper@densaj.com"}, function (err, User) {
             let Matchedfiles = [];
@@ -214,22 +215,22 @@ async function scraperProduct(url, filename, adltsQ, datein){
     var Departureprice = (Price * adltsQ);
     
     if(Currency == "€"){
-        var ConvertedPriceDep = (fx.convert(Departureprice, {from: "EUR", to: "DKK"}, fx.rates)).toFixed(2);
+        var ConvertedPriceDep = (fx.convert(Departureprice, {from: "EUR", to: "DKK"}, fx.rates)).toFixed(0);
         if(datein == "_0"){
             var Currency = "DKK";
         }
     }else if(Currency == "£"){
-        var ConvertedPriceDep = (fx.convert(Departureprice, {from: "GBP", to: "DKK"}, fx.rates)).toFixed(2);
+        var ConvertedPriceDep = (fx.convert(Departureprice, {from: "GBP", to: "DKK"}, fx.rates)).toFixed(0);
         if(datein == "_0"){
             var Currency = "DKK";
         }
     }else if(Currency == "Dkr"){
-        var ConvertedPriceDep = (fx.convert(Departureprice, {from: "DKK", to: "DKK"}, fx.rates)).toFixed(2);
+        var ConvertedPriceDep = (fx.convert(Departureprice, {from: "DKK", to: "DKK"}, fx.rates)).toFixed(0);
         if(datein == "_0"){
             var Currency = "DKK";
         }
     }else if(Currency == "$"){
-        var ConvertedPriceDep = (fx.convert(Departureprice, {from: "USD", to: "DKK"}, fx.rates)).toFixed(2);
+        var ConvertedPriceDep = (fx.convert(Departureprice, {from: "USD", to: "DKK"}, fx.rates)).toFixed(0);
         if(datein == "_0"){
             var Currency = "DKK";
         }
@@ -263,16 +264,16 @@ async function scraperProduct(url, filename, adltsQ, datein){
         let Returnprice = (Price2 * adltsQ);
 
         if(Currency == "€"){
-            var ConvertedPriceRet = (fx.convert(Returnprice, {from: "EUR", to: "DKK"}, fx.rates)).toFixed(2);
+            var ConvertedPriceRet = (fx.convert(Returnprice, {from: "EUR", to: "DKK"}, fx.rates)).toFixed(0);
             var Currency = "DKK";
         }else if(Currency == "£"){
-            var ConvertedPriceRet = (fx.convert(Returnprice, {from: "GBP", to: "DKK"}, fx.rates)).toFixed(2);
+            var ConvertedPriceRet = (fx.convert(Returnprice, {from: "GBP", to: "DKK"}, fx.rates)).toFixed(0);
             var Currency = "DKK";
         }else if(Currency == "Dkr"){
-            var ConvertedPriceRet = (fx.convert(Returnprice, {from: "DKK", to: "DKK"}, fx.rates)).toFixed(2);
+            var ConvertedPriceRet = (fx.convert(Returnprice, {from: "DKK", to: "DKK"}, fx.rates)).toFixed(0);
             var Currency = "DKK";
         }else if(Currency == "$"){
-            var ConvertedPriceRet = (fx.convert(Returnprice, {from: "USD", to: "DKK"}, fx.rates)).toFixed(2);
+            var ConvertedPriceRet = (fx.convert(Returnprice, {from: "USD", to: "DKK"}, fx.rates)).toFixed(0);
             var Currency = "DKK";
         }
        
@@ -340,7 +341,7 @@ function startJob(req, dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecif
         }
     });    
     
-    save_scrapedata_to_user(req, cityFrom + cityTo + dateout + datein + '_' + JobID + ".json");
+    save_scrapedata_to_user(req, cityFrom + cityTo + dateout + datein + '_' + JobID + '.json');
 
     var j = schedule.scheduleJob('05 * * * * *', function(){
         console.log('Running scheduled job...');
@@ -724,12 +725,3 @@ function RunPriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecif
     console.log('User desires a totalprice of: ' + CustomerSpecifiedPrice);
     PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel, JobID);
 }
-
-
-// startJob('2020-05-15', '2020-05-17', 'Copenhagen', 'London Stansted');
-// console.log(selected_date_element.textContent, selected_date_element2.textContent, CityToIata(document.getElementById('myInput1')), CityToIata(document.getElementById('myInput2')));
-// startJob('2020-05-09', '2020-05-16', 'London Stansted', 'Copenhagen');
-// selected_date_element.textContent - dateout
-// selected_date_element2.textContent - datein
-// CityToIata(document.getElementById('myInput1')) - cityfrom
-// CityToIata(document.getElementById('myInput2')) - city to
