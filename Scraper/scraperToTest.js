@@ -11,6 +11,7 @@ const twilio = require('twilio');
 var twilioSID = process.env.TWILIO_ACCOUNT_SID;
 var twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
 const client = new twilio(twilioSID, twilioAuthToken);
+console.log({TwilioSID: twilioSID, TwilioToken: twilioAuthToken});
 
 // Money converter
 var fx = require("money");
@@ -531,7 +532,7 @@ function PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecified
               if(datein !== "_0"){
                   if(parseFloat(ScrapedData[i].TotalPrice) <= CustomerSpecifiedPrice){
                       console.log('Price equal to or lower than '+ CustomerSpecifiedPrice + ' has been recorded at: ' + ScrapedData[i].ScrapeDate);
-                      console.log('Sending notification to user...');
+                      console.log('Sending notification to user on number: ', CustomerTel);
                       client.messages.create({
                           to: '+45'+CustomerTel,
                           from: '+12512200734',
@@ -546,7 +547,7 @@ function PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecified
               }else if(datein == "_0"){
                   if(parseFloat(ScrapedData[i].TotalPrice) <= CustomerSpecifiedPrice){
                       console.log('Price equal to or lower than '+ CustomerSpecifiedPrice + ' has been recorded at: ' + ScrapedData[i].ScrapeDate);
-                      console.log('Sending notification to user...');
+                      console.log('Sending notification to user on number: ', CustomerTel);
                       client.messages.create({
                           to: '+45'+CustomerTel,
                           from: '+12512200734',
@@ -569,10 +570,4 @@ function RunPriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecif
     PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel, JobID);
 }
 
-startJob('2020-07-06', '2020-07-13', 'London Stansted', 'Copenhagen', 1, 530, 42313187); //260, 42313187
-
-// console.log(selected_date_element.textContent, selected_date_element2.textContent, CityToIata(document.getElementById('myInput1')), CityToIata(document.getElementById('myInput2')));
-// selected_date_element.textContent - dateout
-// selected_date_element2.textContent - datein
-// CityToIata(document.getElementById('myInput1')) - cityfrom
-// CityToIata(document.getElementById('myInput2')) - city to
+startJob('2020-07-13', '2020-07-20', 'Copenhagen', 'London Stansted', 1, 700, 42313187);
