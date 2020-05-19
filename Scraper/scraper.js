@@ -688,7 +688,7 @@ function PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecified
               if(datein !== "_0"){
                   if(parseFloat(ScrapedData[i].TotalPrice) <= CustomerSpecifiedPrice){
                       console.log('Price equal to or lower than '+ CustomerSpecifiedPrice + ' has been recorded at: ' + ScrapedData[i].ScrapeDate);
-                      console.log('Sending notification to user...');
+                      console.log('Sending notification to user on number: ', CustomerTel);
                       client.messages.create({
                           to: '+45'+CustomerTel,
                           from: '+12512200734',
@@ -703,7 +703,7 @@ function PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecified
               }else if(datein == "_0"){
                   if(parseFloat(ScrapedData[i].TotalPrice) <= CustomerSpecifiedPrice){
                       console.log('Price equal to or lower than '+ CustomerSpecifiedPrice + ' has been recorded at: ' + ScrapedData[i].ScrapeDate);
-                      console.log('Sending notification to user...');
+                      console.log('Sending notification to user on number: ', CustomerTel);
                       client.messages.create({
                           to: '+45'+CustomerTel,
                           from: '+12512200734',
@@ -722,6 +722,6 @@ function PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecified
 function RunPriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel, JobID){
     console.log('Running scheduled price comparison...');
     console.log('Looking at route: ' + cityFrom + ' to ' + cityTo);
-    console.log('User desires a totalprice of: ' + CustomerSpecifiedPrice);
+    console.log('User desires a totalprice of: ' + CustomerSpecifiedPrice + 'DKK');
     PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel, JobID);
 }

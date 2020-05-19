@@ -57,9 +57,6 @@
 
 
 <script>
-const mongoose = require('mongoose');
-var User = require('./user-models');
-
 // Tabel  
 function insertTd(td, dom){
     var node = document.createElement("td");
@@ -81,6 +78,7 @@ fetch("/scrapedata/"+location.hash.substr(1)).then((response) => {
         insertTd(flight.Departure, tr);
         insertTd(flight.Return, tr);
         dataTabel.appendChild(tr);
+        console.log("Test 1");
     }
 
     // GRAF 
@@ -92,6 +90,7 @@ fetch("/scrapedata/"+location.hash.substr(1)).then((response) => {
         var movedElement2 = data[i].ScrapeDate.slice(4, 10) + data[i].ScrapeDate.slice(15, 21);
         flightPrice.push(movedElement);
         flightDates.push(movedElement2);
+        console.log("Test 2");
     }
 
     /* The text info on the page where you see graph/chart */ 
@@ -117,6 +116,8 @@ fetch("/scrapedata/"+location.hash.substr(1)).then((response) => {
     var PriceAndDate = lowestPrice + ' @ ' + dateOfLowestPrice;
     document.getElementById("PriceField").textContent = PriceAndDate; // + '' + data[i].Currency;
 
+    console.log("Test 3");
+
     var chart = document.getElementById('showchart');
     var layout = {
         autosize: false, width: 680, height: 410, left: 50, right: 50,
@@ -141,6 +142,8 @@ fetch("/scrapedata/"+location.hash.substr(1)).then((response) => {
             color: "#ede5da"
         }
     }], layout, config);
+    
+    console.log("Test 4");
 });
 
 function StringifyDate(date){

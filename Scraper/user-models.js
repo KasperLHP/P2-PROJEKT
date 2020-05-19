@@ -6,7 +6,7 @@ var mongoDB = 'mongodb+srv://dbJohn:123@dbb2-7fmcy.mongodb.net/test?retryWrites=
 
 mongoose.connect(mongoDB, {useUnifiedTopology: true, useNewUrlParser: true})
 db.on('error', error => console.error(error))
-db.once('open', () => console.log('Conncted to Mongoose'))
+db.once('open', () => console.log('Connected to Mongoose'))
 
 var userSchema = new Schema({
     name: {
