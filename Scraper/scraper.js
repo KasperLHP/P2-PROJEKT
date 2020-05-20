@@ -126,12 +126,12 @@ app.post('/', checkAuthenticated, (req, res) => {
    if(req.body.datepicker !== ""){
        // Oneway
        if(req.body.datepicker3 == ""){
-           startJob(req, req.body.datepicker2, undefined, req.body.myInput3, req.body.myInput4, req.body.adltsQ1, req.body.theHiddenPrice1);
+           startJob(req, req.body.datepicker2, undefined, req.body.myInput3, req.body.myInput4, req.body.adltsQ1, req.body.theHiddenPrice1, req.body.theHiddenTel1);
            console.log({departDate: req.body.datepicker2, fromCity: req.body.myInput3, toCity: req.body.myInput4, AmountAdults: req.body.adltsQ1, UserTel1: req.body.theHiddenTel1, UserPrice1: req.body.theHiddenPrice1});
            res.writeHead(200);
        // Round trip
        }else{
-           startJob(req, req.body.datepicker, req.body.datepicker1, req.body.myInput1, req.body.myInput2, req.body.adltsQ, req.body.theHiddenPrice);
+           startJob(req, req.body.datepicker, req.body.datepicker1, req.body.myInput1, req.body.myInput2, req.body.adltsQ, req.body.theHiddenPrice, req.body.theHiddenTel);
            console.log({departDate: req.body.datepicker, returnDate: req.body.datepicker1, fromCity: req.body.myInput1, toCity: req.body.myInput2, AmountAdults: req.body.adltsQ, UserTel: req.body.theHiddenTel, UserPrice:req.body.theHiddenPrice});
            res.writeHead(200);
        }
@@ -315,7 +315,7 @@ function chooseRoute(dateout, datein, cityFrom, cityTo, adltsQ, JobID){
 // Function that allows us to run scraper at scheduled times + creates new file if a file doesnt already exist
 function startJob(req, dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel){
     console.log('Checking if the given file exists...');
-    
+
     JobID = Date.now().toString();
 
     if(datein == undefined || false){
