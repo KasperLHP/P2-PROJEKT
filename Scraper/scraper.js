@@ -290,8 +290,6 @@ async function scraperProduct(url, filename, adltsQ, datein){
         filejsonData = data
     } 
     
-   // filejsonData = JSON.parse(filejsonData);
-    
     var jsonData = JSON.stringify(filejsonData);
 
     fs.writeFile("../Webside/scrapedata/"+filename+'.json', jsonData, function(err){
@@ -300,7 +298,6 @@ async function scraperProduct(url, filename, adltsQ, datein){
         }
     });
     console.log('Data has been added to file!');
-    
 }
 
 // Function that inserts dates and IATA codes in the flexible link creator
