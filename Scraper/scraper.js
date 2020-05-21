@@ -74,7 +74,7 @@ app.get('/register', checkNotAuthenticated, (req, res) => {
 })
 
 app.post('/register', checkNotAuthenticated, (req, res) => {
-    
+
     //const hashedPassword = bcrypt.hash(req.body.password, 10)
     newUser = new User ({
         name: req.body.navn,
@@ -103,7 +103,7 @@ app.get('/getFlightData', checkAuthenticated, (req, res) => {
     var directoryPath = path.join(__dirname, '../Webside/scrapedata');
     fs.readdir(directoryPath, function (err, files) { 
         if (err) return console.log('Unable to scan directory: ' + err);
-        User.findOne({email: "kasper@densaj.com"}, function (err, User) {
+        User.findOne({email: req.user.email}, function (err, User) {
             let Matchedfiles = [];
             if (err) return done(err);
             files.forEach(file => {
