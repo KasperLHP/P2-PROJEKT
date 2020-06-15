@@ -352,6 +352,7 @@ function startJob(req, dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecif
     });
 }
 
+// Function that converts city names to IATA Codes - used in link
 function CityToIata(city){
     switch(city){
         case 'London Heathrow':
@@ -671,8 +672,7 @@ function jsonReader(filePath, cb){
     })
 }
 
-
-
+// Price Notifier (Twilio API) - looks in the created JSON data files
 function PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel, JobID){
     jsonReader("../Webside/scrapedata/" + cityFrom + cityTo + dateout + datein + '_' + JobID + '.json', (err, ScrapedData) => {
       if(err){
