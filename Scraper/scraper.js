@@ -118,6 +118,7 @@ app.get('/getFlightData', checkAuthenticated, (req, res) => {
             res.writeHead(200);
             console.log(Matchedfiles);
             res.end(JSON.stringify(Matchedfiles));
+            
         });
    }); 
 });
