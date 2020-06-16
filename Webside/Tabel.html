@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Flight Ticket Booking</title>
+    <title>Flight Checker - See job</title>
 	<link rel="stylesheet" type="text/css" href="./css/style.css">
 	<link href="//fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css">
 	<link href="//fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css">
@@ -13,16 +13,16 @@
 <body>
     <h1>
 		<div class="img-box">
-		<img src="../images/FlightCheckerLogo.png" alt="FlightChecker" id="FClogo" />
+		<img src="images/FlightCheckerLogo.png" alt="FlightChecker" id="FClogo" />
 		</div>
 	</h1>
     <div class="main-agileinfo">
 		<div class="sap_tabs">			
 			<div id="horizontalTab">
 				<ul class="resp-tabs-list">
-                    <li class="resp-tab-item"><span>Round trip</span></li>
-					<li class="resp-tab-item"><span>One way</span></li>
-                    <li class="resp-tab-item"><span>Overview of jobs</span></li>
+                    <li class="resp-tab-item"><span id="rtb">Round trip</span></li>
+					<li class="resp-tab-item"><span id="owb">One way</span></li>
+                    <li class="resp-tab-item"><span id="oob">Overview of jobs</span></li>
                 </ul>	
 				<div class="clearfix"></div>	
 				<div class="resp-tabs-container">
@@ -156,3 +156,16 @@ function StringifyDate(date){
     return DateAfter;
 }
 </script> 
+<script type="text/javascript">
+    document.getElementById("rtb").onclick = function () {
+            location.href = "./website.html";
+    };
+
+    document.getElementById("owb").onclick = function () {
+            location.href = "./website.html";
+    };
+
+    document.getElementById("oob").onclick = function () {
+            location.href = "./website.html";
+    };
+</script>

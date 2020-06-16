@@ -291,8 +291,6 @@ async function scraperProduct(url, filename, adltsQ, datein){
         filejsonData = data
     } 
     
-   // filejsonData = JSON.parse(filejsonData);
-    
     var jsonData = JSON.stringify(filejsonData);
 
     fs.writeFile("../Webside/scrapedata/"+filename+'.json', jsonData, function(err){
@@ -301,7 +299,6 @@ async function scraperProduct(url, filename, adltsQ, datein){
         }
     });
     console.log('Data has been added to file!');
-    
 }
 
 // Function that inserts dates and IATA codes in the flexible link creator
@@ -356,6 +353,7 @@ function startJob(req, dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecif
     });
 }
 
+// Function that converts city names to IATA Codes - used in link
 function CityToIata(city){
     switch(city){
         case 'London Heathrow':
@@ -675,8 +673,7 @@ function jsonReader(filePath, cb){
     })
 }
 
-
-
+// Price Notifier (Twilio API) - looks in the created JSON data files
 function PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel, JobID){
     jsonReader("../Webside/scrapedata/" + cityFrom + cityTo + dateout + datein + '_' + JobID + '.json', (err, ScrapedData) => {
       if(err){
