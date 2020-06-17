@@ -73,9 +73,8 @@ app.get('/register', checkNotAuthenticated, (req, res) => {
     res.render('register.html')
 })
 
+// Registering a user - and password hashing
 app.post('/register', checkNotAuthenticated, (req, res) => {
-
-    //const hashedPassword = bcrypt.hash(req.body.password, 10)
     newUser = new User ({
         name: req.body.navn,
         email: req.body.email,
@@ -95,7 +94,7 @@ app.post('/register', checkNotAuthenticated, (req, res) => {
                 })
                 .catch(err => console.log(err));
             });
-})
+    })
 })
 
 //Function that upon comparison of scrapedata folder contents and User files (in MongoDB) will only display the jobs that the current user has started
@@ -123,6 +122,7 @@ app.get('/getFlightData', checkAuthenticated, (req, res) => {
    }); 
 });
 
+// When a user starts a job the variables will be parsed to this function - after this, the rest of the program will be able to use the variables.
 app.post('/', checkAuthenticated, (req, res) => {
    if(req.body.datepicker !== ""){
        // Oneway
@@ -139,6 +139,7 @@ app.post('/', checkAuthenticated, (req, res) => {
    }
 })
 
+// Function that saves/pushes the file NAME to mongoDB user (logged in user)
 function save_scrapedata_to_user(req, filename) {
     User.findOne({email: req.user.email}, function (err, User) {
         if (err) return done(err);
@@ -188,7 +189,7 @@ async function scraperProduct(url, filename, adltsQ, datein){
     await page.waitFor(3000);
 
     //Departure flight
-    //Price
+    //Price                      
     const [el1] = await page.$x('/html/body/flights-root/div/div/div/div/flights-summary-container/flights-summary/div/div[1]/journey-container/journey/div/div[2]/carousel-container/carousel/div/ul/li[3]/carousel-item/button/div[2]/ry-price/span[2]');
     const txt = await el1.getProperty('textContent');
     const Price = await txt.jsonValue();
@@ -310,7 +311,7 @@ function chooseRoute(dateout, datein, cityFrom, cityTo, adltsQ, JobID){
     }
 }
 
-// Function that allows us to run scraper at scheduled times + creates new file if a file doesnt already exist
+// Function that allows us to run scraper at scheduled times + creates files based on the route choosen by user - creates new file if a file doesnt already exist
 function startJob(req, dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel){
     console.log('Checking if the given file exists...');
 
@@ -673,7 +674,7 @@ function jsonReader(filePath, cb){
     })
 }
 
-// Price Notifier (Twilio API) - looks in the created JSON data files
+// Price Notifier (Twilio API) - looks in the created JSON data files and compares totalprice in file to the price that the user has inputtet in pop-up.
 function PriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel, JobID){
     jsonReader("../Webside/scrapedata/" + cityFrom + cityTo + dateout + datein + '_' + JobID + '.json', (err, ScrapedData) => {
       if(err){
