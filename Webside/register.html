@@ -16,8 +16,12 @@
     </head>
     
     <body>
-        <h1>Flight Ticket Booking</h1>
-        <div class="main-agileinfo">
+        <h1>
+            <div class="img-box">
+            <img src="images/FlightCheckerLogo.png" alt="FlightChecker" id="FClogo" />
+            </div>
+        </h1>
+        <div class="main-agileinfo" style="width:20%;">
             <div class="sap_tabs">
                 <div id="horizontalTab">
                     <ul class="resp-tabs-list">
@@ -29,22 +33,22 @@
                             <form id="form_register" action="/register" method="POST">
                                 <div id="navn">
                                     <h3>Full Name</h3>
-                                    <input type="name" id="navn" name="navn" required>
+                                    <input type="name" id="navn" name="navn" style="width: 90%;" required>
                                 </div>
                                 <div id="email_reg">
                                     <h3>Email</h3>
-                                    <input type="email" id="email" name="email" required>
+                                    <input type="email" id="email" name="email" style="width: 90%;" required>
                                 </div>
                                 <div id="phonenumber">
                                     <h3>Phone number</h3>
-                                    <input type="number" id="phone_number" name="phone_number" required>
+                                    <input type="number" id="phone_number" name="phone_number" style="width: 90%;" required>
                                 </div>
                                 <div id="password_reg">
                                     <h3>Password</h3>
-                                    <input type="password" id="password" name="password" required>
+                                    <input type="password" id="password" name="password" style="width: 90%;" required>
                                 </div>
-                                <input id="UserRegister" type="submit" value="Register">
-                                <a id="login" href="/login">Log in...</a>
+                                <input id="UserRegister" type="submit" value="Register" style="padding: 10px 30px;">
+                                <a id="login" href="/login" style="margin-left: 50px;">Log in...</a>
                             </form>
                         </div>
                     </div>
