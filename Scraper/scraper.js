@@ -19,7 +19,7 @@ const nStatic = require('node-static');
 const qs = require('querystring');
 const path = require('path');
 
-//Reqs for PriceNotifier
+// Reqs for PriceNotifier
 require('dotenv').config({path: '../twilio.env'});
 const twilio = require('twilio');
 var twilioSID = process.env.TWILIO_ACCOUNT_SID;
@@ -317,6 +317,7 @@ function startJob(req, dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecif
 
     JobID = Date.now().toString();
 
+    // If user picks one-way route, set return date to "_0", so one-way jobs can be identified.
     if(datein == undefined || false){
         datein = "_0";
     }
@@ -326,6 +327,7 @@ function startJob(req, dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecif
     
     firstLine.push(true);
 
+    // Kigger i scrapedate mappen og kigger på de forskellige filer - hvis filen allerede findes, så laves der ikke en ny fil. Hvis filen ikke findes, så laves der en ny fil.
     fs.access("../Webside/scrapedata/" + cityFrom + cityTo + dateout + datein + '_' + JobID + ".json", (err) => {
         if(!err){
             console.log('File named: ' + cityFrom + cityTo + dateout + datein + '_' + JobID + ' already exists!');
@@ -340,12 +342,14 @@ function startJob(req, dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecif
         }
     });    
     
+    // Function that saves JSON file name to MongoDB user
     save_scrapedata_to_user(req, cityFrom + cityTo + dateout + datein + '_' + JobID + '.json');
 
     var j = schedule.scheduleJob('05 * * * * *', function(){
         console.log('Running scheduled job...');
         chooseRoute(dateout, datein, cityFrom, cityTo, adltsQ, JobID);
         
+        // If no information is typed in the pop-up on site, twilio should not even be executed.
         if(CustomerSpecifiedPrice != 0 || undefined || "" || null){
             setTimeout(function (){
                 RunPriceCheck(dateout, datein, cityFrom, cityTo, adltsQ, CustomerSpecifiedPrice, CustomerTel, JobID);
